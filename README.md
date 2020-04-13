@@ -25,7 +25,7 @@ What constitutes a "substantial" change may include the following but is not lim
 - Changes to the contents of the Data Format file listed [here](https://github.com/buildpacks/spec/blob/master/buildpack.md#data-format)
 - Changes that effect contents of the output image
 - Process changes
-- governance changes
+- Governance changes
 
 For clarification about where a change fits into this model, please review previous RFCs, or reach
 out on the official Paketo slack [here](packetobuildpacks.slack.com).
