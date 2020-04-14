@@ -5,19 +5,19 @@ Below we propose what repositories we will migrate into the paketo-buildpacks or
 
 ## Implementation
 
-####NodeJS CNB (language family and implementation CNBs)
+#### NodeJS CNB (language family and implementation CNBs)
 
 - node-engine
 - yarn-install
 - npm
  
-####Go CNB (language family and implementation CNBs)
+#### Go CNB (language family and implementation CNBs)
 
 - go-compiler
 - go-mod
 - dep
 
-####Dotnet Core CNB (language family and implementation CNBs)
+#### Dotnet Core CNB (language family and implementation CNBs)
 
 - dotnet-core-runtime
 - dotnet-core-aspnet
@@ -26,21 +26,21 @@ Below we propose what repositories we will migrate into the paketo-buildpacks or
 - dotnet-core-conf
 - icu
 
-####PHP CNB (language family and implementation CNBs)
+#### PHP CNB (language family and implementation CNBs)
 
 - php-web
 - php-composer
 - php-dist
 
-####Httpd CNB (language family and implementation CNBs)
+#### Httpd CNB (language family and implementation CNBs)
 
 - httpd
 
-####Nginx CNB (language family and implementation CNBs)
+#### Nginx CNB (language family and implementation CNBs)
 
 -nginx
 
-####Java CNB (language family and implementation CNBs)
+#### Java CNB (language family and implementation CNBs)
 
 - openjdk
 - build-system
@@ -64,7 +64,7 @@ Below we propose what repositories we will migrate into the paketo-buildpacks or
 - azul-zulu
 - amazon-corretto
 
-####Libraries
+#### Libraries
 
 - packit
 - libpak
@@ -81,7 +81,7 @@ Below we propose what repositories we will migrate into the paketo-buildpacks or
 - no shim-related code (cnb2cf, etc..)
 
 
-###Buildpack Repo/ID/Name proposal:
+### Buildpack Repo/ID/Name proposal:
 We propose the following naming conventions for repositories, buildpack id's and registry path. 
 
 ### Repo:
@@ -92,7 +92,7 @@ Ex:
 	
 	github.com/paketo-buildpacks/node-engine
 	
-###IDs:
+### IDs:
 The ID's of each buildpack ( in `buildpack.toml` ) should conform to the following.
 
 	paketo-buildpacks/<name-without-cnb-suffix>
@@ -111,13 +111,13 @@ So for the `node-engine` buildpack this would be
 	gcr.io/paketo-buildpacks/node-engine
 
 
-###Stack Repo/ID/Name proposal:
-Below is a plan for where the component pieces of stacks should live & how they should be named.
+### Stack Repo/ID/Name proposal:
+Below is a plan for how the component pieces of stacks & builders should be named.
 
-####Builders
+#### Builders
 	gcr.io/paketo-buildpacks/builder:<builder-name>
 
-####Build Images
+#### Build Images
 	gcr.io/paketo-buildpacks/build:<build-image-name>
 
 #### Run Images
