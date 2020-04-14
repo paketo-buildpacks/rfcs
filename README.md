@@ -42,16 +42,23 @@ To get an RFC implemented, first the RFC needs to be merged into the `rfcs`[/rfc
 
 Once a pull request is opened, the RFC is now in development and the following will happen:
 
-- It will be labeled as general or specific to a language team.
+- It will be labeled as general or specific to a set of teams.
 - Voting members are defined as follows:
-- If the RFC fits into a single language team, voting members are Core Team Members + Maintainers who are part of the effected language team
-- If the RFC fits into a multiple language team, voting members are Core Team Members + Maintainers who are part of the effected language teams
-- IF the RFC effects all language teams, voting members are Core Team Members + All Maintainers
+	- If the RFC effects a single team, voting members are Steering Committee Members + Maintainers who are part of the effected team
+	- If the RFC effects multiple teams, voting members are Steering Committee Members + Maintainers who are part of the effected teams. 
+	- IF the RFC effects all teams, voting members are Steering Committee Members + All Maintainers
+
+	The effect of an RFC referenced above can be defined as follows:
+
+	- Changes inside a repo a team owns effect that team
+	- If changes are proposed against a tool or utility, teams that use that utility are effected.
+	- Changes to any specification that apply to a repo effect all teams that use or maintain that repo. 
+
 - The community will discuss as much as possible in the RFC pull request directly. All discussion should be posted on the PR thread.
 - When an RFC is deemed "ready"
 - A Voting member may propose a "motion for final comment period (FCP)" along with a disposition of the outcome (merge, close, or postpone). Before entering FCP, super majority of the voting members must sign off.
-- This step is taken when enough discussion of the trade-offs have taken place and the team is in a position to make a decision.
-- The FCP will last 7 days. If there's unanimous agreement among the team, then the FCP can close early.
+- This step is taken when enough discussion of the trade-offs have taken place and the team(s) is in a position to make a decision.
+- The FCP will last 7 days. If there's unanimous agreement among the team(s), then the FCP can close early.
 - Acceptance requires a super majority of binding votes by voting members in favor. The voting options are the following: Affirmative, Negative, and Abstinence. Non-binding votes are of course welcome. Super majority means 2/3 or greater.
 - If no substantial new arguments or ideas are raised, the FCP will follow the outcome decided. If there are substantial new arguments, then the RFC will go back into development.
 
