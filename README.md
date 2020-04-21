@@ -1,7 +1,7 @@
 # Paketo RFCs
 
 ## Why RFC?
-The RFC (Request For Comments) process is intended to provide a consistent procedure for all major decisions effecting to Packeto Buildpacks.
+The RFC (Request For Comments) process is intended to provide a consistent procedure for all major decisions affecting Paketo Buildpacks.
 
 ## What is an RFC?
 A Request For Comments starts with a document of proposed changes to Paketo Buildpack(s).
