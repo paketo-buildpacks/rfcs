@@ -15,7 +15,7 @@ Github pull request process.
 For substantial changes, we ask that an RFC be proposed as a method to achieve consensus within the Paketo community.
 
 #### Pull Requests / Issues
-If the change is made as a pull request, but is considered substantial or more clarity/discussion is warranted, the issue will be closed and the author will be asked to be opened.
+If the change is made as a pull request, but is considered substantial or more clarity/discussion is warranted, the issue will be closed and the author will be requested to open new issues.
 
 ### What's in Scope
 You'll need to follow this process for anything considered "substantial".
