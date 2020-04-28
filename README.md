@@ -35,7 +35,7 @@ out on the official [Paketo Slack](packetobuildpacks.slack.com).
 To get an RFC implemented, first the RFC needs to be merged into the [`rfcs`](//github.com/paketo-buildpacks/rfcs) repo. Once an RFC is merged, it's considered 'accepted' and may be implemented in the project. These steps will get an RFC to be considered:
 
 - Fork the RFC repo: <https://github.com/paketo-buildpacks/rfcs>
-- Copy '0000-template.md' to 'accepted/0000-my-feature.md' (where 'my-feature' is descriptive. Don't assign an RFC number yet).
+- Rename 'accepted/0000-template.md' to 'accepted/0000-my-feature.md' (where 'my-feature' is descriptive. Don't assign an RFC number yet).
 - Fill in RFC. Any section can be marked as "N/A" if not applicable.
 - Submit a pull request. The pull request is the time to get review of the proposal from the larger community.
 - Build consensus and integrate feedback. RFCs that have broad support are much more likely to make progress than those that don't receive any comments.
