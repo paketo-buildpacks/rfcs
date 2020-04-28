@@ -73,6 +73,7 @@ Below we propose what repositories we will migrate into the paketo-buildpacks or
 - stacks
 - build-common
 - pipeline-builder
+- occam
 - samples
 
 #### Libraries to be left out
