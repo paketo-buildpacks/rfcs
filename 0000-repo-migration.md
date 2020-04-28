@@ -6,19 +6,19 @@ Below we propose what repositories we will migrate into the paketo-buildpacks or
 ## Implementation
 
 #### NodeJS CNB (language family and implementation CNBs)
-
+- nodejs (metabuildpack)
 - node-engine
 - yarn-install
 - npm
  
 #### Go CNB (language family and implementation CNBs)
-
+- go (metabuildpack)
 - go-compiler
 - go-mod
 - dep
 
 #### Dotnet Core CNB (language family and implementation CNBs)
-
+- dotnet-core (metabuildpack)
 - dotnet-core-runtime
 - dotnet-core-aspnet
 - dotnet-core-sdk
@@ -28,6 +28,7 @@ Below we propose what repositories we will migrate into the paketo-buildpacks or
 
 #### PHP CNB (language family and implementation CNBs)
 
+- php (metabuildpack)
 - php-web
 - php-composer
 - php-dist
@@ -38,41 +39,41 @@ Below we propose what repositories we will migrate into the paketo-buildpacks or
 
 #### Nginx CNB (language family and implementation CNBs)
 
--nginx
+- nginx
 
 #### Java CNB (language family and implementation CNBs)
 
-- openjdk
-- build-system
-- jvmapplication
-- apache-tomcat
-- spring-boot 
-- dist-zip
-- procfile
-- azure-application-insights (Java and NodeJS Implementations)
-- debug
-- googlestackdriver (Java & NodeJS Implementations
-- jdbc
-- jmx
-- springautoreconfiguration
-- executable-jar
-- eclipse-open9
-- sap-machine
 - adopt-openjdk
-- bellsoft-liberica
-- encrypt-at-rest
-- azul-zulu
 - amazon-corretto
+- apache-tomcat
+- azul-zulu
+- azure-application-insights (Java and NodeJS - - Implementations)
+- bellsoft-liberica
+- build-system
+- debug
+- dist-zip
+- eclipse-openj9
+- encrypt-at-rest
+- executable-jar
+- google-stackdriver (Java and NodeJS Implementations)
+- jmx
+- procfile
+- sap-machine
+- spring-boot
 
 #### Libraries
 
 - packit
 - libpak
+- libjvm
 
-#### Other repos
+#### Other 
+
 - builder formerly (cnb-builder)
 - stacks
-- github.com/ForestEckhardt/simple-paketo-node-app
+- build-common
+- pipeline-builder
+- samples
 
 #### Libraries to be left out
 
@@ -86,7 +87,7 @@ We propose the following naming conventions for repositories, buildpack id's and
 
 ### Repo:
 
-Buildpack implementation repositories should be descriptively named and exclude any reference to 'buildpack' or 'Cloud Native Buildpack'.
+Buildpack implementation repositories should be descriptively named and exclude any reference to "buildpack" or "Cloud Native Buildpack".
 
 Ex:
 	
@@ -122,5 +123,4 @@ Below is a plan for how the component pieces of stacks & builders should be name
 
 #### Run Images
 	gcr.io/paketo-buildpacks/run:<run-image-name>
-
 
