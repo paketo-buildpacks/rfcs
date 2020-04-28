@@ -79,6 +79,7 @@ Below we propose what repositories we will migrate into the paketo-buildpacks or
 #### Libraries to be left out
 
 - Python-cnb and all Python implementation CNBs
+- Ruby family CNBs
 - libbuildpack or libcfbuildpack
 - no shim-related code (cnb2cf, etc..)
 
