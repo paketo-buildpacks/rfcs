@@ -22,7 +22,7 @@ You'll need to follow this process for anything considered "substantial".
 What constitutes a "substantial" change may include the following but is not limited to:
 - Changes to [Paketo Spec](todo.com)
 - Adding/Removing a repository to Paketo
-- Changes to the contents of the Data Format file listed [here](https://github.com/buildpacks/spec/blob/master/buildpack.md#data-format)
+- Changes to the contents of the Data Format files defined [here](https://github.com/buildpacks/spec/blob/master/buildpack.md#data-format)
 - Changes that affect the contents of the output image
 - Process changes
 - Governance changes
@@ -59,7 +59,7 @@ When an RFC is deemed "ready"
 - A Voting member may propose a "motion for final comment period (FCP)" along with a disposition of the outcome (merge, close, or postpone). Before entering FCP, super majority of the voting members must sign off.
 - This step is taken when enough discussion of the trade-offs have taken place and the team(s) is in a position to make a decision.
 - The FCP will last 7 days. If there's unanimous agreement among the team(s), then the FCP can close early.
-- Acceptance requires a super majority of binding votes by voting members in favor. The voting options are the following: Affirmative, Negative, and Abstinence. Non-binding votes are of course welcome. Super majority means 2/3 or greater.
+- Acceptance requires a super majority of binding votes by voting members in favor. The voting options are the following: Affirmative, Negative, and Abstention. Non-binding votes are of course welcome. Super majority means 2/3 or greater.
 - If no substantial new arguments or ideas are raised, the FCP will follow the outcome decided. If there are substantial new arguments, then the RFC will go back into development.
 
 Once an RFC has been accepted, the maintainer who merges the pull request should do the following:
@@ -87,6 +87,6 @@ please make a PR in the appropriate repo and mention the RFC in the PR. Feel fre
 
 ## Links
 
-Slack : https://packetobuildpacks.slack.com
+[Slack](https://paketobuildpacks.slack.com/join/shared_invite/zt-ded61bqr-Rw_uK3u6MvaeLPhxEIBcLg)
 
-Buildpack Spec : https://github.com/buildpacks/spec
+[Buildpack Spec](https://github.com/buildpacks/spec)
