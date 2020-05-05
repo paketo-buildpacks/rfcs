@@ -56,10 +56,10 @@ Once a pull request is opened, the RFC is now in development and the following w
 
 - The community will discuss as much as possible in the RFC pull request directly. All discussion should be posted on the PR thread.
 When an RFC is deemed "ready"
-- A Voting member may propose a "motion for final comment period (FCP)" along with a disposition of the outcome (merge, close, or postpone). Before entering FCP, super majority of the voting members must sign off.
+- A Voting member may propose a "motion for final comment period (FCP)" along with a disposition of the outcome (merge, close, or postpone). Before entering FCP, supermajority of the voting members must sign off.
 - This step is taken when enough discussion of the trade-offs have taken place and the team(s) is in a position to make a decision.
 - The FCP will last 7 days. If there's unanimous agreement among the team(s), then the FCP can close early.
-- Acceptance requires a super majority of binding votes by voting members in favor. The voting options are the following: Affirmative, Negative, and Abstention. Non-binding votes are of course welcome. Super majority means 2/3 or greater.
+- Acceptance requires a supermajority of binding votes by voting members in favor. The voting options are the following: Affirmative, Negative, and Abstention. Non-binding votes are of course welcome. Supermajority means 2/3 or greater.
 - If no substantial new arguments or ideas are raised, the FCP will follow the outcome decided. If there are substantial new arguments, then the RFC will go back into development.
 
 Once an RFC has been accepted, the maintainer who merges the pull request should do the following:
