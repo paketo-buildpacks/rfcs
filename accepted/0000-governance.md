@@ -39,9 +39,6 @@ Contributors are those who make regular contributions to the project (documentat
 
 New contributors may be self-nominated or nominated by existing contributors, and must be elected by a supermajority of that project’s maintainers. Contributors may merge approved PRs, and create branches.
 
-Requirements for being nominated as a Contributor:
-
-- contribute 2 PR's under a single subteam.
 
 #### Maintainers
 Maintainers are in charge of the day to day maintenance of the team's projects. 
