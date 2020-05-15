@@ -22,8 +22,8 @@ git fetch origin "pull/${PR}/head:rfc-${ID}"
 git merge "rfc-${ID}" --signoff --no-edit --no-ff
 git branch -d "rfc-${ID}"
 
-SOURCE=$(find accepted -depth 1 -name '0000-*')
-TARGET=${SOURCE//0000/$(printf "%04d" "${ID}")}
+SOURCE=$(find . -depth 1 -name '0000-*')
+TARGET=${SOURCE//.\/0000/accepted\/$(printf "%04d" "${ID}")}
 
 git mv "${SOURCE}" "${TARGET}"
 git add "${TARGET}"
