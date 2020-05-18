@@ -14,6 +14,8 @@ The format used in `build-plan` is also more powerful than `buildpack.yml` becau
 
 By using the `build-plan` buildpack we can completely replace the `buildpack.yml` while losing no functionality, increase user configurability with very low overhead cost for buildpack authors, and vastly increased interoperability.
 
+The ideal end state for this track or work would be to bake this functionality directly into the lifecycle because of how closely the `build-plan` buildpack already interacts with the lifecycle. The `build-plan` buildpack is a middle ground to test out whether or not this model is a good thing for users and buildpack authors. Once this model has proven (or disproven) itself, learnings from this stop gap should be used to inform further actions (whether that be pursuing integration in the lifecycle or abandoning this model for something else).
+
 ## Implementation
 
 The `build-plan` buildpack would need to be added to the end of every build order. If you would like a specific dependency then you can specify that is a `plan.toml`, which is the `requires` portion of a Build Plan (TOML).
