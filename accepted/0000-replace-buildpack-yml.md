@@ -22,6 +22,8 @@ It is worth mentioning that the `build-plan` buildpack will be able to `require`
 
 The `build-plan` buildpack would need to be added to the end of every build order. If you would like a specific dependency then you can specify that is a `plan.toml`, which is the `requires` portion of a Build Plan (TOML).
 
+In order to facilitate the use of the `build-plan` buildpack it should be migrate from its current location into the `paketo-community` organization. This will allow it to be more easily integrated into the Paketo ecosystem as a whole.
+
 An example of what the conversion from `buildpack.yml` to `plan.toml` would look like the following:
 
 `buildpack.yml`
