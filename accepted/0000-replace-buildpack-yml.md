@@ -8,13 +8,15 @@
 
 With this change we can completely eliminate `buildpack.yml` which is a file that adds undue complexity to the buildpacks because in order for `buildpack.yml` influence what appears in the application image it must be parsed during detection in every buildpack. `buildpack.yml` also has a non-standard format meaning that every single buildpack needs to have slightly unique parsing logic in order to grab a buildpack specific key name and then any other additional metadata.
 
-The big advantage of moving to using `build-plan` is that every buildpack that currently has a `buildpack.yml` parser could remove that code entirely and switch to using Buildpack Plan metadata during the `build` phase and there would be no loss of functionality. The job of parsing build configuration will be condensed into the `build-plan` and then all subsequent parsing will be handled by the buildpack library or the lifecyle.
+The big advantage of moving to using `build-plan` is that every buildpack that currently has a `buildpack.yml` parser could remove that code entirely and switch to using Buildpack Plan metadata during the `build` phase and there would be no loss of functionality. The job of parsing build configuration will be condensed into the `build-plan` and then all subsequent parsing will be handled by the buildpack library or the lifecycle.
 
 The format used in `build-plan` is also more powerful than `buildpack.yml` because it allows for fine grain controls as to when that dependency is available by setting `build` and `launch` flags. Any other data that is not the dependency name or version can be put in the metadata section of requires and handled during the `build` phase.
 
 By using the `build-plan` buildpack we can completely replace the `buildpack.yml` while losing no functionality, increase user configurability with very low overhead cost for buildpack authors, and vastly increased interoperability.
 
 The ideal end state for this track or work would be to bake this functionality directly into the lifecycle because of how closely the `build-plan` buildpack already interacts with the lifecycle. The `build-plan` buildpack is a middle ground to test out whether or not this model is a good thing for users and buildpack authors. Once this model has proven (or disproven) itself, learnings from this stop gap should be used to inform further actions (whether that be pursuing integration in the lifecycle or abandoning this model for something else).
+
+It is worth mentioning that the `build-plan` buildpack will be able to `require` any other buildpack, but if that buildpack is not in the group that the `build-plan` buildpack is running in then detection will fail. The `build-plan` buildpack needs to be running in a group with all of its required buildpacks which is something that can be configured by an operator or someone with operator level permissions.
 
 ## Implementation
 
