@@ -14,15 +14,11 @@ The format used in `build-plan` is also more powerful than `buildpack.yml` becau
 
 By using the `build-plan` buildpack we can completely replace the `buildpack.yml` while losing no functionality, increase user configurability with very low overhead cost for buildpack authors, and vastly increased interoperability.
 
-The ideal end state for this track or work would be to bake this functionality directly into the lifecycle because of how closely the `build-plan` buildpack already interacts with the lifecycle. The `build-plan` buildpack is a middle ground to test out whether or not this model is a good thing for users and buildpack authors. Once this model has proven (or disproven) itself, learnings from this stop gap should be used to inform further actions (whether that be pursuing integration in the lifecycle or abandoning this model for something else).
-
-It is worth mentioning that the `build-plan` buildpack will be able to `require` any other buildpack, but if that buildpack is not in the group that the `build-plan` buildpack is running in then detection will fail. The `build-plan` buildpack needs to be running in a group with all of its required buildpacks which is something that can be configured by an operator or someone with operator level permissions.
-
 ## Implementation
 
 The `build-plan` buildpack would need to be added to the end of every build order. If you would like a specific dependency then you can specify that is a `plan.toml`, which is the `requires` portion of a Build Plan (TOML).
 
-In order to facilitate the use of the `build-plan` buildpack it should be migrate from its current location into the `paketo-community` organization. This will allow it to be more easily integrated into the Paketo ecosystem as a whole.
+In order to facilitate the use of the `build-plan` buildpack it should be migrated from its current location into the `paketo-community` organization. This will allow it to be more easily integrated into the Paketo ecosystem as a whole.
 
 An example of what the conversion from `buildpack.yml` to `plan.toml` would look like the following:
 
@@ -48,5 +44,15 @@ version = "~10"
 
 - Can we fold `plan.toml` into another configuration file (like `project.toml`)?
 - Are there things we can do/change to make the interface easier for users to understand?
+
+## Additional Information and Consideration
+
+The `build-plan` buildpack will be able to `require` any other buildpack, but if that buildpack is not in the group that the `build-plan` buildpack is running in then detection will fail. The `build-plan` buildpack needs to be running in a group with all of its required buildpacks which is something that can be configured by an operator or someone with operator level permissions.
+
+In order for configuration information to be passed to a buildpack by the `build-plan` buildpack, that buildpack must be making some provision. There are two approaches to this problem, either we classify any buildpack that has configuration as making a provision or we find a way to make configuration happen in buildpacks where a provision doesn't make sense (allowing configuration to be set by environment variables or some other alternative).
+
+## Potential Long-Term Goals
+
+The ideal end state for this track or work would be to bake this functionality directly into the lifecycle because of how closely the `build-plan` buildpack already interacts with the lifecycle. The `build-plan` buildpack is a middle ground to test out whether or not this model is a good thing for users and buildpack authors. Once this model has proven (or disproven) itself, learnings from this stop gap should be used to inform further actions (whether that be pursuing integration in the lifecycle or abandoning this model for something else).
 
 {{THIS SECTION SHOULD BE REMOVED BEFORE RATIFICATION}}
