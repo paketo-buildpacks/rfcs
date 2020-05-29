@@ -40,14 +40,31 @@ version = "~10"
     optimize-memory = true
 ```
 
+The generic layout of `plan.toml` is the following:
+```toml
+[[requires]]
+name = "<dependency name>"
+version = "<dependency version>"
+
+[requires.metadata]
+# buildpack-specific data
+
+[[or]]
+
+[[or.requires]]
+name = "<dependency name>"
+version = "<dependency version>"
+
+[or.requires.metadata]
+# buildpack-specific data
+```
+
 ## Unresolved Questions and Bikeshedding
 
 - Can we fold `plan.toml` into another configuration file (like `project.toml`)?
 - Are there things we can do/change to make the interface easier for users to understand?
 
 ## Additional Information and Consideration
-
-The `build-plan` buildpack will be able to `require` any other buildpack, but if that buildpack is not in the group that the `build-plan` buildpack is running in then detection will fail. The `build-plan` buildpack needs to be running in a group with all of its required buildpacks which is something that can be configured by an operator or someone with operator level permissions.
 
 In order for configuration information to be passed to a buildpack by the `build-plan` buildpack, that buildpack must be making some provision. There are two approaches to this problem, either we classify any buildpack that has configuration as making a provision or we find a way to make configuration happen in buildpacks where a provision doesn't make sense (allowing configuration to be set by environment variables or some other alternative).
 
