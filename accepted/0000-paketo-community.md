@@ -2,11 +2,11 @@
 
 ## Summary
 
-The Paketo Community should be a place that trusted community created buildpacks should be hosted. This would provide a consumer of Paketo buildpacks a trusted place to search for extensions to Paketo buildpack functionality.
+The Paketo Community is a place where trusted community created buildpacks can be hosted. This would provide users a trusted place to search for buildpacks.
 
 ## Motivation
 
-Having a place for trusted, community created buildpacks allows for effective increased buildpack ecosystem capability without putting newer and unproven buildpacks directly into the core Paketo artifacts.
+There are two point why this community should exist.
 
 The Paketo Community will allow for the testing of new technologies or the development of buildpacks in an environment that is more flexible than that of the core Paketo.
 
@@ -15,13 +15,13 @@ A trusted repository of community buildpacks will also allow for a trusted sourc
 ## Detailed Explanation
 
 A trusted project is a defined by the following:
-- The project must be actively maintained (definition of actively still in the works) (there is also a question around buildpacks that may not need to be actively maintained so some metric on neediness may be important).
+- The project must be actively maintained (i.e. issues and pull requests must be addressed regularly, approved pull requests must be merged or updated in a timely manner, etc.).
 - There must be visible automated testing for all repositories that are part of the project.
-- The project maintainers must conform to a set of best effort SLOs around patching critical CVEs. (when applicable)
+- The project maintainers must conform to a set of best effort SLOs around patching critical CVEs when applicable to the project.
 
 This definition of trusted is meant to alleviate the following problems:
 1. There must be a defined system in place to reap abandonware.
-1. All repositories must meet some testing standard to be trusted in order to ensure that development within the project does not experience large regressions or introduce buggy code on a regular basis.
+1. All repositories must meet some testing standard to be trusted in order to ensure that the projects support the latest Paketo technologies and platforms.
 1. If a project maintainers are not making a best effort of patching out or updating vulnerable software then the project as a whole is untrustworthy.
 
 The maintainers must also be willing to sign the project over to the Cloud Foundry Foundation and conform to the licensing of the project.
@@ -42,5 +42,6 @@ Have a build process that is controlled by the Paketo project that will allow fo
 ## Unresolved Questions and Bikeshedding
 
 - Should this organization be called Paketo Community?
+- Is the licensing inside the CFF flexible to allow for licenses outside of Apache2?
 
 {{REMOVE THIS SECTION BEFORE RATIFICATION!}}
