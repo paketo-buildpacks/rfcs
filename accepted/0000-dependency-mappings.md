@@ -11,17 +11,29 @@ Consumers of Paketo buildpacks may be building in an environment where certain d
 ## Detailed Explanation
 
 ### Discovery
-If a mappings file is present at path `<platform>/dependencies/mappings.toml` buildpacks should respect any URIs found the `mappings.toml` file when downloading dependencies.
+If one or more bindings of kind or type `dependency-mapping` are present, buildpacks should respect any URIs found in the binding. The `sha256` of the dependency should be used to lookup mapped URIs.
 
-### Schema
+### CNB Bindings Specification Example
+Using https://github.com/buildpacks/spec/blob/main/extensions/bindings.md:
 ```
-[[buildpacks]]
-  id = "<buildpack ID>"
+<platform>
+└── bindings
+    └── my-dependency-binding
+        ├── metadata
+        │   └── kind -> "dependency-mapping"
+        └── secret
+            ├── b4cb31162ff6d7926dd09e21551fa745fa3ae1758c25148b48dadcf78ab0c24c -> https://example.com/dep-1.tgz
+            └── efa6d87993ff21615e2d8fc0c98e07ff357fc9f3b9bd93c2cf58ba7f2b6fd2e0 -> https://example.com/dep-2.tgz
+```
 
-  [[buildpacks.mappings]]
-   id = "<dependency ID>"
-   version = "<dependency version>"
-   uri = "<dependency URI>"
+### Service Binding Specification for Kubernetes Example
+Using https://github.com/k8s-service-bindings/spec:
+```
+$SERVICE_BINDING_ROOT
+└── my-dependency-binding
+    ├── type -> "dependency-mapping"
+    ├── b4cb31162ff6d7926dd09e21551fa745fa3ae1758c25148b48dadcf78ab0c24c -> https://example.com/dep-1.tgz
+    └── efa6d87993ff21615e2d8fc0c98e07ff357fc9f3b9bd93c2cf58ba7f2b6fd2e0 -> https://example.com/dep-2.tgz
 ```
 
 ## Rationale and Alternatives
@@ -32,13 +44,11 @@ Another alternative would be for buildpacks to expose URI options for each depen
 
 ## Implementation
 
-Before downloading a dependency the buildpack reads the mappings file at the known location, looks up relevant mappings using its own ID. When the buildpack download a dependency it should use provided URI instead of the URI in `buildpack.toml` if a mapping for the dependency exists.
+Before downloading a dependency the buildpack searches all bindings of type `dependency-mapping` for digests matches that of the target dependency. When the buildpack downloads a dependency it should use mapped URI instead of the URI in `buildpack.toml` if a mapping for the dependency exists.
 
-`pack` already allows users to mount arbitrary directories in to the platform dir. Other platforms are likely to follow suite. 
+`pack` already allows users to mount arbitrary directories in to the platform dir. `kpack` provides a dedicated UX for bindings. Other platforms are likely to follow suite.
 
 ## Prior Art
 
 
 ## Unresolved Questions and Bikeshedding
-
-Would this be better as a binding with kind `dependencies` rather than a custom platform integration?
