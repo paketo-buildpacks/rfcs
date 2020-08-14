@@ -24,7 +24,7 @@ This definition of trusted is meant to alleviate the following problems:
 1. All repositories must meet some testing standard to be trusted in order to ensure that the projects support the latest Paketo technologies and platforms.
 1. If a project maintainers are not making a best effort of patching out or updating vulnerable software then the project as a whole is untrustworthy.
 
-The maintainers must also be willing to sign the project over to the Cloud Foundry Foundation and conform to the licensing of the project.
+The maintainers must also be willing to sign the project over to the Cloud Foundry Foundation and conform to the licensing of the requirements laid out by the Cloud Foundry Foundation.
 
 ## Implementation
 
@@ -38,10 +38,3 @@ Have a build process that is controlled by the Paketo project that will allow fo
 
 - [EPEL](https://fedoraproject.org/wiki/EPEL) and [PPA](https://launchpad.net/ubuntu/+ppas)
 - The [guarantee](https://fedoraproject.org/wiki/EPEL#Can_I_rely_on_these_packages.3F) the Red Hat gived for EPEL
-
-## Unresolved Questions and Bikeshedding
-
-- Should this organization be called Paketo Community?
-- Is the licensing inside the CFF flexible to allow for licenses outside of Apache2?
-
-{{REMOVE THIS SECTION BEFORE RATIFICATION!}}
