@@ -20,9 +20,8 @@ If the change is made as a pull request, but is considered substantial or more c
 ### What's in Scope
 You'll need to follow this process for anything considered "substantial".
 What constitutes a "substantial" change may include the following but is not limited to:
-- Changes to [Paketo Spec](todo.com)
 - Adding/Removing a repository to Paketo
-- Changes to the contents of the Data Format files defined [here](https://github.com/buildpacks/spec/blob/master/buildpack.md#data-format)
+- Changes to the contents of the Data Format files defined [here](https://github.com/buildpacks/spec/blob/main/buildpack.md#data-format)
 - Changes that affect the contents of the output image
 - Process changes
 - Governance changes
