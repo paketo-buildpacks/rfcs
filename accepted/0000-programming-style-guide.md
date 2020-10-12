@@ -42,9 +42,18 @@ talk about guiding principles for what's included in the guide.
 
 ## Rationale and Alternatives
 
-{{Discuss 2-3 different alternative solutions that were considered. This is
-required, even if it seems like a stretch. Then explain why this is the best
-choice out of available ones.}}
+1. Do nothing. For example, the [CNB project](https://github.com/buildpacks/community) functions as an open source community without a contribution Style Guide.
+1. Maintain a private set of contribution guidelines that only maintainers (as PR reviewers) have access to.
+
+While it's clear that open source projects can function without Style Guides,
+the effort required to create one is not tremendous. See the sections above for
+discussion of what the benefits of a Style Guide are. Keeping the Style Guide
+public and accessible to contributors **before** they submit pull
+requests is more in the spirit of open source transparency. It also affords
+contributors the opportunity to self-edit pull requests before submitting them
+to maintainers. A well-written, publicly available Style Guide can increase code quality and
+consistency in a project while transferring some of the responsibility of
+maintaining code quality from maintainers onto contributors themselves.
 
 ## Implementation
 
@@ -54,34 +63,36 @@ The proposed Paketo Project Style Guide is as follows:
 
 #### Buildpack Design Best Practices
 1. Keep `Detect` and `Build` functions as small as possible.
-2. Only add a requirement to a buildpack if it's necessary for the buildpack to run.
+1. Only add a requirement to a buildpack if it's necessary for the buildpack to run.
+1. Only add a provision to a buildpack if it actually supplies something for
+   itself or a subsequent buildpack to use.
 
 #### Testing
-How much testing is enough testing?
+1. Please write tests for your contributions to the Paketo project.
+1. If your contribution changes or adds to the API of a buildpack, you'll
+   likely need to change or add integration tests.
+1. If your contribution changes how the `detect` or `build` executables of a
+   buildpack work, you'll likely need to change or add unit tests.
 
 #### Preferred Code Structures
 1. Many Paketo buildpacks are written in Go. If you are contributing Go, please
-   write [Effective Go](https://golang.org/doc/effective_go.html)
+   write [Effective Go](https://golang.org/doc/effective_go.html).
 
+1. When reviewing Pull Requests, maintainers may refer to these [Common Go Code Review Comments](https://github.com/golang/go/wiki/CodeReviewComments).
 
-
-{{Give a high-level overview of implementation requirements and concerns. Be
-specific about areas of code that need to change, and what their potential
-effects are. Discuss which repositories and sub-components will be affected,
-and what its overall code effect might be.}}
-
-{{THIS SECTION IS REQUIRED FOR RATIFICATION -- you can skip it if you don't
-know the technical details when first submitting the proposal, but it must be
-there before it's accepted.}}
+1. If you're writing in a shell scripting language, keep [this Shell Style Guide](https://google.github.io/styleguide/shellguide.html)
+   in mind.
+   * In particular, check out the "When to use Shell" section to consider if
+     it's time to switch languages.
 
 ## Prior Art
 
-Link to other project style guides that are useful/effective.  {{This section
-is optional if there are no actual prior examples in other tools.}}
+* [Effective Go](https://golang.org/doc/effective_go.html)
+* [Google Shell Style Guide](https://google.github.io/styleguide/shellguide.html)
+* [Common Go Code Review Comments](https://github.com/golang/go/wiki/CodeReviewComments)
 
-{{Discuss existing examples of this change in other tools, and how they've
-addressed various concerns discussed above, and what the effect of those
-decisions has been.}}
+
+<< Link to other project style guides that are useful/effective. >>
 
 ## Unresolved Questions and Bikeshedding
 
