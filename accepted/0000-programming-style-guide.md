@@ -90,7 +90,7 @@ The proposed Paketo Project Style Guide is as follows:
 * [Effective Go](https://golang.org/doc/effective_go.html)
 * [Google Shell Style Guide](https://google.github.io/styleguide/shellguide.html)
 * [Common Go Code Review Comments](https://github.com/golang/go/wiki/CodeReviewComments)
-
+* [Spring Boot Contribution Guidelines](https://github.com/spring-projects/spring-boot/blob/master/CONTRIBUTING.adoc#code-conventions-and-housekeeping)
 
 << Link to other project style guides that are useful/effective. >>
 
