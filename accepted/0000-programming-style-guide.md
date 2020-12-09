@@ -8,7 +8,7 @@ maintain consistent code quality in the project
 
 ## Motivation
 
-The Programming Style Guide will addrress the challenge of maintaining
+The Programming Style Guide will address the challenge of maintaining
 consistent and high-quality code with excellent test coverage in an open source
 project. Explicitly naming expectations will benefit both contributors of new
 code and reviewers of that code in the following ways:
