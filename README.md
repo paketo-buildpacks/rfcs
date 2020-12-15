@@ -76,7 +76,9 @@ It is not a guarantee of implementation, nor does it obligate a team to implemen
 #### Implementation
 When the changes described in an RFC have been implemented and merged into the relevant repository (and thus, due to be released),
 the corresponding RFC will be moved from accepted/ to implemented/. If you'd like to implement an accepted RFC,
-please make a PR in the appropriate repo and mention the RFC in the PR. Feel free to do this even for work-in-progress code!
+please make a PR in the appropriate repo and mention the RFC in the PR. Feel free to do this even for work-in-progress code! If
+you'd like to track progress on an RFC implementation, check if an issue has been opened that requests the RFC be implemented. If not, feel
+free to open one.
 
 ## Unresolved Questions
 [unresolved-questions]: #unresolved-questions
