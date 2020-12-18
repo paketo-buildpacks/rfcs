@@ -9,6 +9,9 @@
 {{Why are we doing this? What pain points does this resolve? What use cases
 does it support? What is the expected outcome? Use real, concrete examples to
 make your case!}}
+a mostly-prose explanation of why we should do this.
+
+## Detailed Explanation
 
 Some Paketo buildpacks set environment variables used to configure language
 ecosystem tooling. Often, buildpacks use the
@@ -51,8 +54,9 @@ build with:
 pack build node-app --env NODE_ENV="development"
 ```
 
-Notably, at launch time, `NODE_ENV` would also be set to `"development"`. To
-change the launch-time value, the user could inject a new value at container
+Notably, at launch time, `NODE_ENV` would also be set to `"development"`.
+
+To change the launch-time value, the user could inject a new value at container
 run time:
 ```
 docker run node-app --env NODE_ENV="production"
@@ -86,10 +90,20 @@ this environment variable exactly as before. The proposed change would **not**
 set `BUNDLE_DISABLE_CHECKSUM_VALIDATION=true` at launch time, since no
 buildpack directly manipulates this environment variable.
 
-## Detailed Explanation
+To change the launch-time value, the user could inject a new value at container
+run time:
+```
+docker run ruby-app --env BUNDLE_DISABLE_CHECKSUM_VALIDATION=true
+```
 
-{{ Explain needed changes for each current buildpack that interacts with
-environment variables. }}
+Alternately, they could use the Environment Variables buildpack to bake a
+different launch-time default into the image:
+```
+pack build node-app --env BUNDLE_DISABLE_CHECKSUM_VALIDATION=true \
+                    --env BPE_DEFAULT_BUNDLE_DISABLE_CHECKSUM_VALIDATION=true
+```
+In this case, the build- and launch-time values of `BUNDLE_DISABLE_CHECKSUM_VALIDATION` is `true`.
+
 
 {{Describe the expected changes in detail.}}
 
@@ -103,6 +117,11 @@ required, even if it seems like a stretch. Then explain why this is the best
 choice out of available ones.}}
 
 ## Implementation
+
+To implement this change, buildpacks that configure environment variables that
+are recognized by language-ecosystem tooling should set the env.Default option,
+not the env.Override option. This will allow the values of these environment
+variables to be configurable by buildpack users.
 
 {{Give a high-level overview of implementation requirements and concerns. Be
 specific about areas of code that need to change, and what their potential
