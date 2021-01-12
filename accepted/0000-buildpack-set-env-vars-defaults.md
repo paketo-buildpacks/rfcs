@@ -102,15 +102,75 @@ different launch-time default into the image:
 pack build node-app --env BUNDLE_DISABLE_CHECKSUM_VALIDATION=true \
                     --env BPE_DEFAULT_BUNDLE_DISABLE_CHECKSUM_VALIDATION=true
 ```
-In this case, the build- and launch-time values of `BUNDLE_DISABLE_CHECKSUM_VALIDATION` is `true`.
+In this case, the build- and launch-time values of
+`BUNDLE_DISABLE_CHECKSUM_VALIDATION` is `true`.
+
+### Example: `JAVA_TOOL_OPTIONS`
+#### Current Behaviour
+Currently, the `JAVA_TOOL_OPTIONS` environment variable is set at launch time
+by various buildpacks including the Java [Debug
+Buildpack](https://github.com/paketo-buildpacks/debug/blob/ebc132acf0ed8bd084839263d37a0a8c9846e41c/helper/debug.go#L59)
+and the [JMX
+Buildpack](https://github.com/paketo-buildpacks/jmx/blob/5d2c6097bc439a0717dbbda330bdee4a32db42d5/helper/jmx.go#L44).
+Users can influence the values set by the buildpack by specifying the
+[buildpack-specific environment variables (e.g.
+`BPL_JVM_HEAD_ROOM`)](https://paketo.io/docs/buildpacks/language-family-buildpacks/java/#configuring-jvm-at-runtime)
+at launch time. The buildpacks compute correct values to populate the
+`JAVA_TOOL_OPTIONS` based on the values of the other environment variables and
+certain launch-time configuration (e.g.  memory available to the container at
+run time).
+
+If a user provides a value of `JAVA_TOOL_OPTIONS` at build time, its value will
+be available to all of the buildpacks at build time, but the inputted value of
+the environment variable **is not** added to the launch-time environment.
+
+If a user sets `JAVA_TOOL_OPTIONS` at launch time, the [user-provided flags are
+appended to the buildpack-calculated
+ones](https://paketo.io/docs/buildpacks/language-family-buildpacks/java/#configuring-jvm-at-runtime).
+
+#### Behaviour After Proposed Change
+With the proposed change, if a user specifies
+```
+pack build my-java-image --env JAVA_TOOL_OPTIONS='-a -b'
+```
+
+Then at build time,  `JAVA_TOOL_OPTIONS='-a -b'` and at launch time,
+`JAVA_TOOL_OPTIONS='-a -b <other flags as determined by buildpack(s)>'` by
+default. Note that the value provided at build time is prepended to
+buildpack-calculated set of launch-time flags.
+
+If a user also provides a value of `JAVA_TOOL_OPTIONS` at launch time:
+```
+docker run my-java-image --env JAVA_TOOL_OPTIONS='-c -d'
+```
+then at launch, `JAVA_TOOL_OPTIONS='-c -d -a -b <other flags as determined by buildpack(s)>'`
+Note that the value provided at launch time is prepended before the value
+provided at build time; also, all of the user-provided flags precede the
+buildpack-determined flags.
+
+If both a user and buildpack set a flag, the user-provided value takes precedence.
+
+
+
+<!---
+##### Notes:
+What happens if you want to completely change the value of JAVA_TOOL_OPTIONS?
+What happens if you want build: `JAVA_TOOL_OPTIONS='-a -b'`
+and launch `JAVA_TOOL_OPTIONS='-c -d <other flags as determined by buildpack(s)>'`
+-->
 
 
 {{Describe the expected changes in detail.}}
 
 ## Rationale and Alternatives
 
-1. What the non-Java buildpacks do
-2. what the Java buildpack does
+1. Do not change the behaviour of any of the current buildpacks. Allow
+buildpack authors to determine a convenient UX for the specific environment
+variables they interact with.
+  - Benefit: No technical changes required
+  - Drawback: Inconsistent UX for environment variables across buildpacks.
+
+{Add other alternatives}
 
 {{Discuss 2-3 different alternative solutions that were considered. This is
 required, even if it seems like a stretch. Then explain why this is the best
@@ -134,9 +194,11 @@ there before it's accepted.}}
 
 ## Prior Art
 
-1. indication of how the non-java BPs do it
-2. how the java bp does it
-3. other buildpacks from other authors? what do they do?
+1. Paketo Nodejs Buildpack: Buildpack-Set Environment Variables (
+   [`NODE_ENV`](https://paketo.io/docs/buildpacks/language-family-buildpacks/nodejs/))
+2. Paketo Java Buildpack: [Configuring the JVM at
+   Runtime](https://paketo.io/docs/buildpacks/language-family-buildpacks/java/#configuring-jvm-at-runtimel)
+3. Other buildpacks?
 
 {{This section is optional if there are no actual prior examples in other tools.}}
 
