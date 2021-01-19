@@ -2,7 +2,16 @@
 
 ## Summary
 
+Paketo buildpacks sometimes use language ecosystem environment variables to
+configure build- and launch-time behaviour.  The environment variables' values
+can come a) from user input at build/launch time or b) from buildpacks'
+"opinions" about proper settings for the container build. If a user provides a
+language ecosystem environment variable at build time **and** the buildpack
+typically sets an opinionated launch-time value for that environment variable,
+the user's build-time input should be set as the launch-time default value.
+<!---
 {{A concise, one-paragraph description of the change.}}
+-->
 
 ## Motivation
 
@@ -44,7 +53,7 @@ meet their needs.
 
 Additionally, the each buildpack should check whether there is already a value
 for the given environment variable available, and if there is, it should **set
-that value as the default** for the remainder of the build and/or for launch.
+that value as the launch-time default**.
 
 ### Example: `NODE_ENV`
 #### Current Behaviour
@@ -187,11 +196,13 @@ variables they interact with.
   - Encourage users to leverage https://github.com/paketo-buildpacks/environment-variables to explicitly set runtime env vars separately from build time env vars.
   - Persuade the the CNB project to adopt a specification for setting runtime env vars during build (something like the `environment-variables` buildpack but built directly into the `lifecycle`, enabling an improved UX).
 
+<!---
 {Add other alternatives}
 
 {{Discuss 2-3 different alternative solutions that were considered. This is
 required, even if it seems like a stretch. Then explain why this is the best
 choice out of available ones.}}
+-->
 
 ## Implementation
 
@@ -200,14 +211,16 @@ are recognized by language-ecosystem tooling should set the env.Default option,
 not the env.Override option. This will allow the values of these environment
 variables to be configurable by buildpack users.
 
+<!---
 {{Give a high-level overview of implementation requirements and concerns. Be
 specific about areas of code that need to change, and what their potential
 effects are. Discuss which repositories and sub-components will be affected,
 and what its overall code effect might be.}}
 
-{{THIS SECTION IS REQUIRED FOR RATIFICATION -- you can skip it if you don't
+{{THIS SECTION IS REQUIRED FOR RATIFICATION; you can skip it if you don't
 know the technical details when first submitting the proposal, but it must be
 there before it's accepted.}}
+-->
 
 ## Prior Art
 
@@ -217,16 +230,20 @@ there before it's accepted.}}
    Runtime](https://paketo.io/docs/buildpacks/language-family-buildpacks/java/#configuring-jvm-at-runtimel)
 3. Other buildpacks?
 
+<!---
 {{This section is optional if there are no actual prior examples in other tools.}}
 
 {{Discuss existing examples of this change in other tools, and how they've
 addressed various concerns discussed above, and what the effect of those
 decisions has been.}}
+-->
 
 ## Unresolved Questions and Bikeshedding
 
+<!---
 {{Write about any arbitrary decisions that need to be made (syntax, colors,
 formatting, minor UX decisions), and any questions for the proposal that have
 not been answered.}}
 
 {{REMOVE THIS SECTION BEFORE RATIFICATION!}}
+-->
