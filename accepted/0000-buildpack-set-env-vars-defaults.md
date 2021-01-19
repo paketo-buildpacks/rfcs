@@ -6,10 +6,24 @@
 
 ## Motivation
 
+Paketo strives to create buildpacks that help the majority of users (app
+developers, app operators) containerize their apps with minimal
+buildpack-specific configuration required. One way Paketo achieves this:
+buildpacks often allow users to provide build-time environment variables that
+are respected by language-ecosystem build tooling.
+
+Currently, different buildpacks have different behaviour when it comes to
+interacting with these language-ecosystem environment variables. The goal of
+this RFC is to align the Paketo project on a single coherent approach to these
+environment variables. The RFC will serve as a decision record for this
+approach. The result will be a consistent and intuitive configuration UX for
+buildpack users, regardless of the buildpack(s) they use.
+
+<!---
 {{Why are we doing this? What pain points does this resolve? What use cases
 does it support? What is the expected outcome? Use real, concrete examples to
 make your case!}}
-a mostly-prose explanation of why we should do this.
+-->
 
 ## Detailed Explanation
 
