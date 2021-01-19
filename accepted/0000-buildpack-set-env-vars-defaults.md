@@ -182,9 +182,9 @@ What happens if you want build: `JAVA_TOOL_OPTIONS='-a -b'`
 and launch `JAVA_TOOL_OPTIONS='-c -d <other flags as determined by buildpack(s)>'`
 -->
 
-
+<!---
 {{Describe the expected changes in detail.}}
-
+-->
 ## Rationale and Alternatives
 
 1. Do not change the behaviour of any of the current buildpacks. Allow
@@ -207,8 +207,8 @@ choice out of available ones.}}
 ## Implementation
 
 To implement this change, buildpacks that configure environment variables that
-are recognized by language-ecosystem tooling should set the env.Default option,
-not the env.Override option. This will allow the values of these environment
+are recognized by language-ecosystem tooling should set the `env.Default` option,
+not the `env.Override` option. This will allow the values of these environment
 variables to be configurable by buildpack users.
 
 <!---
@@ -228,7 +228,6 @@ there before it's accepted.}}
    [`NODE_ENV`](https://paketo.io/docs/buildpacks/language-family-buildpacks/nodejs/))
 2. Paketo Java Buildpack: [Configuring the JVM at
    Runtime](https://paketo.io/docs/buildpacks/language-family-buildpacks/java/#configuring-jvm-at-runtimel)
-3. Other buildpacks?
 
 <!---
 {{This section is optional if there are no actual prior examples in other tools.}}
