@@ -169,6 +169,9 @@ buildpack authors to determine a convenient UX for the specific environment
 variables they interact with.
   - Benefit: No technical changes required
   - Drawback: Inconsistent UX for environment variables across buildpacks.
+1. Never set build time env vars in the launch environment. Instead, do one or both of the following
+  - Encourage users to leverage https://github.com/paketo-buildpacks/environment-variables to explicitly set runtime env vars separately from build time env vars.
+  - Persuade the the CNB project to adopt a specification for setting runtime env vars during build (something like the `environment-variables` buildpack but built directly into the `lifecycle`, enabling an improved UX).
 
 {Add other alternatives}
 
