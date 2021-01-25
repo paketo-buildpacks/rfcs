@@ -1,14 +1,22 @@
-# Default Values for Language Ecosystem Env Vars Set by Buildpacks
+# Default Behaviour for Buildpack-Set Language Ecosystem Environment Variables
 
 ## Summary
 
 Paketo buildpacks sometimes use language ecosystem environment variables to
-configure build- and launch-time behaviour.  The environment variables' values
+configure build- and launch time behaviour.  The environment variables' values
 can come a) from user input at build/launch time or b) from buildpacks'
 "opinions" about proper settings for the container build. If a user provides a
 language ecosystem environment variable at build time **and** the buildpack
-typically sets an opinionated launch-time value for that environment variable,
-the user's build-time input should be set as the launch-time default value.
+typically sets an opinionated build time value, the user's value should
+override or have precedence over the buildpack-set value. Likewise if a user
+provides a language ecosystem environment variable at launch time.
+
+In addition, if a user provides a language-ecosystem environment variable at
+build time, that value **should not** be "sticky" -- it should not influence
+the launch time value of the environment variable. If a user wants to change
+the launch time value of an environment variable, they should provide it at
+launch time.
+
 <!---
 {{A concise, one-paragraph description of the change.}}
 -->
@@ -51,9 +59,10 @@ environment variable modification rule, buildpack users will consistently be
 able to override these environment variables at build and/or launch to better
 meet their needs.
 
-Additionally, the each buildpack should check whether there is already a value
-for the given environment variable available, and if there is, it should **set
-that value as the launch-time default**.
+Buildpacks should not carry over build time values of language ecosystem
+environment variables to launch time. Users can provide these at launch time,
+or include them in the launch time image via the [Environment Variables
+buildpack](https://github.com/paketo-buildpacks/environment-variables).
 
 ### Example: `NODE_ENV`
 #### Current Behaviour
@@ -62,7 +71,7 @@ phase](https://github.com/paketo-buildpacks/node-engine/blob/b8169c8ed58a468e28c
 It [uses the override
 rule](https://github.com/paketo-buildpacks/node-engine/blob/b8169c8ed58a468e28c0ebafea7cfa528e8a3e69/environment.go#L35)
 to set the value for build and launch. Node developers may want to set
-`NODE_ENV` themselves to control build- and launch-time behaviour. For
+`NODE_ENV` themselves to control build- and launch time behaviour. For
 instance, [`NODE_ENV` impacts which dependencies are installed by `npm
 install`](https://docs.npmjs.com/cli/v6/commands/npm-install#description).
 
@@ -77,22 +86,23 @@ build with:
 pack build node-app --env NODE_ENV="development"
 ```
 
-Notably, at launch time, `NODE_ENV` would also be set to `"development"`.
+At launch time, `NODE_ENV` is set to `"production"` by default.
 
-To change the launch-time value, the user could inject a new value at container
+To change the launch time value, the user can inject a new value at container
 run time:
 ```
-docker run node-app --env NODE_ENV="production"
+docker run node-app --env NODE_ENV="development"
 ```
+At launch time, `NODE_ENV` is now set to `"development"`.
 
-Alternately, they could use the Environment Variables buildpack to bake a
-different launch-time default into the image:
+Alternately, they can use the Environment Variables buildpack to bake a
+different launch time default into the image:
 ```
 pack build node-app --env NODE_ENV="development" \
-                    --env BPE_DEFAULT_NODE_ENV="production"
+                    --env BPE_DEFAULT_NODE_ENV="development"
 ```
 In this case, the build-time value of `NODE_ENV` is `"development"` and the
-launch-time value would be `"production"`.
+launch time default value is `"development"`.
 
 
 ### Example: `BUNDLE_DISABLE_CHECKSUM_VALIDATION`
@@ -105,27 +115,26 @@ user can therefore configure their build with this option using:
 pack build ruby-app --env BUNDLE_DISABLE_CHECKSUM_VALIDATION=true
 ```
 which **will** successfully disable checksum validation during the build phase.
+
 The environment variable will not be set at launch time.
 
 #### Behaviour After Proposed Change
 With the proposed change, users would be able to set the build-time value of
 this environment variable exactly as before. The proposed change would **not**
-set `BUNDLE_DISABLE_CHECKSUM_VALIDATION=true` at launch time, since no
-buildpack directly manipulates this environment variable.
-
-To change the launch-time value, the user could inject a new value at container
+set `BUNDLE_DISABLE_CHECKSUM_VALIDATION=true` at launch time.
+To change the launch time value, the user could inject a new value at container
 run time:
 ```
 docker run ruby-app --env BUNDLE_DISABLE_CHECKSUM_VALIDATION=true
 ```
 
 Alternately, they could use the Environment Variables buildpack to bake a
-different launch-time default into the image:
+different launch time default into the image:
 ```
 pack build node-app --env BUNDLE_DISABLE_CHECKSUM_VALIDATION=true \
                     --env BPE_DEFAULT_BUNDLE_DISABLE_CHECKSUM_VALIDATION=true
 ```
-In this case, the build- and launch-time values of
+In this case, the build- and launch time values of
 `BUNDLE_DISABLE_CHECKSUM_VALIDATION` is `true`.
 
 ### Example: `JAVA_TOOL_OPTIONS`
@@ -140,47 +149,22 @@ Users can influence the values set by the buildpack by specifying the
 `BPL_JVM_HEAD_ROOM`)](https://paketo.io/docs/buildpacks/language-family-buildpacks/java/#configuring-jvm-at-runtime)
 at launch time. The buildpacks compute correct values to populate the
 `JAVA_TOOL_OPTIONS` based on the values of the other environment variables and
-certain launch-time configuration (e.g.  memory available to the container at
+certain launch time configuration (e.g.  memory available to the container at
 run time).
 
 If a user provides a value of `JAVA_TOOL_OPTIONS` at build time, its value will
 be available to all of the buildpacks at build time, but the inputted value of
-the environment variable **is not** added to the launch-time environment.
+the environment variable **is not** added to the launch time environment.
 
 If a user sets `JAVA_TOOL_OPTIONS` at launch time, the [user-provided flags are
 appended to the buildpack-calculated
 ones](https://paketo.io/docs/buildpacks/language-family-buildpacks/java/#configuring-jvm-at-runtime).
 
-#### Behaviour After Proposed Change
-With the proposed change, if a user specifies
-```
-pack build my-java-image --env JAVA_TOOL_OPTIONS='-a -b'
-```
-
-Then at build time,  `JAVA_TOOL_OPTIONS='-a -b'` and at launch time,
-`JAVA_TOOL_OPTIONS='-a -b <other flags as determined by buildpack(s)>'` by
-default. Note that the value provided at build time is prepended to
-buildpack-calculated set of launch-time flags.
-
-If a user also provides a value of `JAVA_TOOL_OPTIONS` at launch time:
-```
-docker run my-java-image --env JAVA_TOOL_OPTIONS='-c -d'
-```
-then at launch, `JAVA_TOOL_OPTIONS='-c -d -a -b <other flags as determined by buildpack(s)>'`
-Note that the value provided at launch time is prepended before the value
-provided at build time; also, all of the user-provided flags precede the
-buildpack-determined flags.
-
 If both a user and buildpack set a flag, the user-provided value takes precedence.
 
-
-
-<!---
-##### Notes:
-What happens if you want to completely change the value of JAVA_TOOL_OPTIONS?
-What happens if you want build: `JAVA_TOOL_OPTIONS='-a -b'`
-and launch `JAVA_TOOL_OPTIONS='-c -d <other flags as determined by buildpack(s)>'`
--->
+#### Behaviour After Proposed Change
+This RFC would not change the behaviour of any buildpacks with respect to this
+environment variable.
 
 <!---
 {{Describe the expected changes in detail.}}
@@ -192,9 +176,9 @@ buildpack authors to determine a convenient UX for the specific environment
 variables they interact with.
   - Benefit: No technical changes required
   - Drawback: Inconsistent UX for environment variables across buildpacks.
-1. Never set build time env vars in the launch environment. Instead, do one or both of the following
-  - Encourage users to leverage https://github.com/paketo-buildpacks/environment-variables to explicitly set runtime env vars separately from build time env vars.
-  - Persuade the the CNB project to adopt a specification for setting runtime env vars during build (something like the `environment-variables` buildpack but built directly into the `lifecycle`, enabling an improved UX).
+2.  Persuade the the CNB project to adopt a specification for setting runtime
+    env vars during build (something like the `environment-variables` buildpack
+    but built directly into the `lifecycle`, enabling an improved UX).
 
 <!---
 {Add other alternatives}
@@ -207,9 +191,14 @@ choice out of available ones.}}
 ## Implementation
 
 To implement this change, buildpacks that configure environment variables that
-are recognized by language-ecosystem tooling should set the `env.Default` option,
-not the `env.Override` option. This will allow the values of these environment
-variables to be configurable by buildpack users.
+are recognized by language-ecosystem tooling should set the `env.Default`
+option, not the `env.Override` option at both build and launch. This will allow
+users to configure the values of these environment variables.
+
+Buildpacks should not, in general, use the values of language ecosystem
+environment variables at build time as their launch time values. These launch
+time values should be set by users directly via the Environment Variables
+buildpack or with `docker run --env NAME=value` or similar.
 
 <!---
 {{Give a high-level overview of implementation requirements and concerns. Be
