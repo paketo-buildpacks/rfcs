@@ -14,8 +14,7 @@ information when building a Go binary or used when running a Rails application.
 
 ## Implementation
 
-A new `git` buildpack will be developed to detect whether the `.git` directory and
-`BP_GIT_LOAD` environment variable is present and set to `true`, and then
+A new `git` buildpack will be developed to detect whether the `.git` directory, and then
 read the directory to extract the following environment variables so that they
 can be included in the built image.
 
@@ -23,9 +22,7 @@ can be included in the built image.
 
 ### Detection Criteria
 
-The buildpack will detect if:
-1. The `.git` directory is present
-2. The `BP_GIT_LOAD` environment variable is set to `true`.
+The buildpack will detect if the `.git` directory is present.
 
 ### Build Process
 
@@ -43,22 +40,22 @@ For example:
 [[order]]
 
   [[order.group]]
-    id = "paketo-buildpacks/go"
-    version = "<version>"
-
-  [[order.group]]
     id = "paketo-buildpacks/git"
     version = "<version>"
     optional = true
+
+  [[order.group]]
+    id = "paketo-buildpacks/go"
+    version = "<version>"
 
 [[order]]
 
   [[order.group]]
-    id = "paketo-buildpacks/ruby"
-    version = "<version>"
-
-  [[order.group]]
     id = "paketo-buildpacks/git"
     version = "<version>"
     optional = true
+
+  [[order.group]]
+    id = "paketo-buildpacks/ruby"
+    version = "<version>"
 ```
