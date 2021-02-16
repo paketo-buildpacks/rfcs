@@ -36,12 +36,12 @@ including maintainer/contributor role implementation.
 **Stacks Team**
 * Repos: stacks, base-release, full-release, tiny-release, stack-usns
 * Maintainers: Mark DeLillo, Kenneth DuMez, Marty Spiewak, paketo Bot Reviewer
-* Contributors: Mark DeLillo, Kenneth DuMez, Marty Spiewak, Brayan Henao, paketo Bot
+* Contributors: Brayan Henao, paketo Bot
 
 **Dependencies team**
 * Repos: dep-server
 * Maintainers: Mark DeLillo, Kenneth DuMez, Marty Spiewak, paketo Bot Reviewer
-* Contributors: Mark DeLillo, Kenneth DuMez, Marty Spiewak, Brayan Henao, paketo Bot
+* Contributors: Brayan Henao, paketo Bot
 
 #### Process Changes
 
@@ -62,9 +62,3 @@ Remove existing core-dependencies team
 ## Prior Art
 
 The proposed structure is heavily based on existing paketo governance. 
-
-## Unresolved Questions and Bikeshedding
-
-Exact process around contributors becoming maintainers?
-
-{{REMOVE THIS SECTION BEFORE RATIFICATION!}}
