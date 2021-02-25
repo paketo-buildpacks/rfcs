@@ -18,7 +18,7 @@ A new `git` buildpack will be developed to detect whether the `.git` directory, 
 read the directory to extract the following environment variables so that they
 can be included in the built image.
 
-- `GIT_COMMIT_SHA`
+- `REVISION`
 
 ### Detection Criteria
 
