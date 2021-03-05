@@ -6,6 +6,7 @@ Introduce an (optional) Git buildpack into each language buildpack family. The b
 will be charged with providing `git` metadata as build-time and run-time environment
 variables.
 
+This buildpack would be maintained by the existing Tooling team.
 ## Motivation
 
 Applications of any language may have a need for information extracted from
