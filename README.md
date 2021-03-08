@@ -7,7 +7,7 @@ The RFC (Request For Comments) process is intended to provide a consistent proce
 A Request For Comments starts with a document of proposed changes to Paketo Buildpack(s).
 All major decisions must start with an RFC proposal.
 Once an RFC has been proposed, anyone may ask questions, provide constructive feedback,
-and discuss trade-offs. But only project [maintainers](todo.com) will be able to ratify an RFC.
+and discuss trade-offs. But only project [maintainers](https://github.com/paketo-buildpacks/community/blob/main/TEAMS.md) will be able to ratify an RFC.
 
 ## When to Write an RFC?
 Many changes, including bug fixes and documentation improvement can be implemented and reviewed by the normal
@@ -27,7 +27,7 @@ What constitutes a "substantial" change may include the following but is not lim
 - Governance changes
 
 For clarification about where a change fits into this model, please review previous RFCs, or reach
-out on the official [Paketo Slack](packetobuildpacks.slack.com).
+out on the official [Paketo Slack](https://paketobuildpacks.slack.com).
 
 ### Process
 #### RFCs
