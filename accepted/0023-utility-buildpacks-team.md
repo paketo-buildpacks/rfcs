@@ -34,6 +34,8 @@ should fall under that teams umbrella:
 * Environment Variables
 * Image Labels
 * Build Plan
+* Git
+* Tini
 
 The current maintainers and contributors of those buildpacks should become
 maintainers and contributors on the new `Utility` team in order to maintain
