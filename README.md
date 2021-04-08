@@ -3,13 +3,9 @@
 ## Accepted RFCs
 
 * [0003: Replace buildpack.yml with Build Plan (TOML)](./text/0003-replace-buildpack-yml.md)
-* [0006: Web Servers Buildpack Subteam](./text/0006-web-servers.md)
 * [0010: Dependency Mappings](./text/0010-dependency-mappings.md)
-* [0014: Paketo Community Rust Buildpack](./text/0014-rust.md)
-* [0015: Distribute Buildpacks via Docker Hub](./text/0015-dockerhub-distribution.md)
 * [0017: Paketo Community Go HTTP Function Buildpack](./text/0017-go-http-fn.md)
 * [0019: Default Behaviour for Buildpack-Set Language Ecosystem Environment Variables](./text/0019-buildpack-set-env-vars-defaults.md)
-* [0021: Paketo Community Go Generate Buildpack](./text/0021-go-generate-buildpack.md)
 * [0022: Core-deps governance restructure proposal](./text/0022-core-deps-governance-restructure.md)
 * [0023: Git Support](./text/0023-git-buildpack.md)
 * [0024: Utility Buildpacks Team](./text/0024-utility-buildpacks-team.md)
@@ -20,14 +16,18 @@
 * [0002: Paketo Governance](./text/0002-governance.md)
 * [0004: Leiningen (Clojure) Buildpack](./text/0004-clojure.md)
 * [0005: Ruby Paketo Buildpack Promotion](./text/0005-ruby-promotion.md)
+* [0006: Web Servers Buildpack Subteam](./text/0006-web-servers.md)
 * [0007: Paketo Buildpack Naming](./text/0007-buildpack-naming.md)
 * [0008: Paketo Community](./text/0008-paketo-community.md)
 * [0009: Dep Server to provide buildpack dependency metadata](./text/0009-dep-server.md)
 * [0012: Builders Subteam](./text/0012-builder-subteam.md)
 * [0013: Contributor Guidelines](./text/0013-contributing-guidelines.md)
+* [0014: Paketo Community Rust Buildpack](./text/0014-rust.md)
+* [0015: Distribute Buildpacks via Docker Hub](./text/0015-dockerhub-distribution.md)
 * [0016: Paketo Project Programming Style Guide](./text/0016-programming-style-guide.md)
 * [0018: Radiate Buildpack and Community Metadata via a Dashboard](./text/0018-dashboard.md)
 * [0020: Self-host our blog via Hugo and GitHub Pages](./text/0020-blog.md)
+* [0021: Paketo Community Go Generate Buildpack](./text/0021-go-generate-buildpack.md)
 
 ## Why RFC?
 The RFC (Request For Comments) process is intended to provide a consistent procedure for all major decisions affecting Paketo Buildpacks.
