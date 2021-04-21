@@ -22,17 +22,20 @@ output to suite their needs.
 ## Detailed Explanation
 
 All buildpacks will provide a `BP_LOG_LEVEL` environment variable to allow for
-the configuration of log output. This variable will support 3 acceptable
-options: `WARN`, `INFO`, and `DEBUG`. The default option, should none be
-provided by the user, will be `INFO`. While this RFC will not outline detailed
-specifics for what logs should appear at each level, a basic description of
-their purposes is included below.
+the configuration of log output. This variable will support 2 acceptable
+options: `INFO`, and `DEBUG`. The default option, should none be provided by
+the user, will be `INFO`. While this RFC will not outline detailed specifics
+for what logs should appear at each level, a basic description of their
+purposes is included below.
 
-* `WARN`: log only warnings
 * `INFO`: log information about the progress of the build process
 * `DEBUG`: log debugging information about the progress of the build process
 
-This RFC intentionally limits the number of supported options to 3 as providing
+The `DEBUG` level is a superset of the `INFO` level. The buildpack will emit
+everything you would see at the `INFO` level along with the addition of debug
+output.
+
+This RFC intentionally limits the number of supported options to 2 as providing
 more than that is likely to create confusion for both buildpack authors and
 users. These options may be amended in a future RFC.
 
@@ -47,9 +50,9 @@ also the debug log output from the `npm` tool.
 ## Rationale and Alternatives
 
 The Java buildpacks currently support a `BP_DEBUG` flag that can be enabled to
-emit debug information. While this does support at least 2 of the currently
-proposed log levels, if you assume that disabling `BP_DEBUG` is equivalent to
-the `INFO` log level as described above, it isn't as flexible or extensible.
+emit debug information. While this does support the 2 proposed log levels, if
+you assume that disabling `BP_DEBUG` is equivalent to the `INFO` log level as
+described above, it isn't as flexible or extensible.
 
 ## Implementation
 
