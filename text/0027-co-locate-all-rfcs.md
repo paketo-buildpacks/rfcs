@@ -19,10 +19,11 @@ easier to access.
 
 ## Implementation
 
-Each project team will be given a directory inside of the `rfcs` repository,
-which would be named after the project team. A series of directories with the
-same names as the repositories that fall under that project teams control will
-be created inside of the project team's sub-directory.
+Each [project team](https://github.com/orgs/paketo-buildpacks/teams) will be
+given a directory inside of the `rfcs` repository, which would be named after
+the project team. A series of directories with the same names as the
+repositories that fall under that project teams control will be created inside
+of the project team's sub-directory.
 ```
 rfcs
 ├── assets
