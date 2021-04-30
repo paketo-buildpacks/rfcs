@@ -50,6 +50,12 @@ Example of the `CODEOWNERS` file [(note priority is from top to bottom of the `C
 text/project-team/ @paketo-buildpacks/project-team-maintainers
 ```
 
+Once this structure is set up all currently existing RFCs across the Paketo
+project should be moved into the `rfcs` repository and removed from their
+current repository. The repositories that relocate their RFCs should document
+the new location in the repository’s `README` to indicate to users that there
+has been a move. It should then become standard practice to ask that all new
+RFCs are made in the `rfcs` repository inside the correct sub-directory.
 
 ## Rationale and Alternatives
 
