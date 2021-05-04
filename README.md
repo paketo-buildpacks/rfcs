@@ -9,6 +9,7 @@
 * [0017: Paketo Community Go HTTP Function Buildpack](./text/0017-go-http-fn.md)
 * [0019: Default Behaviour for Buildpack-Set Language Ecosystem Environment Variables](./text/0019-buildpack-set-env-vars-defaults.md)
 * [0023: Git Support](./text/0023-git-buildpack.md)
+* [0027: Common Logging Levels for Buildpacks](./text/0027-log-levels.md)
 
 ## Implemented RFCs
 
