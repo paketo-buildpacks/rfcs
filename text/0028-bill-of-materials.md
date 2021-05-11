@@ -15,7 +15,7 @@ go into an app image.
 
 A BOM can include an array of different metadata about application dependencies
 and buildpack dependencies such as SHAs, URIs, versions, license information,
-vulnerability identifiers, etc. This information is valuablefor users who want
+vulnerability identifiers, etc. This information is valuable for users who want
 an accurate inventory of everything in their final application image, or that
 may have been used to build it. Having access to that information makes it
 easier to audit for vulnerabilities and license information.
