@@ -33,12 +33,45 @@ Stacks (such as those found in the [Paketo Stacks repository](https://github.com
 should have BOM metadata that includes in-depth information on all of the OS
 level packages installed as part of the stack.
 
+The existing metadata for stacks has the following structure:
+```
+{
+  "name" : "<package name>",
+  "version" : "<package version>",
+  "arch" : "<compatible architecture>",
+  "source" : {
+    "name" : "<package source name>",
+    "version" : "<package source version>",
+    "upstreamVersion" : "<package source upstream version>"
+  },
+  "summary" : "<package summary>"
+}
+```
+
 ### Runtime and Compilation Dependencies
 Dependencies that provide runtimes and/or are used for compilation should have
 BOM metadata surfaced about them. This includes both the dependencies in the
 final application image, as well as those used during the image building
 process. An example of this type of dependency is the node-engine dependency
 that is provided by the [Paketo Node Engine Buildpack](https://github.com/paketo-buildpacks/node-engine).
+
+The standardized set of keys to include in dependency BOM entries are:
+```
+[[bom]]
+name = "<dependency name>"
+
+[bom.metadata]
+  sha256 = "<hash of dependency artifact from uri>"
+  uri = "<uri to dependency>"
+  version = "<dependency version>"
+
+  # Optional parameters
+  stacks = [<list of compatible stacks>]
+  cpe = "<version-specific common platfrom enumeration>"
+  licenses = [<licenses that the dependency has>]
+  source-uri = "<uri to the dependency source>"
+  source-sha256 = "<hash of the dependency source artifact from source-uri>"
+```
 
 ### Language Specific Modules
 The final component that we should aim to publish BOM metadata for is language
@@ -47,3 +80,16 @@ or vendored as part of the application. This too should include information
 about the modules available in the final image, as well as those used to
 construct the image. An example of a module would be if Angular was installed
 as a module by the [Paketo NPM Install Buildpack](https://github.com/paketo-buildpacks/npm-install).
+
+The standardized set of keys to include in package module BOM entries are:
+```
+[[bom]]
+name = "<module name>"
+
+[bom.metadata]
+  version = "<module version>"
+```
+Note that this should have the same structure as the runtime and compilation
+dependency BOM entries. Some fields (such as `uri` , for example) have been
+omitted until further investigation is done to find out how these can be
+obtained.
