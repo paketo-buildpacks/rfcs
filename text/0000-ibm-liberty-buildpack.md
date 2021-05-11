@@ -19,6 +19,8 @@ This buildpack has the purpose of installing the IBM Open Liberty. It will will 
 This buildpack will participate if all the following conditions are met:
 
 - `<APPLICATION_ROOT>/WEB-INF` exists
+-  A liberty server directory exists
+-  A liberty packaged server exists
 - `Main-Class` is NOT defined in the mainfest
 
 The buildpack will do the following:
