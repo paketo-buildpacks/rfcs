@@ -142,9 +142,12 @@ their versioning independently.
 
 ### Intial Development
 
-A version of `0.0.x` is considered to be in initial development and may not be
-suitable for user consumption. When in initial development, semantic versioning
-guidelines do not apply.
+A version of `0.0.z` is considered to be experimental/unstable and may not be
+suitable for user consumption. All changes will be released as patches.
+
+A version of `0.y.z` is considered to be in initial development and ready for
+feedback from early adopter. Anything may change at any time. All breaking changes
+will be released as minor bumps.
 
 ## User Policy
 
