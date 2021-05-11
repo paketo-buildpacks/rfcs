@@ -16,20 +16,29 @@ commercial [WebSphere Liberty](https://www.ibm.com/cloud/websphere-liberty).  Th
 
 ## Rationale and Alternatives
 
-There no currently available buildpack that provides the OpenLiberty runtime.  As IBM moves away from WebSphere Liberty in favor or OpenLiberty, we want to create a new cloud native buildpack 
+There is no currently available buildpack that provides the Open Liberty runtime.  As IBM moves away from WebSphere Liberty in favor or OpenLiberty, we want to create a new cloud native buildpack 
 instead of modifying the existing cloud foundry buildpack.  
 
 ## Implementation
-The buildpack will include 2 versions of both open liberty and websphere liberty and be updated on a 4-week cycle to coincide with the 4-week liberty release cycle.  
+The buildpack.toml will include 2 versions of both open liberty and websphere liberty and be updated on a 4-week cycle to coincide with the 4-week liberty release cycle.  
+Open Liberty is released under the [Eclipse Public License - v1.0](https://raw.githubusercontent.com/OpenLiberty/open-liberty/master/LICENSE) and will be included in the buildpack.toml.  
+```
+  [[metadata.dependencies.licenses]]
+  type = "EPL-1.0"
+  uri  = "https://raw.githubusercontent.com/OpenLiberty/open-liberty/master/LICENSE"
+```  
 
 Our intent is to provide a similar configuration as openliberty's [Dockerfile](https://github.com/OpenLiberty/ci.docker/blob/master/releases/21.0.0.4/full/Dockerfile.ubuntu.adoptopenjdk11). 
 
-Avaiable configuration environment variables include:
-BP_LIBERTY_VERSION - The version of Liberty specified as a specific release or use semver.  Default TBD.  
-BP_LIBERTY_PACKAGE - For open liberty one of the following: full or kernel-slim. For websphere liberty one of the following: webProfile7, webProfile8, javaee7, javaee8, or kernel.  Default TBD. 
-BP_LIBERTY_USE_WLP - Indicates that the WebSphere Liberty runtime should be use instead of Open Liberty.  Default false.  
+Available configuration environment variables include:
 
-The multi/meta-buildpack will include buildpacks similar to the java buildpack like maven, gradle, debug, environment variables.  
+* BP_LIBERTY_VERSION - The version of Liberty specified as a specific release or use semver.  Default TBD.  
+
+* BP_LIBERTY_PACKAGE - For open liberty one of the following: full or kernel-slim. For websphere liberty one of the following: webProfile7, webProfile8, javaee7, javaee8, or kernel.  Default TBD. 
+
+* BP_LIBERTY_USE_WLP - Indicates that the WebSphere Liberty runtime should be use instead of Open Liberty.  Default false.  
+
+The multi/meta-buildpack will include buildpacks similar to the java buildpack like maven, gradle, debug, and environment variables.  
 
 ## Prior Art
 
@@ -38,6 +47,10 @@ liberty runtime in cloud foundry v2 buildpacks.
 
 ## Unresolved Questions and Bikeshedding
 
-Defaults need to be decided and defined. 
+* Defaults need to be decided and defined. 
+
+* WebSphere Liberty is not open source and is subject to a commercial license.  How can we deal with that in a Paketo buildpack?
+
+* What are the API specifications for the automation tooling to check for new releases and create a PR?
 
 {{REMOVE THIS SECTION BEFORE RATIFICATION!}}
