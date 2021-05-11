@@ -67,13 +67,3 @@ RFCs are made in the `rfcs` repository inside the correct sub-directory.
   not need to create a fork of the repository to create an RFC. This still puts
   a burden on individuals that would like to keep track of the going ons of
   lots of teams.
-
-## Unresolved Questions and Bikeshedding
-
-- Is there a way to set up permissions to allow for project team members to
-  open up RFCs inside their respective language directories without having to
-  fork the RFCs repository? Should we just give all maintainers and
-  contributors of the Paketo project the ability to create and push branches to
-  the RFCs repository?
-
-{{REMOVE THIS SECTION BEFORE RATIFICATION!}}
