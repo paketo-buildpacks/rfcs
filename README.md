@@ -8,7 +8,6 @@
 * [0015: Distribute Buildpacks via Docker Hub](./text/0015-dockerhub-distribution.md)
 * [0017: Paketo Community Go HTTP Function Buildpack](./text/0017-go-http-fn.md)
 * [0019: Default Behaviour for Buildpack-Set Language Ecosystem Environment Variables](./text/0019-buildpack-set-env-vars-defaults.md)
-* [0023: Git Support](./text/0023-git-buildpack.md)
 * [0026: Environment Variable Configuration Of Buildpack](./text/0026-environment-variable-configuration-of-buildpacks.md)
 * [0027: Common Logging Levels for Buildpacks](./text/0027-log-levels.md)
 
@@ -29,6 +28,7 @@
 * [0020: Self-host our blog via Hugo and GitHub Pages](./text/0020-blog.md)
 * [0021: Paketo Community Go Generate Buildpack](./text/0021-go-generate-buildpack.md)
 * [0022: Core-deps governance restructure proposal](./text/0022-core-deps-governance-restructure.md)
+* [0023: Git Support](./text/0023-git-buildpack.md)
 * [0024: Utility Buildpacks Team](./text/0024-utility-buildpacks-team.md)
 * [0025: Establishing an Emeritus Status](./text/0025-emeritus-status.md)
 
