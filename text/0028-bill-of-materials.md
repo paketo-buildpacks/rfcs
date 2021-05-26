@@ -9,7 +9,8 @@ a key value proposition of Cloud Native Buildpacks.
 
 As an implementation of Cloud Native Buildpacks, the Paketo project should
 support adding bill of materials metadata across the different components that
-go into an app image.
+go into an app image. This RFC serves as an intent to implement the BOM and
+defines the minimal set of key/values to be included.
 
 ## Motivation
 
@@ -33,7 +34,7 @@ Stacks (such as those found in the [Paketo Stacks repository](https://github.com
 should have BOM metadata that includes in-depth information on all of the OS
 level packages installed as part of the stack.
 
-The existing metadata for stacks has the following structure:
+The minimal set of metadata for stacks should be:
 ```
 {
   "name" : "<package name>",
@@ -47,15 +48,19 @@ The existing metadata for stacks has the following structure:
   "summary" : "<package summary>"
 }
 ```
+This closely resembles the metadata that is already available on stacks.
 
-### Runtime and Compilation Dependencies
-Dependencies that provide runtimes and/or are used for compilation should have
-BOM metadata surfaced about them. This includes both the dependencies in the
-final application image, as well as those used during the image building
-process. An example of this type of dependency is the node-engine dependency
-that is provided by the [Paketo Node Engine Buildpack](https://github.com/paketo-buildpacks/node-engine).
+### Directly Installed Dependencies
+Dependencies that directly provide runtimes and/or are tools used for
+compilation should have BOM metadata surfaced about them. This includes both
+the dependencies in the final application image, as well as those used during
+the image building process. An example of this type of dependency is the
+node-engine dependency that is provided by the [Paketo Node Engine
+Buildpack](https://github.com/paketo-buildpacks/node-engine). These are the
+type dependencies that are usually listed in the
+[`buildpack.toml` file](https://github.com/paketo-buildpacks/node-engine/blob/main/buildpack.toml).
 
-The standardized set of keys to include in dependency BOM entries are:
+The minimal set of keys to include in these type of BOM entries are:
 ```
 [[bom]]
 name = "<dependency name>"
@@ -64,7 +69,9 @@ name = "<dependency name>"
   sha256 = "<hash of dependency artifact from uri>"
   uri = "<uri to dependency>"
   version = "<dependency version>"
-
+```
+The optional set of keys may include:
+```
   # Optional parameters
   stacks = [<list of compatible stacks>]
   cpe = "<version-specific common platfrom enumeration>"
@@ -73,15 +80,19 @@ name = "<dependency name>"
   source-sha256 = "<hash of the dependency source artifact from source-uri>"
 ```
 
-### Language Specific Modules
-The final component that we should aim to publish BOM metadata for is language
-specific modules that are either downloaded during the image building process
-or vendored as part of the application. This too should include information
-about the modules available in the final image, as well as those used to
-construct the image. An example of a module would be if Angular was installed
-as a module by the [Paketo NPM Install Buildpack](https://github.com/paketo-buildpacks/npm-install).
+### Indirectly Installed Dependencies
+The final component that we should aim to publish BOM metadata for is for
+dependencies that are indirectly installed. These types of dependencies are
+either downloaded during the image building process or vendored as part of the
+application. If Angular was installed as a module by the [Paketo NPM Install
+Buildpack](https://github.com/paketo-buildpacks/npm-install), it would fall
+under this category as something we'd want to provide BOM metadata for.
 
-The standardized set of keys to include in package module BOM entries are:
+The BOM entries for this category should also include information about the
+modules available in the final image, as well as those used to construct the
+image.
+
+The minimal set of keys to include in package module BOM entries are:
 ```
 [[bom]]
 name = "<module name>"
