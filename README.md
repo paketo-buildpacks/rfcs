@@ -10,6 +10,7 @@
 * [0019: Default Behaviour for Buildpack-Set Language Ecosystem Environment Variables](./text/0019-buildpack-set-env-vars-defaults.md)
 * [0026: Environment Variable Configuration Of Buildpack](./text/0026-environment-variable-configuration-of-buildpacks.md)
 * [0027: Common Logging Levels for Buildpacks](./text/0027-log-levels.md)
+* [0029: Semantic Versioning of Buildpacks and Builders](./text/0029-semantic-versioning.md)
 
 ## Implemented RFCs
 
