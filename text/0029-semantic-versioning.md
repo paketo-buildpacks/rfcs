@@ -149,7 +149,7 @@ A version of `0.y.z` is considered to be in initial development and ready for
 feedback from early adopters. Anything may change at any time. All breaking changes
 will be released as minor bumps.
 
-\* `y`, and `z` are non-negative integers.
+\* `y`, and `z` are positive integers.
 
 ## User Policy
 
