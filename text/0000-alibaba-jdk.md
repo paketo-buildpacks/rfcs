@@ -18,7 +18,7 @@ N/A
 
 ## Implementation
 
-The Alibaba Dragonwell Buildpack will be moved into the `paketo-community` Github organization and added to the Java sub-team. Initial maintainer for this team will be [@dmikusa-pivotal][@dmikusa-pivotal].
+The Alibaba Dragonwell Buildpack will be moved into the `paketo-community` Github organization and added to the Java sub-team. Initial maintainer for this team will be [@dmikusa-pivotal][@dmikusa-pivotal] and [@eddumelendez][@eddumelendez].
 
 The following changes will be made:
 
