@@ -9,7 +9,7 @@ provides.
 
 The current set of buildpacks will be reorganized into the following:
 
-![Proposed Structure](/rfcs/assets/0001-proposed.png)
+![Proposed Structure](/text/python/.assets/0001-proposed.png)
 
 * `cpython`
   * provides: `cpython`
