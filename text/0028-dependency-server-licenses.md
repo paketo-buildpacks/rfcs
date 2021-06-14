@@ -13,7 +13,7 @@ files it hosts. However, it currently does not have the capacity to supply
 license information. This field should be added to the dependency server
 because information about the license(s) of a dependency is a valuable and
 necessary piece of information for those that are trying to make sure that
-thier apps use license that comply with thier use cases.
+their apps use license that comply with their use cases.
 
 ## Implementation
 
