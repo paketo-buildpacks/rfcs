@@ -11,6 +11,7 @@
 * [0026: Environment Variable Configuration Of Buildpack](./text/0026-environment-variable-configuration-of-buildpacks.md)
 * [0027: Common Logging Levels for Buildpacks](./text/0027-log-levels.md)
 * [0029: Semantic Versioning of Buildpacks and Builders](./text/0029-semantic-versioning.md)
+* [0030: Buildpackless Builders](./text/0030-buildpackless-builders.md)
 
 ## Implemented RFCs
 
