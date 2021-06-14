@@ -1,10 +1,10 @@
 # Add License Field to the Dependency Server Metadata
 
-Supersedes [RFC #0009](https://github.com/paketo-buildpacks/rfcs/blob/main/text/0009-dep-server.md)
-
 ## Summary
 
 Add a field for license information into the dependency server schema.
+This RFC is an addendum to  [RFC
+#0009](https://github.com/paketo-buildpacks/rfcs/blob/main/text/0009-dep-server.md)
 
 ## Motivation
 
@@ -19,7 +19,8 @@ their apps use license that comply with their use cases.
 
 The following field should be added to the dependency server output:
 
-* `licenses`: an array of licenses that are used by the dependency
+* `licenses`: an array of [SPDX license IDs](https://spdx.org/licenses/) that
+  are used by the dependency
 
 An example of the new output:
 ```
