@@ -11,7 +11,7 @@ Add a field for license information into the dependency server schema.
 Currently, the dependency server offers a lot of valuable information about the
 files it hosts. However, it currently does not have the capacity to supply
 license information. This field should be added to the dependency server
-because information about the licesnse(s) of a dependency is a valuable and
+because information about the license(s) of a dependency is a valuable and
 necessary piece of information for those that are trying to make sure that
 thier apps use license that comply with thier use cases.
 
