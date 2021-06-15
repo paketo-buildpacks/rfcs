@@ -73,7 +73,6 @@ name = "<dependency name>"
 The optional set of keys may include:
 ```
   # Optional parameters
-  stacks = [<list of compatible stacks>]
   cpe = "<version-specific common platfrom enumeration>"
   licenses = [<licenses that the dependency has>]
   source-uri = "<uri to the dependency source>"
