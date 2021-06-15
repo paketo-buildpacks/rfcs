@@ -1,8 +1,8 @@
-# Paketo Community IBM Liberty Buildpack
+# Paketo Community Liberty Buildpack
 
 ## Summary
 
-1. Create a Cloud Native Buildpack for the purpose of installing the IBM [Open Liberty](https://openliberty.io/) Java runtime. 
+1. Create a Cloud Native Buildpack for the purpose of installing the [Open Liberty](https://openliberty.io/) Java runtime. 
 2. Create a new top-level multi buildpack that packages up Eclipse OpenJ9 & Open Liberty for use by application developers.
 
 ## Motivation
@@ -12,9 +12,9 @@ take that buildpack to the next level, cloud native.  This buildpack will eventu
 
 ## Detailed Explanation
 
-### IBM Open Liberty Buildpack
+### Open Liberty Buildpack
 
-This buildpack has the purpose of installing the IBM Open Liberty. It will will be based on the Paketo [apache-tomcat](https://github.com/paketo-buildpacks/apache-tomcat) buildpack. 
+This buildpack has the purpose of installing the Open Liberty. It will will be based on the Paketo [apache-tomcat](https://github.com/paketo-buildpacks/apache-tomcat) buildpack. 
 
 This buildpack will participate if all the following conditions are met:
 
@@ -31,9 +31,9 @@ The buildpack will do the following:
 - Installs [Open Liberty](openliberty.io) unless `BP_LIBERTY_USE_WLP` is `true` then it installs [WebSphere Liberty](https://www.ibm.com/cloud/websphere-liberty).
 - Contributes liberty, task, and web process types
 
-### IBM Java Buildpack
+### Java-liberty Buildpack
 
-This buildpack has the purpose of being a multi buildpack which defaults to using Eclipse OpenJ9 and Open Liberty. It will be a copy of the [Java](https://github.com/paketo-buildpacks/java) buildpack, but will substitute Eclipse OpenJ9 as the default JVM and it will swap Apache Tomcat in favor of Open Liberty. The proposed name is `java-ibm`.
+This buildpack has the purpose of being a multi buildpack which defaults to using Eclipse OpenJ9 and Open Liberty. It will be a copy of the [Java](https://github.com/paketo-buildpacks/java) buildpack, but will substitute Eclipse OpenJ9 as the default JVM and it will swap Apache Tomcat in favor of Open Liberty. The proposed name is `java-liberty`.
 
 ## Rationale and Alternatives
 
@@ -41,7 +41,7 @@ There is no currently available buildpack that provides the Open Liberty runtime
 instead of modifying the existing cloud foundry buildpack.  
 
 ## Implementation
-The buildpack.toml will include 2 versions of both open liberty and websphere liberty and be updated on a 4-week cycle to coincide with the 4-week Liberty release cycle.  
+The buildpack.toml will include 2 versions of both Open liberty and Websphere Liberty and be updated on a 4-week cycle to coincide with the 4-week Liberty release cycle.  
 Open Liberty is released under the [Eclipse Public License - v1.0](https://raw.githubusercontent.com/OpenLiberty/open-liberty/master/LICENSE) and will be included in the buildpack.toml.
   
 ```
