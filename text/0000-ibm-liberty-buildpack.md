@@ -19,11 +19,9 @@ This buildpack has the purpose of installing the Open Liberty. It will will be b
 This buildpack will participate if all the following conditions are met:
 
 - `<APPLICATION_ROOT>/WEB-INF` exists or
--  A liberty server directory exists
-      a server.xml exists in the --path  or
--  A liberty packaged server exists 
-	  an unarchived zip file exists containing a wlp/usr/servers/*/server.xml in the --path and
-- `Main-Class` is NOT defined in the mainfest
+-  `<APPLICATION_ROOT>/server.xml` exists or
+-  `<APPLICATION_ROOT>/wlp/usr/servers/*/server.xml` exists and
+- `Main-Class` is NOT defined in the manifest
 
 The buildpack will do the following:
 
