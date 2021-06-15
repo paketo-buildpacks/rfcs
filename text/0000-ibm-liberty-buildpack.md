@@ -54,6 +54,8 @@ Available configuration environment variables include:
 * BP_LIBERTY_PACKAGE_TYPE - The set of Liberty features to contribute.   For Open Liberty one of the following: full or kernel-slim. For websphere liberty one of the following: webProfile7, webProfile8, javaee7, javaee8, or kernel.  Default TBD. 
 * BP_LIBERTY_USE_WLP - Indicates that the WebSphere Liberty runtime should be use instead of Open Liberty.  Default false.  
 
+The java-liberty and open-liberty buildpacks will be owned and maintained by the IBM liberty buildpack team: (Kevin Ortega (@kevin-ortega), Preeti Sawant (@preetisawant) and Raymond Xu (@rxu1). 
+
 ## Prior Art
 
 This buildpack will contribute a liberty runtime similar to how the [ibm-websphere-liberty-buildpack](https://github.com/cloudfoundry/ibm-websphere-liberty-buildpack) provides the websphere 
