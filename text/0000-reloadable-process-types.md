@@ -48,7 +48,11 @@ Note that watchexec watches the current directory (and below). The working direc
 
 Note also that watchexec supports shell-less invocation and therefore will be able to support the tiny builder that produces a run image with no shell.  
 
-It also supports windows through both Cmd and Powershell shells. 
+Finally, it also supports windows through both the Cmd and Powershell shells and therefore is likely usable by windows-related buildpacks but that is considered out of scope for this proposal.
+
+## Trade offs
+
+For compiled languages, once a live reload session is established we have to defer to the dev orchestrator, or more likely to the IDE, to compile files as they change.  This does circumvent pack/buildpacks but only for the set of files deemed safe for live reload and only for the lifetime of the live reload session.  All other builds, the initial build and the fallback build would still be performed by pack.  
 
 ## Rationale and Alternatives
 
