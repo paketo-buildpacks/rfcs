@@ -34,21 +34,27 @@ Stacks (such as those found in the [Paketo Stacks repository](https://github.com
 should have BOM metadata that includes in-depth information on all of the OS
 level packages installed as part of the stack.
 
-The minimal set of metadata for stacks should be:
+The minimal set of keys to include in these type of BOM entries are:
 ```
-{
-  "name" : "<package name>",
-  "version" : "<package version>",
-  "arch" : "<compatible architecture>",
-  "source" : {
-    "name" : "<package source name>",
-    "version" : "<package source version>",
-    "upstreamVersion" : "<package source upstream version>"
-  },
-  "summary" : "<package summary>"
-}
+[[bom]]
+name = "<dependency name>"
+
+[bom.metadata]
+  version = "<dependency version>"
+
+[bom.metadata.source]
+  name = "<package source name>"
+  version = "<package source version>",
+  upstream-version = "<package source upstream version>"
 ```
-This closely resembles the metadata that is already available on stacks.
+The optional set of keys may include:
+```
+  # Optional parameters
+  arch = "<compatible architecture>"
+  summary = "<package summary>"
+```
+This closely resembles the content of the metadata that is already available on
+stacks.
 
 ### Directly Installed Dependencies
 Dependencies that directly provide runtimes and/or are tools used for
@@ -73,10 +79,13 @@ name = "<dependency name>"
 The optional set of keys may include:
 ```
   # Optional parameters
+[bom.metadata]
   cpe = "<version-specific common platfrom enumeration>"
   licenses = [<licenses that the dependency has>]
-  source-uri = "<uri to the dependency source>"
-  source-sha256 = "<hash of the dependency source artifact from source-uri>"
+
+[bom.metadata.source]
+  uri = "<uri to the dependency source>"
+  sha256 = "<hash of the dependency source artifact from source-uri>"
 ```
 
 ### Indirectly Installed Dependencies
