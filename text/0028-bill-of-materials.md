@@ -49,7 +49,8 @@ name = "<dependency name>"
 ```
 The optional set of keys may include:
 ```
-  # Optional parameters
+# Optional parameters
+[bom.metadata]
   arch = "<compatible architecture>"
   summary = "<package summary>"
 ```
