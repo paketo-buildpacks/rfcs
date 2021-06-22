@@ -8,8 +8,11 @@
 * [0015: Distribute Buildpacks via Docker Hub](./text/0015-dockerhub-distribution.md)
 * [0017: Paketo Community Go HTTP Function Buildpack](./text/0017-go-http-fn.md)
 * [0019: Default Behaviour for Buildpack-Set Language Ecosystem Environment Variables](./text/0019-buildpack-set-env-vars-defaults.md)
-* [0023: Git Support](./text/0023-git-buildpack.md)
+* [0026: Environment Variable Configuration Of Buildpack](./text/0026-environment-variable-configuration-of-buildpacks.md)
 * [0027: Common Logging Levels for Buildpacks](./text/0027-log-levels.md)
+* [0028: Co-locate All Paketo RFCs](./text/0028-co-locate-all-rfcs.md)
+* [0029: Semantic Versioning of Buildpacks and Builders](./text/0029-semantic-versioning.md)
+* [0030: Buildpackless Builders](./text/0030-buildpackless-builders.md)
 
 ## Implemented RFCs
 
@@ -28,6 +31,7 @@
 * [0020: Self-host our blog via Hugo and GitHub Pages](./text/0020-blog.md)
 * [0021: Paketo Community Go Generate Buildpack](./text/0021-go-generate-buildpack.md)
 * [0022: Core-deps governance restructure proposal](./text/0022-core-deps-governance-restructure.md)
+* [0023: Git Support](./text/0023-git-buildpack.md)
 * [0024: Utility Buildpacks Team](./text/0024-utility-buildpacks-team.md)
 * [0025: Establishing an Emeritus Status](./text/0025-emeritus-status.md)
 
@@ -38,7 +42,7 @@ The RFC (Request For Comments) process is intended to provide a consistent proce
 A Request For Comments starts with a document of proposed changes to Paketo Buildpack(s).
 All major decisions must start with an RFC proposal.
 Once an RFC has been proposed, anyone may ask questions, provide constructive feedback,
-and discuss trade-offs. But only project [maintainers](https://github.com/paketo-buildpacks/community/blob/main/TEAMS.md) will be able to ratify an RFC.
+and discuss trade-offs. But only the [steering committee or team maintainers](https://github.com/paketo-buildpacks/community/blob/main/TEAMS.md) will be able to ratify an RFC for project-level and team-level RFCs, respectively.
 
 ## When to Write an RFC?
 Many changes, including bug fixes and documentation improvement can be implemented and reviewed by the normal
@@ -60,12 +64,28 @@ What constitutes a "substantial" change may include the following but is not lim
 For clarification about where a change fits into this model, please review previous RFCs, or reach
 out on the official [Paketo Slack](https://paketobuildpacks.slack.com).
 
+## Project-Level vs. Team-Level RFCs
+
+If the changes proposed in the RFC are scoped to a specific sub-team, please open a team-level RFC. If the proposal will affect the multiple teams or the entire project please open a project-level RFC.
+
+Examples of project-level RFCs:
+- Process changes that affect all teams
+- New conventions that should be adopted by all buildpacks
+- A proposal to add a standard configuration option to every buildpack (e.g. `BP_LOG_LEVEL`)
+- Changes to the governance structure
+- Change to the RFC process
+
+Examples of teams-level RFCs:
+- A proposal to support a workflow or feature in a particular language family (e.g. support building Java apps with Gradle)
+- A proposal to add a configuration option to a particular language family buildpacks
+- Process changes that affect a single team
+
 ### Process
 #### RFCs
 To get an RFC implemented, first the RFC needs to be merged into the [`rfcs`](//github.com/paketo-buildpacks/rfcs) repo. Once an RFC is merged, it's considered 'accepted' and may be implemented in the project. These steps will get an RFC to be considered:
 
 - Fork the RFC repo: <https://github.com/paketo-buildpacks/rfcs>
-- Rename 'accepted/0000-template.md' to 'accepted/0000-my-feature.md' (where 'my-feature' is descriptive. Don't assign an RFC number yet).
+- Copy 'text/0000-template.md' to 'text/0000-my-feature.md' or 'text/<project-team>/0000-my-feature.md' for project-level or team-level RFCs respectively, where 'my-feature' is descriptive of the proposal (Don't assign an RFC number yet).
 - Fill in RFC. Any section can be marked as "N/A" if not applicable.
 - Submit a pull request. The pull request is the time to get review of the proposal from the larger community.
 - Build consensus and integrate feedback. RFCs that have broad support are much more likely to make progress than those that don't receive any comments.
@@ -94,14 +114,14 @@ When an RFC is deemed "ready"
 
 Once an RFC has been accepted, the maintainer who merges the pull request should do the following:
 
-- Assign an id based off the pull request number.
-- Rename the file based off the id inside '/accepted'.
+- Assign an incremental ID (e.g. if currently 12 accepted project-level RFCs, assign ID 0013. If there are 3 accepted NodeJS team RFCs assign ID 0004).
+- Rename the file, replacing `0000` with the assigned ID.
 - Create a corresponding issue in the appropriate repo.
 - Fill in the remaining metadata at the top.
 - Commit everything.
 
 ### After an RFC is accepted
-Once an RFC is accepted, maintaners agree to merge a corresponding PR implementing the described changes, provided it passes a standard code review.
+Once an RFC is accepted, maintainers agree to merge a corresponding PR implementing the described changes, provided it passes a standard code review.
 It is not a guarantee of implementation, nor does it obligate a team to implement the requested changes.
 
 #### Implementation
