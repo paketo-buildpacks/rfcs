@@ -13,6 +13,7 @@
 * [0028: Co-locate All Paketo RFCs](./text/0028-co-locate-all-rfcs.md)
 * [0029: Semantic Versioning of Buildpacks and Builders](./text/0029-semantic-versioning.md)
 * [0030: Buildpackless Builders](./text/0030-buildpackless-builders.md)
+* [0031: Liberty Buildpack](./text/0031-liberty-buildpack.md)
 
 ## Implemented RFCs
 
