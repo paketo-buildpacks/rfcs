@@ -22,7 +22,7 @@ This may be desirable with other buildpacks as well, such as the Go and Rust fam
 
 It is recommended that buildpacks which opt-in to using `upx`, make using `upx` optional with a default of disabled. This is because there is presently a known issue that causes a SEGFAULT when running a `upx` compressed binary on a Mac M1 Laptop running buildpacks under amd64 emulation. Defaulting to off provides for the largest compatibility.
 
-A buildpack that opts-in to using `upx` for compression will do so by checking the `BP_COMPRESS_BINARIES` environment variable. The value of the variable should contain the compression method to be used, which is `upx` for UPX. Other types may be supported, but are outside the scope of this RFC.
+A buildpack that opts-in to using `upx` for compression will do so by checking the `BP_BINARY_COMPRESSION_METHOD` environment variable. The value of the variable should contain the compression method to be used, which is `upx` for UPX. If it is unset, empty or set to `none` then no compression should be used. Other types may be supported, but are outside the scope of this RFC.
 
 ## Rationale and Alternatives
 
