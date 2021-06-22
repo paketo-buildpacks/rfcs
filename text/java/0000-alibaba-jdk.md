@@ -2,7 +2,7 @@
 
 ## Summary
 
-A [Alibaba Dragonwell Buildpack](https://github.com/eddumelendez/dragonwell) for supplying Alibaba's distribution of OpenJDK has been created by [@eddumelendez][@eddumelendez]. It is built using common tooling (libpak and lijvm) used by the Paketo Java sub-team and should be adopted into the Paketo Buildpacks Github Org.
+A [Alibaba Dragonwell Buildpack](https://github.com/eddumelendez/dragonwell) for supplying Alibaba's distribution of OpenJDK has been created by [@eddumelendez][@eddumelendez]. It is built using common tooling (libpak and libjvm) used by the Paketo Java sub-team and should be adopted into the Paketo Buildpacks Github Org.
 
 ## Motivation
 
