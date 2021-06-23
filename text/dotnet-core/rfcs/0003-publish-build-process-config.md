@@ -28,7 +28,7 @@ Splitting up the build process into distinct `restore` and `publish` commands
 will give our users more control over the complete build process by allowing
 the buildpack to provide configuration for each command.
 
-## Implementation (Optional)
+## Implementation
 
 The current implementation executes the following command:
 
@@ -79,7 +79,7 @@ dotnet publish <project-path> \
   --output <output-path>
 ```
 
-## Source Material (Optional)
+## Source Material
 
 * Documentation of the [`dotnet
   publish`](https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-publish)
