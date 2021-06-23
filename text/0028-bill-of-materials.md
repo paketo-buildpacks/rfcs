@@ -29,10 +29,35 @@ achieve a consistent user experience across the Paketo project.
 
 The following Paketo components should have BOM metadata attached to them:
 
+### Overall Schema
+The bill of materials for each of type of entry should have some subset of
+fields that conform to the overall schema below.
+```
+[[bom]]
+name = "<dependency name>"
+
+[bom.metadata]
+  version = "<dependency version>"
+  sha256 = "<hash of dependency artifact from uri>"
+  uri = "<uri to dependency>"
+  arch = "<compatible architecture>"
+  summary = "<package summary>"
+  cpe = "<version-specific common platfrom enumeration>"
+  licenses = [<licenses that the dependency has>]
+
+[bom.metadata.source]
+  name = "<dependency source name>"
+  version = "<dependency source version>",
+  uri = "<uri to the dependency source>"
+  sha256 = "<hash of the dependency source artifact from source-uri>"
+  upstream-version = "<dependency source upstream version>"
+```
+
 ### Stacks
-Stacks (such as those found in the [Paketo Stacks repository](https://github.com/paketo-buildpacks/stacks))
-should have BOM metadata that includes in-depth information on all of the OS
-level packages installed as part of the stack.
+Stacks (such as those found in the [Paketo Stacks
+repository](https://github.com/paketo-buildpacks/stacks)) should have BOM
+metadata that includes in-depth information on all of the OS level packages
+installed as part of the stack.
 
 The minimal set of keys to include in these type of BOM entries are:
 ```
@@ -43,9 +68,9 @@ name = "<dependency name>"
   version = "<dependency version>"
 
 [bom.metadata.source]
-  name = "<package source name>"
-  version = "<package source version>",
-  upstream-version = "<package source upstream version>"
+  name = "<dependency source name>"
+  version = "<dependency source version>",
+  upstream-version = "<dependency source upstream version>"
 ```
 The optional set of keys may include:
 ```
