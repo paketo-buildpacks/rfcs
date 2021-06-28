@@ -10,7 +10,6 @@
 * [0019: Default Behaviour for Buildpack-Set Language Ecosystem Environment Variables](./text/0019-buildpack-set-env-vars-defaults.md)
 * [0026: Environment Variable Configuration Of Buildpack](./text/0026-environment-variable-configuration-of-buildpacks.md)
 * [0027: Common Logging Levels for Buildpacks](./text/0027-log-levels.md)
-* [0028: Co-locate All Paketo RFCs](./text/0028-co-locate-all-rfcs.md)
 * [0029: Semantic Versioning of Buildpacks and Builders](./text/0029-semantic-versioning.md)
 * [0030: Buildpackless Builders](./text/0030-buildpackless-builders.md)
 * [0031: Liberty Buildpack](./text/0031-liberty-buildpack.md)
@@ -35,6 +34,7 @@
 * [0023: Git Support](./text/0023-git-buildpack.md)
 * [0024: Utility Buildpacks Team](./text/0024-utility-buildpacks-team.md)
 * [0025: Establishing an Emeritus Status](./text/0025-emeritus-status.md)
+* [0028: Co-locate All Paketo RFCs](./text/0028-co-locate-all-rfcs.md)
 
 ## Why RFC?
 The RFC (Request For Comments) process is intended to provide a consistent procedure for all major decisions affecting Paketo Buildpacks.
