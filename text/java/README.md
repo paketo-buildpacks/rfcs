@@ -4,7 +4,8 @@ This directory contains RFCs that pertain to the [Java Subteam](https://github.c
 
 ## Accepted RFCs
 
-* [0001: Microsoft OpenJDK Buildpack](./text/java/0001-microsoft-jdk.md)
+* [0001: Microsoft OpenJDK Buildpack](0001-microsoft-jdk.md)
+* [0002: Alibaba Dragonwell Buildpack](0002-alibaba-jdk.md)
 
 ## Implemented RFCs
 
