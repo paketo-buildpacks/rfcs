@@ -4,10 +4,10 @@ This directory contains RFCs that pertain to the [Utilities Subteam](https://git
 
 ## Accepted RFCs
 
-* [0001: UPX Support](0001-upx-buildpack.md)
 
 ## Implemented RFCs
 
+* [0001: UPX Support](0001-upx-buildpack.md)
 
 ## Links
 
