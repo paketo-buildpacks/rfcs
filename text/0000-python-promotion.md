@@ -45,12 +45,15 @@ The following repos should be moved from the `paketo-community` to `paketo-build
 - [Conda Env Update Buildpack](https://github.com/paketo-community/conda-env-update)
 - [Python Start Buildpack](https://github.com/paketo-community/python-start)
 
-* **All** Python Buildpack IDs should be updated to
+* All Python Buildpack IDs should be updated to
 	`paketo-buildpacks/<RUNTIME>`
 
-* **All** Python Buildpack artifacts should be shipped to
+* All Python Buildpack artifacts should be shipped to
 	`index.docker.io/paketobuildpacks/<RUNTIME>` and
 	`gcr.io/paketo-buildpacks/<RUNTIME>`
+
+* All Python buildpacks will continue to be maintained by the [Python
+	subteam](https://github.com/orgs/paketo-buildpacks/teams/python)
 
 * Versioning of all buildpacks should continue as is.
 
