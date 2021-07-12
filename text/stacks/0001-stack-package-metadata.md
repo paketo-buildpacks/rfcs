@@ -45,6 +45,3 @@ Example:
 ## Unresolved Questions and Bikeshedding
 
 Is there a clearer/more accurate label name we can use? Technically "stack" refers to a pair of images but we're only trying to represent the packages on a single image.
-
-
-{{REMOVE THIS SECTION BEFORE RATIFICATION!}}
