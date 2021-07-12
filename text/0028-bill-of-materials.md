@@ -138,3 +138,15 @@ Note that this should have the same structure as the runtime and compilation
 dependency BOM entries. Some fields (such as `uri` , for example) have been
 omitted until further investigation is done to find out how these can be
 obtained.
+
+### License Information
+
+As a note, the plan is to use various scanning tools in order to obtain license
+information for all dependencies. It should be assumed that you are receiving
+all of the output from a given license scanning tool with no further vetting at
+this time. If this could potentially cause issues for your compliance process
+you should go through with any advanced compliance that is normally required.
+However, there should be a good faith effort to provide only false-postive
+license results to ensure that individuals can still trust that all relevant
+licenses are present. This level of confidence and verification may change in
+the future, but that change should be communicated in later documentation.
