@@ -16,12 +16,9 @@ encompass a wide variety of functions such as:
 * Summarizing the contents of a buildpackage
 * Updating `builder.toml` files
 * Updating metabuildpack `buildpack.toml` dependencies
-* Updating implementation `buildpack.toml` dependencies
 
 All of these are generic functions that could work with any buildpack
-regardless of whether or not it is written using `packit`. Furthermore, with
-the introduction of asset packages, the packaging logic specific to `packit`
-and therefore `jam` will no longer be needed.
+regardless of whether or not it is written using `packit`.
 
 By extracting the `jam` cli, a number of positives can be achieved:
 * The version of `packit` and `jam` are no longer interlocked making the
