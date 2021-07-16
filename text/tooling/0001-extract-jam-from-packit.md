@@ -2,7 +2,7 @@
 
 ## Proposal
 
-Currently, the source for the `jam` cli tool currently resides inside of the
+Currently, the source for the `jam` cli tool resides inside of the
 `cargo` package which itself is inside of the `packit` repository. All `jam`
 source code should be extracted from its current location and be relocated into
 its own repository.
@@ -25,16 +25,16 @@ and therefore `jam` will no longer be needed.
 
 By extracting the `jam` cli, a number of positives can be achieved:
 * The version of `packit` and `jam` are no longer interlocked making the
-  releases of both more SerVerically sound
+  releases of both more SemVerically sound
 * It will clean up the `packit` codebase of any code that is not api or helper
-* It will more `jam` more discoverable and we could potentially expand `jam`
+* It will make `jam` more discoverable and we could potentially expand `jam`
   into a much more useful and universal buildpacks development tool for authors
   in the buildpacks community
 
 ## Implementation
 
 A new repository should be created that is owned by the tooling maintainers
-name `jam`. Then all `jam` source code should be moved into this repository
+named `jam`. Then all `jam` source code should be moved into this repository
 from `packit`. Once that is complete and a release has been cut, all scripts
 that currently download `jam` need to be updated in order to download `jam`
 from it's new release home. A message should be added to the `packit` README
