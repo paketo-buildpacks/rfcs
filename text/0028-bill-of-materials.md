@@ -43,6 +43,7 @@ name = "<dependency name>"
   arch = "<compatible architecture>"
   summary = "<package summary>"
   cpe = "<version-specific common platfrom enumeration>"
+  purl = "<package URL>"
   licenses = [<licenses that the dependency has>]
 
 [bom.metadata.source]
@@ -107,6 +108,7 @@ The optional set of keys may include:
   # Optional parameters
 [bom.metadata]
   cpe = "<version-specific common platfrom enumeration>"
+  purl = "<package URL>"
   licenses = [<licenses that the dependency has>]
 
 [bom.metadata.source]
@@ -137,7 +139,8 @@ name = "<module name>"
 Note that this should have the same structure as the runtime and compilation
 dependency BOM entries. Some fields (such as `uri` , for example) have been
 omitted until further investigation is done to find out how these can be
-obtained.
+obtained. The final set of fields will be some subset of the fields available
+on our Directly Installed Dependencies.
 
 ### License Information
 
@@ -150,3 +153,14 @@ However, there should be a good faith effort to provide only false-postive
 license results to ensure that individuals can still trust that all relevant
 licenses are present. This level of confidence and verification may change in
 the future, but that change should be communicated in later documentation.
+
+### Package URLs
+
+[Package URLs](https://github.com/package-url/purl-spec) will be provided for
+our directly installed dependencies. These types of dependencies (runtime
+dependencies) do not have explicitly supported types in the [Package URL
+Types](https://github.com/package-url/purl-spec/blob/master/PURL-TYPES.rst)
+document, so we will use the `generic` or `debian` types as instructed by
+maintainers of the Package URL project. For indirectly installed dependencies,
+there are specific types we can use for most of the languages we support (Go
+modules, NPM packages, etc.)
