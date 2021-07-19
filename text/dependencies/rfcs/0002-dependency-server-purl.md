@@ -18,7 +18,11 @@ identified by the end user. Package URLs are also a standard supported by the Cy
 The following field should be added to the dependency server output:
 
 * `purl`: a string which is a pURL for that dependency that conforms to the
-  [pURL Specification](https://github.com/package-url/purl-spec).
+  [pURL Specification](https://github.com/package-url/purl-spec). For
+  consistency, we will be using the `generic` type because it allows to
+  consistently generate the pURLs. Because we are using a `generic` type we
+  will also be including the `source` and `source_sha256` as qualifiers on the
+  pURL to give end users as much specific information as necessary.
 
 An example of the new output:
 ```
