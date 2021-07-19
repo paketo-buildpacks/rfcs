@@ -11,7 +11,7 @@ Currently, the dependency server offers a lot of valuable information about the
 files it hosts. However, it currently does not have the capacity to supply
 pURLs. This field should be added to the dependency server because pURLs are an
 industry standard package identifier that allow dependencies to be accurately
-identified by the end user.
+identified by the end user. Package URLs are also a standard supported by the CycloneDX Bill of Materials format, and are [integrated with a number of other tools](https://github.com/package-url/purl-spec#users-adopters-and-links). Overall, package URLs can provide rich information beyond what's available via CPEs alone, making them a strong choice to include on our dependency metadata.
 
 ## Implementation
 
