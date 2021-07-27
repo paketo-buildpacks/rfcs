@@ -39,7 +39,7 @@ name = "<dependency name>"
 [bom.metadata]
   arch = "<compatible architecture>"
   cpe = "<version-specific common platfrom enumeration>"
-  deprecation_date = "<dependency EOS date formatted in using RFC 3339>"
+  deprecation-date = "<dependency EOS date formatted in using RFC 3339>"
   licenses = [<licenses that the dependency has>]
   purl = "<package URL>"
   sha256 = "<hash of dependency artifact from uri>"
@@ -98,7 +98,7 @@ name = "<dependency name>"
 
 [bom.metadata]
   cpe = "<version-specific common platfrom enumeration>"
-  deprecation_date = "<dependency EOS date formatted in using RFC 3339>"
+  deprecation-date = "<dependency EOS date formatted in using RFC 3339>"
   licenses = [<licenses that the dependency has>]
   purl = "<package URL>"
   sha256 = "<hash of dependency artifact from uri>"
