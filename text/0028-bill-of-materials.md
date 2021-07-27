@@ -37,21 +37,22 @@ fields that conform to the overall schema below.
 name = "<dependency name>"
 
 [bom.metadata]
-  version = "<dependency version>"
-  sha256 = "<hash of dependency artifact from uri>"
-  uri = "<uri to dependency>"
   arch = "<compatible architecture>"
-  summary = "<package summary>"
   cpe = "<version-specific common platfrom enumeration>"
-  purl = "<package URL>"
+  deprecation_date = "<dependency EOS date formatted in using RFC 3339>"
   licenses = [<licenses that the dependency has>]
+  purl = "<package URL>"
+  sha256 = "<hash of dependency artifact from uri>"
+  summary = "<package summary>"
+  uri = "<uri to dependency>"
+  version = "<dependency version>"
 
 [bom.metadata.source]
   name = "<dependency source name>"
-  version = "<dependency source version>",
-  uri = "<uri to the dependency source>"
   sha256 = "<hash of the dependency source artifact from source-uri>"
   upstream-version = "<dependency source upstream version>"
+  uri = "<uri to the dependency source>"
+  version = "<dependency source version>",
 ```
 
 ### Stacks
@@ -66,15 +67,15 @@ The set of keys to include in these type of BOM entries are:
 name = "<dependency name>"
 
 [bom.metadata]
-  version = "<dependency version>"
   arch = "<compatible architecture>"
   summary = "<package summary>"
+  version = "<dependency version>"
 
 [bom.metadata.source]
   name = "<dependency source name>"
   purl = "<package URL>"
-  version = "<dependency source version>",
   upstream-version = "<dependency source upstream version>"
+  version = "<dependency source version>",
 ```
 The only required fields are `name` and `version`, the rest are strongly
 recommended. This structure closely resembles the content of the metadata that
@@ -96,19 +97,20 @@ The set of keys to include in these type of BOM entries are:
 name = "<dependency name>"
 
 [bom.metadata]
+  cpe = "<version-specific common platfrom enumeration>"
+  deprecation_date = "<dependency EOS date formatted in using RFC 3339>"
+  licenses = [<licenses that the dependency has>]
+  purl = "<package URL>"
   sha256 = "<hash of dependency artifact from uri>"
   uri = "<uri to dependency>"
   version = "<dependency version>"
-  cpe = "<version-specific common platfrom enumeration>"
-  purl = "<package URL>"
-  licenses = [<licenses that the dependency has>]
 
 [bom.metadata.source]
-  uri = "<uri to the dependency source>"
   sha256 = "<hash of the dependency source artifact from source-uri>"
+  uri = "<uri to the dependency source>"
 ```
 The only required fields are `name` and `version`, the rest are strongly
-recommended. 
+recommended.
 
 ### Indirectly Installed Dependencies
 The final component that we should aim to publish BOM metadata for is for
