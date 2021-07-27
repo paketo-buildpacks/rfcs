@@ -70,6 +70,7 @@ name = "<dependency name>"
 
 [bom.metadata.source]
   name = "<dependency source name>"
+  purl = "<package URL>"
   version = "<dependency source version>",
   upstream-version = "<dependency source upstream version>"
 ```
@@ -157,10 +158,10 @@ the future, but that change should be communicated in later documentation.
 ### Package URLs
 
 [Package URLs](https://github.com/package-url/purl-spec) will be provided for
-our directly installed dependencies. These types of dependencies (runtime
+our directly installed dependencies. Some of these dependencies (runtime
 dependencies) do not have explicitly supported types in the [Package URL
 Types](https://github.com/package-url/purl-spec/blob/master/PURL-TYPES.rst)
-document, so we will use the `generic` or `debian` types as instructed by
+document, so we will either use the `generic` type or another type as instructed by
 maintainers of the Package URL project. For indirectly installed dependencies,
 there are specific types we can use for most of the languages we support (Go
 modules, NPM packages, etc.)
