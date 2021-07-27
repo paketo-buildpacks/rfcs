@@ -60,13 +60,15 @@ repository](https://github.com/paketo-buildpacks/stacks)) should have BOM
 metadata that includes in-depth information on all of the OS level packages
 installed as part of the stack.
 
-The minimal set of keys to include in these type of BOM entries are:
+The set of keys to include in these type of BOM entries are:
 ```
 [[bom]]
 name = "<dependency name>"
 
 [bom.metadata]
   version = "<dependency version>"
+  arch = "<compatible architecture>"
+  summary = "<package summary>"
 
 [bom.metadata.source]
   name = "<dependency source name>"
@@ -74,15 +76,9 @@ name = "<dependency name>"
   version = "<dependency source version>",
   upstream-version = "<dependency source upstream version>"
 ```
-The optional set of keys may include:
-```
-# Optional parameters
-[bom.metadata]
-  arch = "<compatible architecture>"
-  summary = "<package summary>"
-```
-This closely resembles the content of the metadata that is already available on
-stacks.
+The only required fields are `name` and `version`, the rest are strongly
+recommended. This structure closely resembles the content of the metadata that
+is already available on stacks.
 
 ### Directly Installed Dependencies
 Dependencies that directly provide runtimes and/or are tools used for
@@ -94,7 +90,7 @@ Buildpack](https://github.com/paketo-buildpacks/node-engine). These are the
 type dependencies that are usually listed in the
 [`buildpack.toml` file](https://github.com/paketo-buildpacks/node-engine/blob/main/buildpack.toml).
 
-The minimal set of keys to include in these type of BOM entries are:
+The set of keys to include in these type of BOM entries are:
 ```
 [[bom]]
 name = "<dependency name>"
@@ -103,11 +99,6 @@ name = "<dependency name>"
   sha256 = "<hash of dependency artifact from uri>"
   uri = "<uri to dependency>"
   version = "<dependency version>"
-```
-The optional set of keys may include:
-```
-  # Optional parameters
-[bom.metadata]
   cpe = "<version-specific common platfrom enumeration>"
   purl = "<package URL>"
   licenses = [<licenses that the dependency has>]
@@ -116,6 +107,8 @@ The optional set of keys may include:
   uri = "<uri to the dependency source>"
   sha256 = "<hash of the dependency source artifact from source-uri>"
 ```
+The only required fields are `name` and `version`, the rest are strongly
+recommended. 
 
 ### Indirectly Installed Dependencies
 The final component that we should aim to publish BOM metadata for is for
@@ -129,7 +122,7 @@ The BOM entries for this category should also include information about the
 modules available in the final image, as well as those used to construct the
 image.
 
-The minimal set of keys to include in package module BOM entries are:
+The set of keys to include in package module BOM entries are:
 ```
 [[bom]]
 name = "<module name>"
