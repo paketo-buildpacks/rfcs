@@ -37,21 +37,21 @@ fields that conform to the overall schema below.
 name = "<dependency name>"
 
 [bom.metadata]
-  arch = "<compatible architecture>"
+  arch = "<compatible processor architecture>"
   cpe = "<version-specific common platfrom enumeration>"
   deprecation-date = "<dependency EOS date formatted in using RFC 3339>"
-  licenses = [<licenses that the dependency has>]
-  purl = "<package URL>"
-  sha256 = "<hash of dependency artifact from uri>"
+  licenses = [<dependency license IDs(s) in SPDX Format>]
+  purl = "<package URL per github.com/package-url>"
+  sha256 = "<dependency artifact hash from URI>"
   summary = "<package summary>"
-  uri = "<uri to dependency>"
+  uri = "<compiled dependency URI>"
   version = "<dependency version>"
 
 [bom.metadata.source]
   name = "<dependency source name>"
-  sha256 = "<hash of the dependency source artifact from source-uri>"
+  sha256 = "<dependency source artifact hash from source URI>"
   upstream-version = "<dependency source upstream version>"
-  uri = "<uri to the dependency source>"
+  uri = "<dependency source URI>"
   version = "<dependency source version>",
 ```
 The only required fields are `name` and `version`, but other fields from the
