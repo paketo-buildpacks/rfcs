@@ -52,10 +52,10 @@ then run from a directory containing `node_modules`. The output BOM contains
 the following fields for each module:
 * name,
 * version,
-* description, 
-* hash, 
-* source URI, 
-* license ID, 
+* description,
+* hash,
+* source URI,
+* license ID,
 * and package URL
 
 All of these are fields that we aim to support per [the Paketo BOM
@@ -83,7 +83,7 @@ Node.JS language family buildpack order groups.
 
 Users of the Node.JS buildpack can opt out of this behaviour by creating a
 custom order grouping that does not include the BOM Generation buildpack, or
-they can set a `ENABLE_MODULE_BOM` flag during container build-time to `false`.
+they can set a `BP_ENABLE_MODULE_BOM` flag during container build-time to `false`.
 The default for this flag will be `true`.
 
 #### Detection
@@ -127,9 +127,9 @@ The build phase will perform a few tasks as mentioned above.
 ## Rationale
 
 Performing BOM generation with the CycloneDX Node.JS Module tool has some
-advantages. First, it minimizes the extra code we would have to develop and
-maintain to recurse through the nested `node_modules` directories and pull
-information from each `package.json` file.
+advantages. First, it minimizes the extra domain knowledge we would have to
+develop and maintain a program to recurse through the nested `node_modules`
+directories and pull information from each `package.json` file.
 
 Second, there is a high likelihood that we will support CycloneDX as a BOM
 format in the future. In that case, we can simply run the tool and return that
@@ -152,7 +152,6 @@ commands. This is less than ideal because it's not transparent or intuitive to
 install it during the node-engine specific build process. It makes more sense
 to separate all module BOM creation logic into its own buildpack, so that users
 may easily opt out.
-
 
 ## Resources
 
