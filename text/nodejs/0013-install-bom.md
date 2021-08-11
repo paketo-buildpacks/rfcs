@@ -73,7 +73,7 @@ Node.JS language family buildpack order groups.
 * A single BOM generation buildpack will be added. It's primary functions are:
   * perform the BOM dependency tool retrieval from the dep-server,
   * execute BOM generation with the tool (`cyclonedx-bom -o bom.json`), and
-  * contribute the BOM to the layer metadata.
+  * contribute the BOM to the `launch.toml` `[bom]` label.
 
 * For each of the three Node.JS buildpack order groups, the BOM generation
   buildpack will run directly before the start command buildpack. This means:
@@ -88,14 +88,13 @@ The default for this flag will be `true`.
 
 #### Detection
 
-The buildpack will pass detection in two different cases:
-
-* Detection will pass if there is a `node_modules` directory in the source directory.
-  * Requires `node`
+The Node Module BOM Generator CNB always detects with the following contract:
+  * Requires {`node`, `node_modules`} during `build`
   * Provides none
 
-* Detection will also pass if there is no `node_modules` directory
-  * Requires {`node`, `node_modules`}
+Detection will also pass if there is a vendored `node_modules` directory in the source
+directory. The contract changes to:
+  * Requires `node` during `build`
   * Provides none
 
 #### Build
@@ -104,11 +103,11 @@ The build phase will perform a few tasks as mentioned above.
 
 1. Perform the BOM dependency tool retrieval from the dep-server. It will get
    added to a build-time layer. It will contribute a BOM entry for the tool itself
-   on the build layer metadata.
+   on the `build.toml` `[bom]` section.
 
 2. Execute BOM generation with the installed tool via the `cyclonedx-bom -o
    bom.json` command on the application `node_modules` directory. It will
-   contribute BOM entries on the launch layer metadata for every node module.
+   contribute BOM entries for every node module.
 
 3. Unmarshal the CycloneDX JSON BOM and transform each BOM entry into a
    [`postal.Dependency`](https://github.com/paketo-buildpacks/packit/blob/c5a40518f2c6bd913ade999b9e2d58d6892d2ea9/postal/buildpack.go#L12)
