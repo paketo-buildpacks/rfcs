@@ -93,3 +93,5 @@ N/A
 ## Unresolved Questions and Bikeshedding
 
 1. There are many different JVM implementations now. Java Flight Recorder is a newer feature so it's unclear if this will function on all JVM implementations. Some initial tests show that it works on all of our JVM providers except Eclipse OpenJ9 (which is IBM-based, not Oracle based). The Java Flight Recorder buildpack will not attempt to differentiate between JVMs, if you ask it to enable JFR, it will add the flags regardless of the JVM vendor. We may need to revisit this if it turns out that there are more compatibility issues.
+
+    - This will be addressed but by a future RFC. The idea that has been proposed is to fold JVM feature flag buildpacks like JMX, Debug and JRF into libjvm and the actual JVM vendor buildpacks. This will allow individual JVM vendor buildpacks to disable functionality that does not make sense or work for a particular vendor.
