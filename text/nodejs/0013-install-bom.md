@@ -81,11 +81,6 @@ Node.JS language family buildpack order groups.
   * directly before the `npm-start` buildpack in the NPM order group, and
   * directly before the `node-start` buildpack in the no-package-manager order group.
 
-Users of the Node.JS buildpack can opt out of this behaviour by creating a
-custom order grouping that does not include the BOM Generation buildpack, or
-they can set a `BP_ENABLE_MODULE_BOM` flag during container build-time to `false`.
-The default for this flag will be `true`.
-
 #### Detection
 
 The Node Module BOM Generator CNB always detects with the following contract:
@@ -122,6 +117,13 @@ The build phase will perform a few tasks as mentioned above.
   command.
 
 6. Clean up the generated BOM file
+
+#### Potential Future Optimizations
+
+Given future user interest in a way to opt out of this buildpack beyond a
+custom order grouping, an optimization that could be made is the inclusion of a
+`BP_ENABLE_MODULE_BOM` environment variable that can be set during container
+build-time.
 
 ## Rationale
 
