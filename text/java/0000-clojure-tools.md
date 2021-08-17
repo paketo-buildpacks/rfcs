@@ -23,7 +23,7 @@ The following changes will be made:
 * Buildpack will be published to gcr.io/paketo-buildpacks/clojure
 * Buildpack will have go module of github.com/paketo-buildpacks/clojure
 * Github Actions will be added through [pipeline-builder][p]
-* An action will be added to [pipeline-builder][p] with the purpose of checking for new versions of Microsoft OpenJDK
+* An action will be added to [pipeline-builder][p] with the purpose of checking for new versions of Clojure Tools
 
 [b]: https://github.com/eddumelendez/clojure
 [p]: https://github.com/paketo-buildpacks/pipeline-builder
