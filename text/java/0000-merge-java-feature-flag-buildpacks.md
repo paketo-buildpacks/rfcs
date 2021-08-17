@@ -21,6 +21,7 @@ There are a few motivations for this change:
 1. Consistency. At present, some JVM options are configured through libjvm and some are configured through external buildpacks. We can enable libjvm to support all of these use cases and have a more consistent experience. If a feature is facilitated through the JVM, then it's configured via libjvm.
 2. Reduce maintenance. There is additional overhead in maintaining each buildpack. We have two feature-flag buildpacks now, but will have two more coming. If we move feature-flag compatibility into libjvm then we reduce the number of buildpacks by four.
 3. Most feature-flags are supported by all JVMs, but when you get into Java NMT and Java Flight Recorder, that's not true. Moving functionality into libjvm, allows us to enable a JVM Vendor buildpack to opt-out of features that it does not support.
+4. Image size. Consolidating these buildpacks will reduce the size of our builder images and the number of layers (which is becoming important as we approach the layer limit. Consolidating the feature flag launch helpers (which use the [`exec.d`](https://github.com/buildpacks/spec/blob/main/buildpack.md#execd) interface) into a single binary, will reduce the size of resulting app images.  
 
 ## Detailed Explanation
 
