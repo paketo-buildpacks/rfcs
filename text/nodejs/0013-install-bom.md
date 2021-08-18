@@ -65,6 +65,16 @@ In order to support this tool in both the online and offline cases, we will
 pre-compile the tool with it's dependencies, and provide it as a dependency
 hosted on the [dep-server](https://github.com/paketo-buildpacks/dep-server).
 
+### Performance
+
+The addition of this tool to the language family order groupings should not
+have an impactful change to the overall performance of the buildpacks.
+
+When the `cyclonedx-bom -o bom.json` command was run against the [official
+Angular repo](https://github.com/angular/angular) which contains 1300+ node
+modules, the time to generate the BOM was 3.115s. In our opinion, this is a
+negligible time addition to overall buildpack performance.
+
 ### Language Family Additions
 
 Using the CycloneDX tool to generate the BOM will involve some changes to the
