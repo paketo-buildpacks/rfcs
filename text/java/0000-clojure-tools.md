@@ -23,10 +23,11 @@ The following changes will be made:
 * Buildpack will be published to gcr.io/paketo-buildpacks/clojure-tools
 * Buildpack will have go module of github.com/paketo-buildpacks/clojure
 * Github Actions will be added through [pipeline-builder][p]
-* An action will be added to [pipeline-builder][p] with the purpose of checking for new versions of Clojure Tools
+* An action will be added to [pipeline-builder][p] with the purpose of checking for new versions of [Clojure Tools][c]
 
 [b]: https://github.com/eddumelendez/clojure
 [p]: https://github.com/paketo-buildpacks/pipeline-builder
+[c]: https://clojure.org/releases/tools
 
 ## Rationale and Alternatives
 
@@ -42,4 +43,9 @@ N/A
 
 ## Unresolved Questions and Bikeshedding
 
-N/A
+* During the implementation version `1.10.3.943` was not allowed, the message said 
+ 
+```
+[builder]   unable to parse version 1.10.3.943
+[builder]   Invalid Semantic Version
+```
