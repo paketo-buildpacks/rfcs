@@ -19,8 +19,8 @@ The Clojure Tools Buildpack will be moved into the paketo-buildpacks Github orga
 The following changes will be made:
 
 * [Clojure Tools Buildpack][b] moved to Paketo Buildpacks org
-* Buildpack will have paketo-buildpacks/clojure ID
-* Buildpack will be published to gcr.io/paketo-buildpacks/clojure
+* Buildpack will have paketo-buildpacks/clojure-tools ID
+* Buildpack will be published to gcr.io/paketo-buildpacks/clojure-tools
 * Buildpack will have go module of github.com/paketo-buildpacks/clojure
 * Github Actions will be added through [pipeline-builder][p]
 * An action will be added to [pipeline-builder][p] with the purpose of checking for new versions of Clojure Tools
