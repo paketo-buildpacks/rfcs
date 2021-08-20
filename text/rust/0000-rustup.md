@@ -19,18 +19,15 @@ Right now we have two buildpacks: rust-dist and cargo install. The former provid
 
 ## Implementation
 
-The idea is to have a build plan like this:
+The idea is to have buildpacks in the order rustup, rust-dist, cargo-install and a build plan like this:
 
-1. The rustup buildpack will provide both rust and rustup.
+1. The rustup buildpack will provide rust.
 2. The rust-dist buildpack will not change and will continue to provide rust.
-3. The cargo-install buildpack will change and will now provide two buildplans. Both will provide and require cargo. The first will require rust. The second will require rust and rustup.
+3. The cargo-install buildpack will not change, it will continue to provide cargo and require cargo and rust.
 
-The idea is that we have a buildplan which will allow for either rust-dist and cargo-install to be used together or we'll have a buildplan that allows for rustup and cargo-install to be used together. When the rustup buildpack runs, it will consume the rustup and rust requirements from the buildplan and so the rust-dist buildpack while it still runs will effectively do nothing (i.e. it only installs rust if the rust requirement has not been yet met). Optionally, a builder could remove rust-dist or rustup if the builder author had a preverence for one over the other.
+The idea is that this buildplan configuration will allow either rust-dist and cargo-install to be used together or rustup and cargo-install to be used together. When the rustup buildpack runs, it will consume the rust requirement from the buildplan and so the rust-dist buildpack while it still runs will effectively do nothing (i.e. it only installs rust if the rust requirement has not been yet met). Optionally, a builder could change the order if the builder author perfers rust-dist or the builder author could remove rust-dist or rustup to prohibit one or the other option.
 
-Since a user cannot manipulate the buildplan directly, we are exposing two ways that a user can control which method is used to install Rust.
-
-1. Through an environment variable. We will add `BP_RUSTUP_ENABLED` which the rustup buildpack will examine. If it's true, which is the default, then the buildpack will proceed to use Rustup to install Rust. If it's set to false, the buildpack will do nothing, which will allow for some other buildpack, presently that's just rust-dist, to install Rust.
-2. Through a custom builder. A user could compose their own builder without the rustup buildpack, which would allow them to select a different buildpack for installing Rust.
+To enable select of rustup or rust-dist at the application level, we are also providing an environment variable that can be used to toggle the behavior. We will add `BP_RUSTUP_ENABLED` which the rustup buildpack will examine. If it's true, which is the default, then the buildpack will proceed to use Rustup to install Rust. If it's set to false, the buildpack will do nothing, which will allow for some other buildpack, presently that's just rust-dist, to install Rust.
 
 ## Prior Art
 
