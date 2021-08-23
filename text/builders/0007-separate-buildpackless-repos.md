@@ -54,3 +54,7 @@ of the `github-config` repo.
  its own repo. These repos could use all of the same workflows and scripts
  already defined in the `github-config` repo for builders with limited
  modification required.
+ 
+ ## Implementation
+ 
+ For each of the existing three Paketo builders (Full, Base, and Tiny) we should create brand new repos called `paketo-buildpacks/buildpackless-full-builder` `paketo-buildpacks/buildpackless-base-builder` and `paketo-buildpacks/buildpackless-tiny-builder` where the buildpackless builders' configuration files will be checked in. These should be owned by the Builders subteam.
