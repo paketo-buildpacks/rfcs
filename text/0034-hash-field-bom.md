@@ -4,7 +4,7 @@
 
 Currently, the only hashing algorithm that we support in the BOM (bill of
 materials) is `SHA256`, as the only checksum fields are explicitly named
-`sha256`. This shoehorns the hash algorithm to `SHA256` an alienates any hashes
+`sha256`. This shoehorns the hash algorithm to `SHA256` and alienates any hashes
 we can collect in other formats. This RFC proposes that the Paketo BOM supports
 hashes in any algorithm.
 
@@ -22,7 +22,7 @@ not hosting the packages they use and the metadata attached.
 
 ## Implementation
 
-We purpose the following change to the BOM schema:
+We propose the following change to the BOM schema:
 ```
 [[bom]]
 name = "<dependency name>"
