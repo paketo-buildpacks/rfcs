@@ -38,7 +38,7 @@ name = "<dependency name>"
   version = "<dependency version>"
 
 [bom.metadata.checksum]
-  algorithm = "<hashing algorithm>"
+  algorithm = "<CycloneDX supported hashing algorithm>"
   hash = "<dependency artifact hash from URI made using the specified algorithm>"
 
 [bom.metadata.source]
@@ -48,8 +48,14 @@ name = "<dependency name>"
   version = "<dependency source version>"
 
 [bom.metadata.source.checksum]
-  algorithm = "<hashing algorithm>"
+  algorithm = "<CycloneDX supported hashing algorithm>"
   hash = "<dependency source artifact hash from source URI made using the specified algorithm>"
+```
+
+As pointed out in the schema, the checksum algorithm should be a
+CycloneDX-supported hashing algorithm. The supported options are:
+```
+{ 'MD5'| 'SHA-1'| 'SHA-256'| 'SHA-384'| 'SHA-512'| 'SHA3-256'| 'SHA3-384'| 'SHA3-512'| 'BLAKE2b-256'| 'BLAKE2b-384'| 'BLAKE2b-512'| 'BLAKE3'}
 ```
 
 This style closely reflects what both
