@@ -5,6 +5,7 @@ This directory contains RFCs that pertain to the [Java Subteam](https://github.c
 ## Accepted RFCs
 
 * [0003: Retire Java Kill Agent](0003-retire-kill-agent.md)
+* [0004: Merge Java Feature Flag Buildpacks](0004-merge-java-feature-flag-buildpacks.md)
 
 ## Implemented RFCs
 
