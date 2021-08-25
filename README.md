@@ -15,7 +15,6 @@
 * [0031: Liberty Buildpack](./text/0031-liberty-buildpack.md)
 * [0032: Reloadable Process Types](./text/0032-reloadable-process-types.md)
 * [0033: Implement a Bill of Materials Across Paketo](./text/0033-bill-of-materials.md)
-* [0034: Update Hash Field in Bill of Materials](./text/0034-hash-field-bom.md)
 
 ## Implemented RFCs
 
@@ -38,6 +37,7 @@
 * [0024: Utility Buildpacks Team](./text/0024-utility-buildpacks-team.md)
 * [0025: Establishing an Emeritus Status](./text/0025-emeritus-status.md)
 * [0028: Co-locate All Paketo RFCs](./text/0028-co-locate-all-rfcs.md)
+* [0034: Update Hash Field in Bill of Materials](./text/0034-hash-field-bom.md)
 
 ## Why RFC?
 The RFC (Request For Comments) process is intended to provide a consistent procedure for all major decisions affecting Paketo Buildpacks.
