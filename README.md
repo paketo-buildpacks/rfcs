@@ -15,6 +15,7 @@
 * [0031: Liberty Buildpack](./text/0031-liberty-buildpack.md)
 * [0032: Reloadable Process Types](./text/0032-reloadable-process-types.md)
 * [0033: Implement a Bill of Materials Across Paketo](./text/0033-bill-of-materials.md)
+* [0034: Update Hash Field in Bill of Materials](./text/0034-hash-field-bom.md)
 
 ## Implemented RFCs
 
