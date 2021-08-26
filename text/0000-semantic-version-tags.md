@@ -30,7 +30,7 @@ When a minor version is updated `1.2.3` -> `1.3.0`
 * Tag `1` should address the version `1.3.0`
 * Tag `1.3` should address the version `1.3.0`
 * Tag `1.3.0` should address the version `1.3.0`
-* Tag `latest` should address the version `1.3.0`
+* Tag `latest` should address the version `1.3.0` (if v1 is still the latest one)
 
 This allows users to safeguard from incompatible changes and even minor changes, but still receive security updates.
 
@@ -41,7 +41,7 @@ When a patch version is updated `1.2.3` -> `1.2.4`:
 * Tag `1` should address the version `1.2.4`
 * Tag `1.2` should address the version `1.2.4`
 * Tag `1.2.4` should address the version `1.2.4`
-* Tag `latest` should address the version `1.2.4`
+* Tag `latest` should address the version `1.2.4` (if v1.2 is still the latest one)
 
 This allows users to pin the version and to be sure that the image is the same.
 
@@ -64,4 +64,4 @@ This is a common pattern and often seen for docker images. A good example is the
 
 ## Unresolved Questions and Bikeshedding
 
-N/A
+* Backporting security or bug fixes to older releases is not addressed by this rfc.
