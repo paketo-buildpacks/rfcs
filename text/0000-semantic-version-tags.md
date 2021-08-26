@@ -6,7 +6,7 @@ To allow users to use the semantic versioning of buildpacks (see [rfc 0029](./00
 
 ## Motivation
 
-Semantic versioning for buildpacks was introduced with [rfc 0029](./0029-semantic-versioning.md), but the buildpacks have only a tag for the complete version (`MAJOR.MINOR.PATCH`). So any user can either use this tag and got no updates at all or the user omits the tag and receives all updates including breaking changes automatically.
+Semantic versioning for buildpacks was introduced with [rfc 0029](./0029-semantic-versioning.md), but the buildpacks have only a tag for the complete version (`MAJOR.MINOR.PATCH`). So any user can either use this tag and get no updates at all or the user omits the tag and receives all updates including breaking changes automatically.
 
 With the use of the semantic versioning, it would be good to allow the user to specify which updates should be taken automatically.
 
