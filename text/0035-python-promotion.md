@@ -6,7 +6,7 @@ A [Python Buildpack](https://github.com/paketo-community/python) exists as a
 community created buildpack in the [Paketo Community
 Org](https://github.com/paketo-community/python). This RFC proposes the
 promotion of the Python Buildpack from a "Community" buildpack to an official
-Paketo Buildpack. 
+Paketo Buildpack.
 
 ## Motivation
 
@@ -16,11 +16,11 @@ pipenv, conda etc.). The contributors of this buildpack has recently
 restructured it to follow Paketo Buildpack philosophies like modularity,
 meaningful API etc. (See
 [RFC](https://github.com/paketo-buildpacks/rfcs/blob/main/text/python/0001-restructure.md),
-[Implementation](https://github.com/paketo-community/python/issues/226))  
+[Implementation](https://github.com/paketo-community/python/issues/226))
 
 Python is one of the most popular programming languages, and its promotion to
 an official Paketo buildpack would mean that it can be exposed to a much
-broader set of users via the Paketo builders. 
+broader set of users via the Paketo builders.
 
 ## Detailed Explanation
 
@@ -30,7 +30,7 @@ Python Buildpack should be included in Paketo builders (Full, Base) and
 promoted in website content.
 
 Upon promotion, future enhancements should be made from directly within the
-`paketo-buildpacks` org. 
+`paketo-buildpacks` org.
 
 ## Implementation
 
