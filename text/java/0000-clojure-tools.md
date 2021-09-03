@@ -44,9 +44,4 @@ N/A
 
 ## Unresolved Questions and Bikeshedding
 
-* During the implementation version `1.10.3.943` was not allowed, the message said 
- 
-```
-[builder]   unable to parse version 1.10.3.943
-[builder]   Invalid Semantic Version
-```
+N/A
