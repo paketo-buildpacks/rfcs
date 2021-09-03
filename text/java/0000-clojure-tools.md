@@ -24,6 +24,7 @@ The following changes will be made:
 * Buildpack will have go module of github.com/paketo-buildpacks/clojure-tools
 * Github Actions will be added through [pipeline-builder][p]
 * An action will be added to [pipeline-builder][p] with the purpose of checking for new versions of [Clojure Tools][c]
+  * Following existing conventions, the action will truncate the version of Clojure Tools to a three part semver (e.g. `1.10.3.943` becomes `1.10.3`). In the future, this may change if pipeline-builder and libpak are enhanced to sanely handle a wider range of version formats.
 
 [b]: https://github.com/eddumelendez/clojure
 [p]: https://github.com/paketo-buildpacks/pipeline-builder
