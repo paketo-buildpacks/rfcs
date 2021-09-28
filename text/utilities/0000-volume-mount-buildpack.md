@@ -82,3 +82,5 @@ During build, the glob `$BP_VOLUME_MOUNT_SOURCE/**` will be recursively copied t
 - Should `$BP_VOLUME_MOUNT_SOURCE` have a default?
 
 - Should detection be based on the presence of the volume rather than the environment variable? (Note, would require `$BP_VOLUME_MOUNT_SOURCE` to have a default).
+
+- Detection: What if a later buildpack relies on a file that will be volume mounted? It wouldn't be available during detection as the build phase would not have executed yet.
