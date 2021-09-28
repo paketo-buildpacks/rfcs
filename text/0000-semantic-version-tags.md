@@ -4,6 +4,8 @@
 
 To allow users to use the semantic versioning of buildpacks (see [rfc 0029](./0029-semantic-versioning.md)) in a convenient way, a buildpacks must have tags not only in the format `MAJOR.MINOR.PATCH`, but also `MAJOR.MINOR` and `MAJOR`.
 
+NOTE: Backporting security or bug fixes to older releases is not addressed by this RFC.
+
 ## Motivation
 
 Semantic versioning for buildpacks was introduced with [rfc 0029](./0029-semantic-versioning.md), but the buildpacks have only a tag for the complete version (`MAJOR.MINOR.PATCH`). So any user can either use this tag and get no updates at all or the user omits the tag and receives all updates including breaking changes automatically.
