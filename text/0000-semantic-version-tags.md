@@ -51,7 +51,7 @@ The only alternative is to keep everything as is. In such case we will miss the 
 
 ## Implementation
 
-TBD
+The current workflows that push buildpack images to their registry locations already tag those images with the values `latest` and `MAJOR.MINOR.PATCH`. These workflows should be updated to also include `MAJOR.MINOR` and `MAJOR` tags.
 
 ## Prior Art
 
