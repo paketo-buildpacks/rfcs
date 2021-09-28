@@ -64,6 +64,3 @@ This is a common pattern and often seen for docker images. A good example is the
 `python:3.6` is pinning the major version to 3, the minor version to 6 but the latest patch version is used.
 `python:3.6.14` is pinning the exact version.
 
-## Unresolved Questions and Bikeshedding
-
-* Backporting security or bug fixes to older releases is not addressed by this rfc.
