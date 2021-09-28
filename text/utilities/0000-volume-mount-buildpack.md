@@ -52,7 +52,7 @@ Note:
 
 ## Rationale and Alternatives
 
-We could leverage the [service binding spec](https://github.com/servicebinding/spec#workload-projection) was considered, especially since this is [now implemented in packit](https://github.com/paketo-buildpacks/packit/pull/228), and update buildpacks on a case-by-case basis (such as updating the nginx buildpack to search for a `nginx.conf` binding), but this would amount to individual buildpack complexity when a modular and more generic approach is available.
+We could leverage the [service binding spec](https://github.com/servicebinding/spec#workload-projection), especially since this is [now implemented in packit](https://github.com/paketo-buildpacks/packit/pull/228), and update buildpacks on a case-by-case basis (such as updating the nginx buildpack to search for a `nginx.conf` binding). But this would amount to individual buildpack complexity when a modular and more generic approach is available.
 
 ## Implementation
 
