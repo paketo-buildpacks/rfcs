@@ -89,6 +89,7 @@ It will need to:
 - Adjust the thread stack size, thread count and code cache size, scaling them down by the scaling factor (i.e. `value - (value * scaling) = new value` ). Values should be in KB and fractional results all rounded down for safety. Do not adjust a value if a user has manually fixed this value.
 - Warn if a user has set `-Xmx`, which can cause unexpected problems.
 - Enforce minimum defined requirements. Fail immediately, if below a spec defined minimum.
+- If code cache is less than 240M, warn that this can cause reduced performance, especially at load
 - Test the scenarios outlined in the table above. Confirm expected results.
 - Include intuitive error messages explaining the users next steps, if there is a memory calculator failure.
 - Document the new behavior (and existing behavior, which isn't documented) as well as limitations/non-perfect nature of low profile mode).
