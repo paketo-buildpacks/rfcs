@@ -10,7 +10,16 @@ We would like to move the Oracle JDK Buildpack into the Paketo Buildpacks org so
 
 ## Detailed Explanation
 
-N/A
+Oracle now has binary releases available under the [Oracle No-Fee Terms and Conditions License](https://java.com/freeuselicense). This is a different license than most of the other OpenJDK distributions available through buildpacks (the others utilize GPLv2 + classpath exception).
+
+This Oracle No-Fee Terms and Conditions license, in a nutshell, stipulates that it is OK to redistribute the binaries so long as these two conditions are met.
+
+1. Do not modify the binaries that get redistributed with the buildpacks
+2. Do not charge money for the binaries that get redistributed or for any software that redistributes them.
+
+No one writing or reviewing this RFC is a lawyer or qualified to provide legal advice, but it is believed that the buildpack to be contributed complies with these stipulations.
+
+Please be aware if you are consuming Paketo buildpacks and integrating them with other projects (commercial or OSS) & consult your own lawyer if needed.
 
 ## Rationale and Alternatives
 
