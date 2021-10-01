@@ -39,7 +39,7 @@ The following changes will be made:
 
 ## Prior Art
 
-[Microsoft OpenJDK Buildpack](https://github.com/paketo-buildpacks/rfcs/blob/main/text/java/0001-microsoft-jdk.md)
+* [Microsoft OpenJDK Buildpack](https://github.com/paketo-buildpacks/rfcs/blob/main/text/java/0001-microsoft-jdk.md)
 [Alibaba Dragonwell Buildpack](https://github.com/paketo-buildpacks/rfcs/blob/main/text/java/0002-alibaba-jdk.md)
 
 ## Unresolved Questions and Bikeshedding
