@@ -35,7 +35,7 @@ The following changes will be made:
 - Buildpack will have `paketo-buildpacks/oracle-jdk` ID
 - Buildpack will be published to `gcr.io/paketo-buildpacks/oracle-jdk`
 - Buildpack will have go module of `github.com/paketo-buildpacks/oracle-jdk`
-- An action will be added to [pipeline-builder](https://github.com/paketo-buildpacks/pipeline-builder/tree/main/actions) with the purpose of checking for new versions of Oracle JDK
+- An action will be added to [pipeline-builder](https://github.com/paketo-buildpacks/pipeline-builder/tree/main/actions) with the purpose of [checking for new versions of Oracle JDK](https://www.oracle.com/java/technologies/jdk-script-friendly-urls/)
 
 ## Prior Art
 
