@@ -60,11 +60,11 @@ Here are some example calculations based on the rules above:
 | 384K         | 125          | 120M       | 100M          | 235M     | 10M    | 512M             | Container memory reduced by 1/2 the baseline, user has fixed thread stack at 384K    |
 | 384K         | 62           | 60M        | 100M          | 62M      | 10M    | 256M             | Container memory reduced by 1/4 the baseline, user has fixed thread stack at 384K    |
 | 1M           | 50           | 240M       | 100M          | 624M     | 10M    | 1G               | Baseline, user has fixed thread count to 50                                          |
-| 512K         | 50           | 120M       | 100M          | 257M     | 10M    | 1G               | Container memory reduced by 1/2 the baseline, user has fixed thread count to 50      |
-| 256K         | 50           | 60M        | 100M          | 73M      | 10M    | 1G               | Container memory reduced by 1/4 the baseline, user has fixed thread count to 50      |
+| 512K         | 50           | 120M       | 100M          | 257M     | 10M    | 512M             | Container memory reduced by 1/2 the baseline, user has fixed thread count to 50      |
+| 256K         | 50           | 60M        | 100M          | 73M      | 10M    | 256M             | Container memory reduced by 1/4 the baseline, user has fixed thread count to 50      |
 | 1M           | 250          | 120M       | 100M          | 544M     | 10M    | 1G               | Baseline, user has fixed code cache size to 120M                                     |
-| 512K         | 125          | 120M       | 100M          | 219M     | 10M    | 1G               | Container memory reduced by 1/2 the baseline, user has fixed code cache size to 120M |
-| 256K         | 62           | 120M       | 100M          | 10M      | 10M    | 1G               | Container memory reduced by 1/4 the baseline, user has fixed code cache size to 120M |
+| 512K         | 125          | 120M       | 100M          | 219M     | 10M    | 512M             | Container memory reduced by 1/2 the baseline, user has fixed code cache size to 120M |
+| 256K         | 62           | 120M       | 100M          | 10M      | 10M    | 256M             | Container memory reduced by 1/4 the baseline, user has fixed code cache size to 120M |
 
 [1] - Metaspace will vary per application. For these calculations it is fixed at 100M.
 [2] - Heap is dynamically adjusted to consume whatever memory is remaining while not exceeding the container memory limit.
