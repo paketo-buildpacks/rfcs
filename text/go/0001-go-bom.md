@@ -12,22 +12,21 @@ previous months
 the [Node.JS BOM Module](https://github.com/paketo-buildpacks/rfcs/blob/main/text/nodejs/0013-install-bom.md) was
 developed.
 
-We would like to add support for BOM generation in the Go language family. We would like to create a new buildpack
-to provide this. We do not anticipate the need for changes to other buildpacks in the language family.
+We would like to add support for BOM generation in the Go language family. We would like to create a new buildpack to
+provide this. We do not anticipate the need for changes to other buildpacks in the language family.
 
-We propose to support generating BOMs only for projects which utilse vendoring via `go mod`.
-At this time we do not propose to support any other vendoring solutions
+We propose to support generating BOMs only for projects which utilize vendoring via `go mod`. At this time we do not
+propose to support any other vendoring solutions
 (e.g. `dep` or files copied directly into the `vendor` directory without a
-`go.mod` file).
-Extending the new buildpack to support to other
-vendoring solutions could be a future RFC, if we discover a clear requirement for this.
+`go.mod` file). Extending the new buildpack to support to other vendoring solutions could be a future RFC, if we
+discover a clear requirement for this.
 
 ## Implementation
 
 ### Tool details
 
 The Bill of Materials that will result should be an accurate accounting of all the modules that are defined and
-installed by `go modudules`.
+installed by `go modules`.
 
 There already exists a tool called [CycloneDX Gomod](https://github.com/CycloneDX/cyclonedx-gomod) which is an official
 CycloneDX supported-tool that creates valid CycloneDX BOMs for Go applications. CycloneDX is a BOM format supported by
@@ -49,8 +48,8 @@ This tool supports three different cases of BOM generation:
 
 Of these, we are only interested in `app`. The buildpacks do not currently support building modules, or libraries, which
 is the primary use-case for `mod`. The `bin` command is for pre-built executables, which is unnecessary for the
-buildpack as it has access to the source code. The BOM created by the `bin` command also contains less information
-than the one created via the `app` command.
+buildpack as it has access to the source code. The BOM created by the `bin` command also contains less information than
+the one created via the `app` command.
 
 The output BOM contains the following fields for each module:
 
@@ -67,11 +66,10 @@ Almost all of fields that we aim to support
 per [the Paketo BOM RFC](https://github.com/paketo-buildpacks/rfcs/blob/main/text/0033-bill-of-materials.md#overall-schema)
 are available. The only one that is not available is `description`, and this is because there is no standard way to
 capture this information in Go projects (as compared with other languages like nodejs and rust, where the package
-description files contain a field for this metadata). See unresolved questions
-below.
+description files contain a field for this metadata). See unresolved questions below.
 
-In order to support this tool in both the online and offline cases, we will host
-the binary tool on the [dep-server](https://github.com/paketo-buildpacks/dep-server).
+In order to support this tool in both the online and offline cases, we will host the binary tool on
+the [dep-server](https://github.com/paketo-buildpacks/dep-server).
 
 ### Performance
 
@@ -85,8 +83,8 @@ We can investigate ways to improve this performance.
 
 ### Language Family Additions
 
-Using the CycloneDX tool to generate the BOM will involve some changes to the Go language family buildpack order
-groups as follows:
+Using the CycloneDX tool to generate the BOM will involve some changes to the Go language family buildpack order groups
+as follows:
 
 * A single BOM generation buildpack will be added. It's primary functions are:
     * perform the BOM dependency tool retrieval from the dep-server,
@@ -110,8 +108,8 @@ The build phase will perform a few tasks as mentioned above.
    contribute a BOM entry for the tool itself on the `build.toml` `[bom]` section.
 
 2. Execute BOM generation with the installed tool via the `cyclonedx-gomod app -o bom.json` command in the root
-   directory of the application. There is an unresolved question around determining which main package to run against
-   if the application source contains multiple `main` packages.
+   directory of the application. There is an unresolved question around determining which main package to run against if
+   the application source contains multiple `main` packages.
 
 3. Unmarshal the CycloneDX JSON BOM and transform each BOM entry into a
    [`postal.Dependency`](https://github.com/paketo-buildpacks/packit/blob/c5a40518f2c6bd913ade999b9e2d58d6892d2ea9/postal/buildpack.go#L12)
@@ -155,10 +153,11 @@ more sense to separate all module BOM creation logic into its own buildpack, so 
 ## Unresolved Questions and Bikeshedding
 
 * How do we know which of the main commands we are building and hence which main package to generate the BOM?
-* Is the `description` field something that is required by the BOM Standard mentioned in the Paketo BOM RFC?
+* Is the `description` field something that is required by the BOM Standard mentioned in the Paketo BOM RFC? (The field
+  mentioned in the RFC is `summary`, which is the same as the description)
     * If this is required, is there a standard way to capture the package description in Go libraries?
 
 ## Resources
 
-* [Paketo BOM RFC](https://github.com/paketo-buildpacks/rfcs/blame/main/text/nodejs/0013-install-bom.md#L62)
+* [Paketo BOM RFC](https://github.com/paketo-buildpacks/rfcs/blob/main/text/0033-bill-of-materials.md#overall-schema)
 * Work in progress [Cloud Native Buildpacks BOM Format RFC](https://github.com/buildpacks/rfcs/pull/166)
