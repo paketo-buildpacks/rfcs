@@ -59,7 +59,7 @@ the following fields for each module:
 * and package URL
 
 All of these are fields that we aim to support per [the Paketo BOM
-RFC](https://github.com/sophiewigmore/rfcs/blob/8b1e8c9ed6201313f47c5897223cbffb265e96ed/text/0028-bill-of-materials.md)
+RFC](https://github.com/paketo-buildpacks/rfcs/blob/main/text/0033-bill-of-materials.md)
 
 In order to support this tool in both the online and offline cases, we will
 pre-compile the tool with it's dependencies, and provide it as a dependency
@@ -166,6 +166,6 @@ may easily opt out.
 
 ## Resources
 
-* [Paketo BOM RFC](https://github.com/sophiewigmore/rfcs/blob/sophie/bom/text/0028-bill-of-materials.md)
+* [Paketo BOM RFC](https://github.com/paketo-buildpacks/rfcs/blob/main/text/0033-bill-of-materials.md)
 * Work in progress [Cloud Native Buildpacks BOM Format
   RFC](https://github.com/buildpacks/rfcs/pull/166)
