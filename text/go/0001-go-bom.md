@@ -29,7 +29,7 @@ The Bill of Materials that will result should be an accurate accounting of all t
 installed by `go modules`.
 
 There already exists a tool called [CycloneDX Gomod](https://github.com/CycloneDX/cyclonedx-gomod) which is an official
-CycloneDX supported-tool that creates valid CycloneDX BOMs for Go applications. CycloneDX is a BOM format supported by
+CycloneDX-supported tool that creates valid CycloneDX BOMs for Go applications. CycloneDX is a BOM format supported by
 the OWASP Foundation, and is a serious contender (at the time of this RFC creation) as a format we will eventually
 support.
 
@@ -46,10 +46,16 @@ This tool supports three different cases of BOM generation:
    on the target module's dependencies.
 3. `bin`: Offers support of generating rudimentary SBOMs from binaries built with Go modules.
 
-Of these, we are only interested in `app`. The buildpacks do not currently support building modules, or libraries, which
-is the primary use-case for `mod`. The `bin` command is for pre-built executables, which is unnecessary for the
-buildpack as it has access to the source code. The BOM created by the `bin` command also contains less information than
-the one created via the `app` command.
+Of these, we are only interested in `app`. There are a few reasons why `mod` and `bin` are not suitable:
+
+* The buildpacks do not currently support building modules without an associated
+executable (i.e. libraries) which is the primary use-case for `mod`.
+* The BOM produced by the `mod` command contains less information than the BOM produced by the `app` command.
+(e.g. the `mod` command does not include license info, or detailed info for each file).
+* The `mod` command does not respect flags provided to the `go build`
+  process at build time e.g. `CGO_ENABLED`, `GOFLAGS`.
+* The `bin` command is for pre-built executables, which is unnecessary for the buildpack as it has access to the source code
+* The `bin` command produces less detailed output than `app` as it does utilize the source code if it is present.
 
 The output BOM contains the following fields for each module:
 
@@ -81,6 +87,19 @@ to construct a BOM.
 
 We can investigate ways to improve this performance.
 
+### Limitations
+
+The `cyclonedx-gomod` tool requires that the app being analyzed is a valid `git`
+repository, as it uses `git` for version detection. We believe that this is not
+a significant issue, as `git` is a common VCS. The authors of `cyclonedx-gomod`
+imply they might be open to support for other VCSs if the need arose.
+
+The main limitation of the `git` repository requirement is if the app
+being analyzed does not have version control at all.
+For example, if the app is part of a parent repository that is not uploaded in its
+entirety to `pack`. In this case the entire parent repository must be uploaded
+to `pack`, or some other option must be considered (e.g. using git submodules).
+
 ### Language Family Additions
 
 Using the CycloneDX tool to generate the BOM will involve some changes to the Go language family buildpack order groups
@@ -95,7 +114,7 @@ as follows:
 
 #### Detection
 
-The Go Module BOM Generator CNB always detects with the following contract:
+The Go Module BOM Generator CNB will pass detection if there is valid `go.mod` file and the repository is a valid `git` repository with the following contract:
 
 * Requires {`go-dist`} during `build`
 * Provides none
@@ -107,28 +126,27 @@ The build phase will perform a few tasks as mentioned above.
 1. Perform the BOM dependency tool retrieval from the dep-server. It will get added to a build-time layer. It will
    contribute a BOM entry for the tool itself on the `build.toml` `[bom]` section.
 
-2. Execute BOM generation with the installed tool via the `cyclonedx-gomod app -o bom.json` command in the root
-   directory of the application. There is an unresolved question around determining which main package to run against if
-   the application source contains multiple `main` packages.
+2. Execute BOM generation with the installed tool via the
+`cyclonedx-gomod app -json -files -licenses -main <target> -o bom.json` command in the root
+   directory of the application. The `<target>` is determined by the
+   `BP_GO_TARGETS` command in the same manner as the `go-build` buildpack. If
+   multiple targets are provided, the tool is invoked for each target and the
+   resultant BOMs are merged. We opt to merge the BOMs to keep the same
+   structure as the node buildpack (which does not support building multiple
+   targets), and can consider changing the structure to support multiple
+   top-level targets in the future if the need arises.
 
-3. Unmarshal the CycloneDX JSON BOM and transform each BOM entry into a
-   [`postal.Dependency`](https://github.com/paketo-buildpacks/packit/blob/c5a40518f2c6bd913ade999b9e2d58d6892d2ea9/postal/buildpack.go#L12)
-   type. This step and step 5 will eventually go away if we support CycloneDX as a BOM format.
+3. Parse the resulting JSON output from the command above, and map each entry into a
+   [`packit.BOMEntry`](https://github.com/paketo-buildpacks/packit/blob/fc612d69a93a6f36f4fe97a25076cc8eddf0b544/bom.go#L10) type.
+   Merge the entries from multiple targets (see above).
 
-4. (Optionally) generate `CPE` and `pURL` from the data and add it to the
-   `postal.Dependency`.
-
-5. Run the
-   [`postal.GenerateBillOfMaterials`](https://github.com/paketo-buildpacks/packit/blob/c5a40518f2c6bd913ade999b9e2d58d6892d2ea9/postal/service.go#L186)
-   command.
-
-6. Clean up the generated BOM file
+4. Clean up the generated BOM file
 
 #### Potential Future Optimizations
 
 Given future user interest in a way to opt out of this buildpack beyond a custom order grouping, an optimization that
 could be made is the inclusion of a
-`BP_ENABLE_MODULE_BOM` environment variable that can be set during container build-time.
+`BP_DISABLE_MODULE_BOM` environment variable that can be set during container build-time. The default value for this (when unset) is `false`.
 
 ## Rationale
 
@@ -152,10 +170,9 @@ more sense to separate all module BOM creation logic into its own buildpack, so 
 
 ## Unresolved Questions and Bikeshedding
 
-* How do we know which of the main commands we are building and hence which main package to generate the BOM?
 * Is the `description` field something that is required by the BOM Standard mentioned in the Paketo BOM RFC? (The field
   mentioned in the RFC is `summary`, which is the same as the description)
-    * If this is required, is there a standard way to capture the package description in Go libraries?
+    * If this is required, is there a standard way to capture the package description in Go applications and libraries?
 
 ## Resources
 
