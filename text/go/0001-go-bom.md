@@ -130,18 +130,32 @@ one. So, if we wish to support vendoring directly without a `go.mod` file we
 will need to explore an alternative tool, or find a way for `cyclonedx-gomod` to
 support this.
 
-### Language Family Additions
+### Language Family Changes
 
-There will be a single new buildpack called `cyclonedx-gomod` which will provide
-the `cyclonedx-gomod` executable. It will install this binary onto the `$PATH`
-which makes it available for the `go-build` buildpack to use during the `build`
-phase when generating a BOM.
+There will be a single new buildpack called `cyclonedx-gomod` which will
+provide the `cyclonedx-gomod` executable. It will install this binary onto the
+`$PATH` which makes it available for the `go-build` buildpack to use during the
+`build` phase when generating a BOM.
 
-This buildpack will always pass detection, and will provide the dependency
+This buildpack will always pass detection, and will `provide` the dependency
 `cyclonedx-gomod` with no version. This buildpack will require nothing.
 
 This new buildpack will behave similarly to the
 [`dep`](https://github.com/paketo-buildpacks/dep) buildpack.
+
+The `go-build` buildpack will optionally `require` this `cyclonedx-gomod`
+dependency, depending on whether it will run BOM generation. Pseudo-code for
+this optional `require` looks as follows:
+
+```
+if BP_DISABLE_MODULE_BOM is unset/false and go.mod file exists:
+    require: go-dist, cyclonedx-gomod
+else:
+    require: go-dist
+```
+
+This same logic will be utilized during the `build` phase of the `go-build`
+buildpack to determine if the BOM should be generated.
 
 ### Full order group
 
@@ -267,6 +281,15 @@ both `cyclonedx-gomod` and the `go build` processes.
   which is the same as the description)
 	* If this is required, is there an idiomatic way to capture the package
 	  description in Go applications and libraries?
+* Should the dependency be called `cyclonedx-gomod` or something more abstract like
+  `bom-generator`?
+  * The specific dependency is simpler to reason about both at the
+    `requires`/`provides` API level and in the code in `go-build` buildpack. We
+    also have no evidence that we will ever support (or be able to support)
+    multiple golang BOM generators.
+  * The more abstract name allows for different implementations of
+    BOM-generation without making a breaking change to the `requires`/`provides`
+    API.
 
 ## Resources
 
