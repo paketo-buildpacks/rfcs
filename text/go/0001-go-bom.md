@@ -30,6 +30,23 @@ RFC, if we discover a clear requirement for this. The primary reason for this is
 that the `cyclonedx-gomod` tool (see the Implementation section below) does not
 support generating BOMs for these alternative vendoring mechanisms.
 
+The `cyclonedx-gomod` tool supports vendoring in a limited manner. From the
+[cyclonedx-gomod README](https://github.com/CycloneDX/cyclonedx-gomod/blob/main/README.md):
+
+> Modules that use vendoring are, although in a limited manner, supported.
+> Limitations are as follows:
+>
+> * No hashes. Go doesn't copy all module files to vendor, only those that are
+>   required to build and test the main module. Because module checksums
+>   consider almost all files in a module's directory though, calculating
+>   accurate hashes from the vendor directory is not possible. As a consequence,
+>   SBOMs for modules that use vendoring do not include component hashes.
+> * License detection may fail. Go doesn't always copy license files when
+>   vendoring modules, which may cause license detection to fail.
+
+If the `go.mod` file and the `vendor` directory are inconsistent, BOM generation
+may appear to succeed, but is undefined and unsupported.
+
 ## Implementation
 
 ### Tool details
