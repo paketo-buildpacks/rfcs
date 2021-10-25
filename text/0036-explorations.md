@@ -82,8 +82,3 @@ inclusion of clear READMEs in exploration directories is a good place to start.
 ## Prior Art
 
 - [Github discussion](https://github.com/paketo-buildpacks/feedback/discussions/20)
-
-## Unresolved Questions and Bikeshedding
-- What should we name the repo?
-
-{{REMOVE THIS SECTION BEFORE RATIFICATION!}}
