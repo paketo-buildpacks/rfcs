@@ -11,8 +11,6 @@ for the future of Paketo. This RFC proposes a repository
 `paketo-community/explorations` wherein artifacts like decision records, sample
 apps, and prototypes can be stored in a centralized place.
 
-{{A concise, one-paragraph description of the change.}}
-
 ## Motivation
 
 Paketo strives to make decisions out in the open as much as possible. Often,
@@ -68,8 +66,6 @@ See implementation.
          `paketo-buildapcks/rfcs`, decentralized decision records make it
          harder for community members to figure out the current state of the
          project.
-
-{{Discuss 2-3 different alternative solutions that were considered. This is required, even if it seems like a stretch. Then explain why this is the best choice out of available ones.}}
 
 ## Implementation
 
