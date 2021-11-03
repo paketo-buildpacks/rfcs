@@ -2,7 +2,7 @@
 
 ## Summary
 
-Introduce a Syft buildpack. This buildpack will provide the `syft` binary should any buildpacks want to use it. The `syft` CLI is a tool and library for generating a Software Bill of Materials from container images and filesystems.
+Introduce a Syft buildpack. This buildpack will provide the [`syft` binary](https://github.com/anchore/syft) should any buildpacks want to use it. The `syft` CLI is a tool and library for generating a Software Bill of Materials from container images and filesystems.
 
 The Syft buildpack would be maintained by the existing [Utilities team](https://github.com/orgs/paketo-buildpacks/teams/utilities). It uses libpak & libcnb.
 
