@@ -34,7 +34,7 @@ When conditions are met, the buildpack will do the following:
 
 Buildpacks that wish to opt-in, simply need to indiate that they require `syft` at detection time. Then `syft` should be present on the path at build time and these buildpacks can run it.
 
-The Syft buildpack would need to be added to the order group for any language family that wishes to use `syft`. It needs to be added prior to the buildpack that is going to require `syft`, which would likely require it to be very early in the order group. For example, the maven buildpack will require Syft, so the Syft buildpack needs to be listed in the order groups prior to maven.
+The Syft buildpack would need to be added to the order group for any language family that wishes to use `syft`. It needs to be added prior to the buildpack that is going to require `syft`, which would likely require it to be very early in the order group. For example, the maven buildpack will require Syft, so the Syft buildpack needs to be listed in the order groups prior to maven. If it's included and the exact order where it's included can be decided by each buildpack language family based on individual need.
 
 ## Prior Art
 
