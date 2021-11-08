@@ -23,7 +23,7 @@ BOM more consumable for users than providing the SBOM in other formats.
 The SBOM associated with Stack run images will now be available in both CycloneDX and
 Syft formats. Per the CNB specification, the generated SBOM will be available at
 `/cnb/sbom/bom.<ext>.json`, where `<ext>` will be `cdx` for CycloneDX documents and
-`syft` for Syft documents. Then, the associated layer digest will be surfaced as a
+`syft` for Syft documents. Then, the associated layer diffID will be surfaced as a
 `LABEL` on run image metadata under the `io.buildpacks.base.sbom` key.
 
 ### Overall Schema
