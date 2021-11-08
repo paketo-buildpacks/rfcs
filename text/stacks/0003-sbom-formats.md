@@ -20,7 +20,7 @@ BOM more consumable for users than providing the SBOM in other formats.
 
 ## Detailed Explanation
 
-The SBOM associated with Stack run images will now be available in either CycloneDX or
+The SBOM associated with Stack run images will now be available in both CycloneDX and
 Syft formats. Per the CNB specification, the generated SBOM will be available at
 `/cnb/sbom/bom.<ext>.json`, where `<ext>` will be `cdx` for CycloneDX documents and
 `syft` for Syft documents. Then, the associated layer digest will be surfaced as a
