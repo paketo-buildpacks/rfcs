@@ -28,14 +28,17 @@ Syft formats. Per the CNB specification, the generated SBOM will be available at
 
 ### Overall Schema
 The SBOM for each entry will correspond to an OS-level package provided by the
-stack. The minimal set of fields we should provide for the `syft`-formatted SBOM
+stack.
+
+#### Syft
+The minimal set of fields we should provide for the `syft`-formatted SBOM
 should conform to [Syft JSON Schema version
 1.1.0](https://raw.githubusercontent.com/anchore/syft/main/schema/json/schema-1.1.0.json) and above:
 ```
 {
  "artifacts": [
   {
-   "id": "",
+   "id": <Syft-generated UUID string for in-file dependency graphing>,
    "name": <package name>,
    "version": <package version>,
    "licenses": [<package license ID(s) in SPDX-format>],
@@ -54,14 +57,15 @@ should conform to [Syft JSON Schema version
 }
 ```
 
+#### CycloneDX
 The minimal set of fields we should provide for the `cyclonedx`-formatted SBOM
 should confirm to [CycloneDX schema version
-1.2](https://github.com/CycloneDX/specification/blob/master/schema/bom-1.2.schema.json)
+1.3](https://github.com/CycloneDX/specification/blob/master/schema/bom-1.3.schema.json)
 and above:
 ```
 {
   "bomFormat": "CycloneDX",
-  "specVersion": "1.2",
+  "specVersion": "1.3",
   "version": <BOM revision number>,
   "components": [
     {
