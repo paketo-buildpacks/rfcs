@@ -59,7 +59,7 @@ should conform to [Syft JSON Schema version
 
 #### CycloneDX
 The minimal set of fields we should provide for the `cyclonedx`-formatted SBOM
-should confirm to [CycloneDX schema version
+should conform to [CycloneDX schema version
 1.3](https://github.com/CycloneDX/specification/blob/master/schema/bom-1.3.schema.json)
 and above:
 ```
