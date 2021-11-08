@@ -18,6 +18,7 @@
 * [0035: Python Paketo Buildpack Promotion](./text/0035-python-promotion.md)
 * [0036: Explorations Repository](./text/0036-explorations.md)
 * [0037: Remote Debug](./text/0037-remote-debug.md)
+* [0038: Support for CycloneDX and Syft SBoM](./text/0038-cdx-syft-sbom.md)
 
 ## Implemented RFCs
 
