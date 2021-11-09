@@ -60,4 +60,4 @@ The Java buildpacks supports remote debugging in the manner defined above.
 
 ## Unresolved Questions and Bikeshedding
 
-- Are there other standard debug configuration options that we should list in this RFC?
+None
