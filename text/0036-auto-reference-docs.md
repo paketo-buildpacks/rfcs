@@ -100,17 +100,21 @@ buildpacks as a way of automatically generating information about the
 environment variables that can be configured to modify the buildpacks'
 behavior.
 
-Additional documentation can be generated using an optional file included in
-the project's root named `reference-doc.md`. The `reference-doc.md` file would
-provide maintainers an opportunity to include supplemental documentation. For
-example, maintainers might want to describe the build plan contract or caching
-strategy, etc. We think that having an additional document that is clearly
-named will make the process of adding and updating supplemental reference
-documentation clear and approachable to new contributors.
+Additional documentation is parsed out of the `README.md` with all of the
+content of the H2 level sections being appended after the environment variable
+configuration. This parsing can be controlled the a `.docs.yml` that would
+allow the buildpack maintainers to exclude certain H2 level sections of the
+`README.md` from the final generated document. Below is an example of a
+[`.docs.yml`](https://github.com/ForestEckhardt/bellsoft-liberica/blob/main/.docs.yml)
+from a fork of the [Paketo BellSoft Liberica buildpack](https://github.com/ForestEckhardt/bellsoft-liberica/)
+
+```yaml
+exclude:
+- "Configuration"
+```
 
 Below is an example snippet that was generated using a [POC CLI](https://github.com/ForestEckhardt/spikes/tree/main/auto-doc) and a fork of
 the [Paketo BellSoft Liberica buildpack](https://github.com/ForestEckhardt/bellsoft-liberica).
-
 ---
 # Paketo BellSoft Liberica Buildpack
 
@@ -127,34 +131,64 @@ the JVM type - JDK or JRE
 Default Value: `JRE`
 This environment variable is used during build
 
-## Build Plan
-```
-[[provides]]
-name = "lorem"
+## Behavior
 
-[[requires]]
-name = "ipsum"
+This buildpack will participate if any of the following conditions are met
 
-[requires.metadata]
-build = true
-```
+* Another buildpack requires `jdk`
+* Another buildpack requires `jre`
 
-## Caching Reuse Logic
-| `lorem` | `ipsum` | `dolor` | Command |
-| ------- | ------- | ------- | ------- |
-| X | X | X | `sum` |
-| X | X | ✓ | `sum` |
-| X | ✓ | X | `es` |
-| X | ✓ | ✓ | `es` |
-| ✓ | X | X | `est` |
-| ✓ | X | ✓ | `est` |
-| ✓ | ✓ | X | `es` |
-| ✓ | ✓ | ✓ | `est` |
+The buildpack will do the following if a JDK is requested:
+
+* Contributes a JDK to a layer marked `build` and `cache` with all commands on `$PATH`
+* Contributes `$JAVA_HOME` configured to the build layer
+* Contributes `$JDK_HOME` configure to the build layer
+
+The buildpack will do the following if a JRE is requested:
+
+* Contributes a JRE to a layer with all commands on `$PATH`
+* Contributes `$JAVA_HOME` configured to the layer
+* Contributes `-XX:ActiveProcessorCount` to the layer
+* Contributes `-XX:+ExitOnOutOfMemoryError` to the layer
+* Contributes `-XX:+UnlockDiagnosticVMOptions`,`-XX:NativeMemoryTracking=summary` & `-XX:+PrintNMTStatistics` to the layer (Java NMT)
+* If `BPL_JMX_ENABLED = true`
+  * Contributes `-Djava.rmi.server.hostname=127.0.0.1`, `-Dcom.sun.management.jmxremote.authenticate=false`, `-Dcom.sun.management.jmxremote.ssl=false` & `-Dcom.sun.management.jmxremote.rmi.port=5000`
+* If `BPL_DEBUG_ENABLED = true`
+  * Contributes `-agentlib:jdwp=transport=dt_socket,server=y,address=*:8000,suspend=n`. If Java version is 8, address parameter is `address=:8000`
+* Contributes `$MALLOC_ARENA_MAX` to the layer
+* Disables JVM DNS caching if link-local DNS is available
+* If `metadata.build = true`
+  * Marks layer as `build` and `cache`
+* If `metadata.launch = true`
+  * Marks layer as `launch`
+* Contributes Memory Calculator to a layer marked `launch`
+* Contributes Heap Dump helper to a layer marked `launch`
+...
 
 ---
 You can see the whole sample document generated [here](https://github.com/ForestEckhardt/spikes/blob/main/auto-doc/sample-output.md).
 
-### Alternative To `reference-doc.md`
+### Alternative To `README.md` Parsing
+---
+### `reference-doc.md`
+Add an optional file included in
+the project's root named `reference-doc.md`. The `reference-doc.md` file would
+provide maintainers an opportunity to include supplemental documentation. For
+example, maintainers might want to describe the build plan contract or caching
+strategy, etc. We think that having an additional document that is clearly
+named will make the process of adding and updating supplemental reference
+documentation clear and approachable to new contributors.
+
+#### Pros
+It is a file that is placed at the root of the directory that has a name that
+make ths the function obvious. This would hopefully make the addition of
+relevant reference documentation easier for new contributors.
+
+#### Cons
+There would most likely be a duplication of documentation between the
+`reference-doc.md` and the `README.md` which would increase the maintainence
+overhead by making it necessary to maintain two sources of truth.
+
 ---
 ### Tagged Comments
 Add the ability to tag code comments as comments that should also be added to
@@ -183,6 +217,3 @@ it will be formatted.
 - [`Doxygen`](https://www.doxygen.nl/index.html)
 - [`Swagger UI`](https://swagger.io/tools/swagger-ui/)
 
-## Unresolved Questions and Bikeshedding
-
-- Should the `reference-doc.md` be named as such?
