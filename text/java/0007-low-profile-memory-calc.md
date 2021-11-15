@@ -100,4 +100,4 @@ It will need to:
 
 ## Unresolved Questions and Bikeshedding
 
-- Is this the right algorithm? Can we do better?
+- None
