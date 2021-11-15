@@ -6,13 +6,14 @@ This directory contains RFCs that pertain to the [Java Subteam](https://github.c
 
 * [0003: Retire Java Kill Agent](0003-retire-kill-agent.md)
 * [0004: Merge Java Feature Flag Buildpacks](0004-merge-java-feature-flag-buildpacks.md)
-* [0006: Oracle JDK](0006-oracle.jdk)
+* [0007: Memory Calculator Low Profile Mode](0007-low-profile-memory-calc.md)
 
 ## Implemented RFCs
 
 * [0001: Microsoft OpenJDK Buildpack](0001-microsoft-jdk.md)
 * [0002: Alibaba Dragonwell Buildpack](0002-alibaba-jdk.md)
 * [0005: Clojure Tools](0005-clojure-tools.md)
+* [0006: Oracle JDK](0006-oracle.jdk)
 
 ## Links
 
