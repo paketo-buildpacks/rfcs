@@ -8,6 +8,7 @@ This directory contains RFCs that pertain to the [Utilities Subteam](https://git
 ## Implemented RFCs
 
 * [0001: UPX Support](0001-upx-buildpack.md)
+* [0002: Syft Support](0002-syft-buildpack.md)
 
 ## Links
 
