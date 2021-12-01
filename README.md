@@ -16,6 +16,7 @@
 * [0037: Remote Debug](./text/0037-remote-debug.md)
 * [0038: Support for CycloneDX and Syft SBoM](./text/0038-cdx-syft-sbom.md)
 * [0039: Semantic Versioning in Tags for Buildpacks](./text/0039-semantic-version-tags.md)
+* [0040: Auto-generate Reference Documentation](./text/0040-auto-reference-docs.md)
 
 ## Implemented RFCs
 
