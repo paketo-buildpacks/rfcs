@@ -2,7 +2,6 @@
 
 ## Accepted RFCs
 
-* [0003: Replace buildpack.yml with Build Plan (TOML)](./text/0003-replace-buildpack-yml.md)
 * [0006: Web Servers Buildpack Subteam](./text/0006-web-servers.md)
 * [0010: Dependency Mappings](./text/0010-dependency-mappings.md)
 * [0015: Distribute Buildpacks via Docker Hub](./text/0015-dockerhub-distribution.md)
@@ -10,12 +9,13 @@
 * [0019: Default Behaviour for Buildpack-Set Language Ecosystem Environment Variables](./text/0019-buildpack-set-env-vars-defaults.md)
 * [0026: Environment Variable Configuration Of Buildpack](./text/0026-environment-variable-configuration-of-buildpacks.md)
 * [0027: Common Logging Levels for Buildpacks](./text/0027-log-levels.md)
-* [0029: Semantic Versioning of Buildpacks and Builders](./text/0029-semantic-versioning.md)
-* [0030: Buildpackless Builders](./text/0030-buildpackless-builders.md)
 * [0031: Liberty Buildpack](./text/0031-liberty-buildpack.md)
 * [0032: Reloadable Process Types](./text/0032-reloadable-process-types.md)
 * [0033: Implement a Bill of Materials Across Paketo](./text/0033-bill-of-materials.md)
 * [0035: Python Paketo Buildpack Promotion](./text/0035-python-promotion.md)
+* [0037: Remote Debug](./text/0037-remote-debug.md)
+* [0038: Support for CycloneDX and Syft SBoM](./text/0038-cdx-syft-sbom.md)
+* [0039: Semantic Versioning in Tags for Buildpacks](./text/0039-semantic-version-tags.md)
 * [0040: Auto-generate Reference Documentation](./text/0040-auto-reference-docs.md)
 
 ## Implemented RFCs
@@ -39,7 +39,14 @@
 * [0024: Utility Buildpacks Team](./text/0024-utility-buildpacks-team.md)
 * [0025: Establishing an Emeritus Status](./text/0025-emeritus-status.md)
 * [0028: Co-locate All Paketo RFCs](./text/0028-co-locate-all-rfcs.md)
+* [0029: Semantic Versioning of Buildpacks and Builders](./text/0029-semantic-versioning.md)
+* [0030: Buildpackless Builders](./text/0030-buildpackless-builders.md)
 * [0034: Update Hash Field in Bill of Materials](./text/0034-hash-field-bom.md)
+* [0036: Explorations Repository](./text/0036-explorations.md)
+
+## Superseded RFCs
+
+* [0003: Replace buildpack.yml with Build Plan (TOML)](./text/0003-replace-buildpack-yml.md)
 
 ## Why RFC?
 The RFC (Request For Comments) process is intended to provide a consistent procedure for all major decisions affecting Paketo Buildpacks.
