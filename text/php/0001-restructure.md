@@ -20,11 +20,11 @@ various kinds of images related to PHP.
 
 In the current state of the world, we have:
 
-- a [php-dist](github.com/paketo-buildpacks/php-dist) buildpack that provides
+- a [php-dist](https://github.com/paketo-buildpacks/php-dist) buildpack that provides
   php.
-- a [php-composer](github.com/paketo-buildpacks/php-composer) that provides
+- a [php-composer](https://github.com/paketo-buildpacks/php-composer) that provides
   composer and installs dependencies.
-- a [php-web](github.com/paketo-buildpacks/php-web) that takes care of
+- a [php-web](https://github.com/paketo-buildpacks/php-web) that takes care of
   everything related to serving php on a web server.
 
 ## Buildpacks
