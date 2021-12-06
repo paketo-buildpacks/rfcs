@@ -35,7 +35,7 @@ structure would include the following buildpacks in addition to the existing
 
 This structure would look like the following:
 
-![Proposed Structure](/rfcs/assets/0001-proposed.png)
+![Proposed Structure](./assets/0001-proposed.png)
 
 <div>
   <div><b>Legend</b></div>
@@ -129,7 +129,7 @@ The current Dotnet-Core buildpack has a high degree of coupling between the
 interacting buildpacks. This is most evident when viewing a graph of the build
 plan requirements between buildpacks in its current form.
 
-![Original Structure](/rfcs/assets/0001-original.png)
+![Original Structure](./assets/0001-original.png)
 
 <div>
   <div><b>Legend</b></div>
