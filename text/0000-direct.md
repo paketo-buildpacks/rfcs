@@ -2,7 +2,7 @@
 
 ## Summary
 
-This RFC proposes that we move all Paketo buildpacks to use `direct` process types and `exec.d` interface instead of `profile.d` interface and `direct = false` process types.
+This RFC proposes that we move all Paketo buildpacks to use `direct` process types and `exec.d` interface instead of `profile.d` interface and `direct = false` process types wherever possible without breaking backwards compatibility from an end user perspective.
 
 ## Motivation
 
