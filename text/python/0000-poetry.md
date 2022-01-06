@@ -14,8 +14,12 @@ the Python buildpack should contain:
   * requires: `cpython` and `pip` during build
 
 * `poetry-install`
-  * provides: `site-packages`
+  * provides: `poetry-venv`
   * requires: `cpython`, `pip`, and `poetry` during `build`
+
+* `poetry-run`
+  * provides: 
+  * requires: `cpython`, `pip`, `poetry`, and `poetry-venv` during `build`
 ```
 
 The following order grouping should be added to the Python buildpack:
@@ -24,10 +28,10 @@ The following order grouping should be added to the Python buildpack:
 [[order]]
 
   [[order.group]]
-    id = "paketo-community/cpython"
+    id = "paketo-buildpacks/cpython"
     
   [[order.group]]
-    id = "paketo-community/pip"
+    id = "paketo-buildpacks/pip"
 
   [[order.group]]
     id = "paketo-community/poetry"
@@ -36,7 +40,7 @@ The following order grouping should be added to the Python buildpack:
     id = "paketo-community/poetry-install"
 
   [[order.group]]
-    id = "paketo-community/python-start"
+    id = "paketo-community/poetry-run"
 
   [[order.group]]
     id = "paketo-buildpacks/procfile"
@@ -51,9 +55,10 @@ environments.
 
 ## Detailed Explanation
 
-A new buildpack order group in the Python buildpack will consist of a `poetry`
-& `poetry-install` buildpack. It will handle the installation of Poetry itself
-and the installation of the app's dependencies (using Poetry) respectively.
+A new buildpack order group in the Python buildpack will consist of a `poetry`,
+`poetry-install` and `poetry-run` buildpack. These buildpacks will handle the
+installation of Poetry itself, the installation of the app's dependencies
+(using Poetry) and setting the application's start command.
 
 
 ## Implementation
@@ -81,7 +86,7 @@ Here is an example `buildpack.toml` from the `poetry` buildpack:
     version = "<some-version>"
 ```
 
-This would require the `poetry` dependency to be built and served by the
+This would require the `poetry` dependency to be served by the
 `dep-server` so that it may be consumed by the buildpack.
 
 ### Poetry Installation
@@ -112,8 +117,33 @@ the buildpack could run `python get-poetry.py --file <release-asset.tgz>` with
 
 ### Dependency Installation
 
-<-- WIP -->
+By default, poetry creates virtualenvs to install dependencies into. This
+[config
+option](https://python-poetry.org/docs/configuration/#virtualenvsin-project),
+when set to `true`, causes poetry to create a virtualenv inside the project
+directory.
 
+Once a virtualenv is created, a user might run `poetry shell` which
+"activates" the virtualenv, followed by `poetry install` and `poetry
+run`. This activation is less useful in the context of a running container
+since the environment has already been optimally configured by the buildpacks.
+The poetry-install buildpack will therefore forego the `poetry shell` step and
+instead:
+
+1. Configure poetry to create the virtualenv within the project dir
+1. Run `poetry install`
+
+The resulting virtualenv will be stored in a separate layer and symlinked into
+the working directory.
+
+### Launching an app
+
+Unlike the existing order groups in the Python buildpack, the `poetry` group
+will rely less on Procfile in favor of a more idiomatic `poetry-run` buildpack.
+Poetry has its own `run` command and it seems worthwhile to sacrifice
+consistency with the other Python buildpacks for a more idiomatic user
+experience. The alternative would be to specify `poetry run` as part of a
+process type in a Procfile.
 
 ## Prior Art
 
@@ -130,27 +160,18 @@ the buildpack could run `python get-poetry.py --file <release-asset.tgz>` with
       [#2003](https://github.com/python-poetry/poetry/issues/2003) &
       [#1937](https://github.com/python-poetry/poetry/issues/1937))
 
-    - By default, poetry creates virtualenvs to install dependencies into. This
-      [config
-      option](https://python-poetry.org/docs/configuration/#virtualenvsin-project),
-      when set to `true`, causes poetry to create a virtualenv inside the
-      project directory. It may be possible to leverage this option along to
-      control where dependencies are installed.
+- What steps are needed to enable caching with poetry?
 
- E.g.
-    ```bash
-    #!/bin/bash
-    function main() {
-      pip install poetry
-      poetry config virtualenvs.in-project true
+  - In the Node.js buildpack, npm-install runs the dependency installation
+    process from the working directory and moves the resulting files into a
+    separate layer. This new location is subsequently symlinked to the relevant
+    path within the working directory. This approach could be reused in the
+    poetry-install buildpack.
 
-      local dir
-      dir="/tmp/python-packages"
-      ln -s "${dir}" .venv
+  - How does the native poetry cache interact with buildpack caching?
 
-      poetry install -vvv --no-dev --no-root
-    }
+- Should there be a poetry-run-script buildpack?
 
-    main "${@:-}"
-    ```
+## Future Topics
 
+- Should `poetry-install` provide `site-packages`?
