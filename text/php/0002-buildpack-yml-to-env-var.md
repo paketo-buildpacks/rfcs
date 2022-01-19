@@ -143,24 +143,6 @@ This will replace the following structure in `buildpack.yml`:
 composer:
   vendor_directory: vendor
 ```
-
-### `BP_COMPOSER_HOME`
-```shell
-$BP_COMPOSER_HOME="composer"
-```
-
-Note: The value of this environment variable will be used to set
-[`$COMPOSER_HOME`](https://getcomposer.org/doc/03-cli.md#composer-home)
-therefore if a user attempts to set this value themselves as well as set the
-value of `$BP_COMPOSER_HOME` the value of `$COMPOSER_HOME` will be overwritten
-resulting in potentially unexpected behavior.
-
-This will replace the following structure in `buildpack.yml`:
-```yaml
-composer:
-  json_path: composer
-```
-
 ### `BP_COMPOSER_GLOBAL_INSTALL_OPTIONS`
 ```shell
 $BP_COMPOSER_GLOBAL_INSTALL_OPTIONS="--only-name --type"
@@ -173,6 +155,18 @@ This will replace the following structure in `buildpack.yml`:
 composer:
   install_global: ["--only-name", "--type"]
 ```
+
+### Configuration Removal
+The following structure in `buildpack.yml` will not be receiving an environment
+variable configuration option:
+```yaml
+composer:
+  json_path: composer
+```
+This structure is effectively performing the function of the
+[`$COMPOSER`](https://getcomposer.org/doc/03-cli.md#composer) environment
+variable that is natively supported by `composer`. Therefore the structure is
+being removed in favor of the native solution.
 
 ---
 
