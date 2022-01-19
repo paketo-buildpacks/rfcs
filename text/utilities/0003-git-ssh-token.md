@@ -22,6 +22,8 @@ variable like most of our other buildpack configuration as this poses a risk of
 exposure by view the build process in some form of CI. Because of this
 restriction, an approach similar to the CA Certificates Buildpack will be used
 where the token will be provided in a mounted volume through a service binding.
+The `type` for the service binding will be `git-ssh-token`.
+
 That token will then be used to change the global `git` config for that
 container which will persist for the entirety of the build which the [CNB
 specification](https://github.com/buildpacks/spec/blob/main/buildpack.md#requirements)
