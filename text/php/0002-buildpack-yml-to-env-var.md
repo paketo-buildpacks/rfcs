@@ -76,30 +76,6 @@ php:
  serveradmin: admin@localhost
 ```
 
-### `BP_REDIS_SESSION_STORE_SERVICE_NAME`
-```shell
-$BP_REDIS_SESSION_STORE_SERVICE_NAME="redis-session"
-```
-
-This will replace the following structure in `buildpack.yml`:
-```yaml
-php:
- redis:
-   session_store_service_name: redis-sessions
-```
-
-### `BP_MEMCACHED_SESSION_STORE_SERVICE_NAME`
-```shell
-$BP_MEMCACHED_SESSION_STORE_SERVICE_NAME="memcached-session"
-```
-
-This will replace the following structure in `buildpack.yml`:
-```yaml
-php:
- memcached:
-   session_store_service_name: memcached-sessions
-```
-
 ### Configuration Removal
 The following structure in `buildpack.yml` will not be receiving an environment
 variable configuration option:
@@ -114,6 +90,17 @@ the Procfile buildpack will be added to all order groupings. Because of this
 addition I am proposing the removal of this configuration option in the
 environment variables in favor of encouraging users to use a Procfile if they
 need to set a custom start script.
+
+```yaml
+php:
+ redis:
+   session_store_service_name: redis-sessions
+ memcached:
+   session_store_service_name: memcached-sessions
+```
+Both of these configuration options are going to be replaced with standardized
+service binding types. The types will be `php-redis-session` and
+`php-memcached-session` respectively.
 
 ---
 The proposed environment variables for Composer are as follows:
@@ -190,16 +177,15 @@ composer:
 ---
 
 ### Deprecation Strategy
-In order to facilitate a smooth transition from `buildpack.yml`, the buildpack
-should will support both configuration options with environment variables
-taking priority or `buildpack.yml` until the 1.0 release of the buildpack. The
-buildpack will detect whether or not the application has a `buildpack.yml` and
-print a warning message which will include links to documentation on how to
-upgrade and how to run builds with environment variable configuration. After
-1.0, having a `buildpack.yml` will cause a detection failure and with a link to
-the same documentation. This behavior will only last until the next minor
-release of the buildpack after which point there will no longer be and error
-but `buildpack.yml` will not be supported.
+
+A deprecation warning will be added warning users that support for
+`buildpack.yml` will be removed in the next major version in favor of
+environment variable configuration.A deprecation warning will be added warning
+users that support for `buildpack.yml` will be removed in the next major
+version in favor of environment variable configuration. Once the major bump
+does occur, the buildpack should fail applications that still have a
+`buildpack.yml` until the next minor release to ensure that people are
+migrating to the environment variable configuration.
 
 ## Source Material
 * [Google buildpack configuration](https://github.com/GoogleCloudPlatform/buildpacks#language-idiomatic-configuration-options)
@@ -211,12 +197,6 @@ but `buildpack.yml` will not be supported.
 ## Unresolved Questions and Bikeshedding
 
 - Are there any environment variable names that are out of place?
-- Are `BP_MEMCACHED_SESSION_STORE_SERVICE_NAME` and
-  `BP_REDIS_SESSION_STORE_SERVICE_NAME` okay to not be PHP tagged? It gives
-  them extensibility for future implementations that may want to use Redis or
-  Memcached but is that safe or wise?
-- Is it ok to end support for the scripts configuration for environment
-  variables?
 - Should we remove the `BP_PHP_SERVER` configuration in favor a multi-buildpack
   build as outlined in [this comment thread](https://github.com/paketo-buildpacks/php/issues/472)
   on the issue for this RFC.
