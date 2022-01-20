@@ -9,7 +9,7 @@ Add the ability to supply credentials to the Git buildpack that will be used by
 ## Motivation
 
 There are some operations, such as obtaining private language modules, that
-require `git` authentication during the build process. Currently there is now
+require `git` authentication during the build process. Currently there is no
 way of authenticating as a user to enable these workflows. Adding this
 functionality to the Git buildpack would open up a wider range of workflows
 than adding the functionality on an individual buildpack basis and make the
@@ -44,7 +44,7 @@ password=some-password/token
 
 For every service binding the following `git` command will be run:
 ```shell
-git config --global credential.{{context.}}helper "!cat path/to/binding/credentials"
+git config --global credential.{{context}}.helper "!cat path/to/binding/credentials"
 ```
 This command will add the following to the global `git` config:
 ```shell
