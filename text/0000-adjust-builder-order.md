@@ -40,7 +40,7 @@ Moves to be just before
 
 This will enable other buildpacks to detect before Node.js, that way if you have frontend and backend code in the same application then the correct buildpack will be selected.
 
-The chagne to the order will not impact applications that only build using a single language family.
+The change to the order will not impact applications that only build using a single language family.
 
 The potential danger with this change would be if there are Node.js applications which also include code from other language families. For example, if a Node.js application also included Python code or Ruby code.
 
