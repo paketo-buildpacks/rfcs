@@ -18,7 +18,7 @@ the Python buildpack should contain:
   * requires: `cpython`, `pip`, and `poetry` during `build`
 
 * `poetry-run`
-  * provides: 
+  * provides:
   * requires: `cpython`, `pip`, `poetry`, and `poetry-venv` during `build`
 ```
 
@@ -29,7 +29,7 @@ The following order grouping should be added to the Python buildpack:
 
   [[order.group]]
     id = "paketo-buildpacks/cpython"
-    
+
   [[order.group]]
     id = "paketo-buildpacks/pip"
 
@@ -150,28 +150,3 @@ process type in a Procfile.
 - The Miniconda buildpack downloads an installation script which installs
   `conda` [RFC000X]. To support this change, `packit` was modified to handle
   downloading text files/scripts as dependency.
-
-
-## Unresolved Questions and Bikeshedding
-
-- Where will packages be installed?
-    - It does not seem that installing to a custom directory is officially
-      supported yet. (Poetry Issues:
-      [#2003](https://github.com/python-poetry/poetry/issues/2003) &
-      [#1937](https://github.com/python-poetry/poetry/issues/1937))
-
-- What steps are needed to enable caching with poetry?
-
-  - In the Node.js buildpack, npm-install runs the dependency installation
-    process from the working directory and moves the resulting files into a
-    separate layer. This new location is subsequently symlinked to the relevant
-    path within the working directory. This approach could be reused in the
-    poetry-install buildpack.
-
-  - How does the native poetry cache interact with buildpack caching?
-
-- Should there be a poetry-run-script buildpack?
-
-## Future Topics
-
-- Should `poetry-install` provide `site-packages`?
