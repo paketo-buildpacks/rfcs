@@ -127,22 +127,6 @@ This will replace the following structure in `buildpack.yml`:
 composer:
   install_options: ["--no-dev", "--prefer-install=auto"]
 ```
-### `BP_COMPOSER_VENDOR_DIR`
-```shell
-$BP_COMPOSER_VENDOR_DIR="vendor"
-```
-
-Note: The value of this environment variable will be used to set
-[`$COMPOSER_VENDOR_DIR`](https://getcomposer.org/doc/03-cli.md#composer-vendor-dir)
-therefore if a user attempts to set this value themselves as well as set the
-value of `$BP_COMPOSER_VENDOR_DIR` the value of `$COMPOSER_VENDOR_DIR` will be
-overwritten resulting in potentially unexpected behavior.
-
-This will replace the following structure in `buildpack.yml`:
-```yaml
-composer:
-  vendor_directory: vendor
-```
 ### `BP_COMPOSER_GLOBAL_INSTALL_OPTIONS`
 ```shell
 $BP_COMPOSER_GLOBAL_INSTALL_OPTIONS="--only-name --type"
@@ -157,8 +141,8 @@ composer:
 ```
 
 ### Configuration Removal
-The following structure in `buildpack.yml` will not be receiving an environment
-variable configuration option:
+The following structure in `buildpack.yml` will not be receiving a buildpack
+specific environment variable configuration option:
 ```yaml
 composer:
   json_path: composer
@@ -167,6 +151,21 @@ This structure is effectively performing the function of the
 [`$COMPOSER`](https://getcomposer.org/doc/03-cli.md#composer) environment
 variable that is natively supported by `composer`. Therefore the structure is
 being removed in favor of the native solution.
+
+The following structure in `buildpack.yml` will not be receiving a buildpack
+specific environment variable configuration option:
+```yaml
+composer:
+  vendor_directory: vendor
+```
+If the user would like to set a custom `composer` vendoring location they can
+use the
+[`$COMPOSER_VENDOR_DIR`](https://getcomposer.org/doc/03-cli.md#composer-vendor-dir)
+environment variable native to `composer`.
+Note:
+The value of `$COMPOSER_VENDOR_DIR` will be modified by the buildpack in order
+to set up efficient caching; these changes will be logged for the user to
+observe and will also be documented.
 
 ---
 
