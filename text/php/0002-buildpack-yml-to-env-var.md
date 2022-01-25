@@ -189,7 +189,6 @@ migrating to the environment variable configuration.
 
 ## Unresolved Questions and Bikeshedding
 
-- Are there any environment variable names that are out of place?
 - Should we remove the `BP_PHP_SERVER` configuration in favor a multi-buildpack
   build as outlined in [this comment thread](https://github.com/paketo-buildpacks/php/issues/472)
   on the issue for this RFC.
