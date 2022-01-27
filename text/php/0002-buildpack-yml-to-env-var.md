@@ -76,6 +76,17 @@ php:
  serveradmin: admin@localhost
 ```
 
+### `BP_PHP_ENABLE_HTTPS_REDIRECT`
+```shell
+$BP_PHP_ENABLE_HTTPS_REDIRECT="true"
+```
+
+This will replace the following structure in `buildpack.yml`:
+```yaml
+php:
+ enable_https_redirect: true
+```
+
 ### Configuration Removal
 The following structure in `buildpack.yml` will not be receiving an environment
 variable configuration option:
