@@ -27,12 +27,32 @@ order groupings list to enable this outcome.
 
 ## Rationale and Alternatives
 
+### Alternative: Do nothing
+
 We could choose not to directly support this through a language family
 buildpack. In fact, we tell users today that want to build this type of
-application that it can be acheived manually using the consituent pieces of the
+application that it can be achieved manually using the consituent pieces of the
 Node.js buildpack and a web server. Based on the continued requests for
 first-class support of this type of application, it is clear that we would be
 missing an obvious user need.
+
+### Alternative: Include this in the Node.js Buildpack
+
+We could include this group ordering in the Node.js buildpack itself. However,
+this starts to muddy the waters of what a Node.js application is. The Node.js
+buildpack is purpose built to support applications that run `node` inside the
+container. This is commonly a backend server application, but could also be
+something like a React server that is acting in both a backend and frontend
+capacity. Either way, the image that gets built contains `node`.
+
+In the proposed usecase, `node` is really just needed during the build process
+to convert some JavaScript into a bundled static file that is then served by a
+web server. This type of application is a pattern that can be found in a number
+of language ecosystems beyond just Node.js. For example, Hugo (Go), Jekyll
+(Ruby), MkDocs (Python), and mdBook (Rust) all provide a similar process to
+convert some intermediate development files into a set of static assets to be
+served by a web server. In the future, it may make sense to include optimized
+buildpack groups to support these other toolkits as well.
 
 ## Implementation
 
