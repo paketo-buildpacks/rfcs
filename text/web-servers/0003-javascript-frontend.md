@@ -90,6 +90,37 @@ following order groupings:
 
   [[order.group]]
     id = "paketo-buildpacks/nginx"
+
+[[order]]
+
+  [[order.group]]
+    id = "paketo-buildpacks/node-engine"
+
+  [[order.group]]
+    id = "paketo-buildpacks/yarn"
+
+  [[order.group]]
+    id = "paketo-buildpacks/yarn-install"
+
+  [[order.group]]
+    id = "paketo-buildpacks/node-run-script"
+
+  [[order.group]]
+    id = "paketo-buildpacks/httpd"
+
+[[order]]
+
+  [[order.group]]
+    id = "paketo-buildpacks/node-engine"
+
+  [[order.group]]
+    id = "paketo-buildpacks/npm-install"
+
+  [[order.group]]
+    id = "paketo-buildpacks/node-run-script"
+
+  [[order.group]]
+    id = "paketo-buildpacks/httpd"
 ```
 
 In order to detect either of these groups, users will need an application that
@@ -97,8 +128,9 @@ is using either NPM or Yarn to install their packages. These are detected by
 the presence of a `package.json` or `yarn.lock` file. Additionally, users will
 need to specify the `BP_NODE_RUN_SCRIPTS` environment variable indicating how
 to go about building their application. Finally, users will need to include an
-`nginx.conf` file that is configured to serve the build result static files.
+`nginx.conf` or `httpd.conf` file that is configured to serve the build result
+static files.
 
 ## Unresolved Questions and Bikeshedding
 
-* Should we support more than just `nginx` as the web server?
+* What does this mean for this buildpack's position in the builder?
