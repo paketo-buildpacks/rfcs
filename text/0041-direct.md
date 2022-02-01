@@ -1,4 +1,4 @@
-# Use direct processes and exec.d
+# Use Direct Processes and exec.d
 
 ## Summary
 
@@ -18,7 +18,6 @@ As of Buildpacks [RFC 0093](https://github.com/buildpacks/rfcs/blob/main/text/00
 
 Because of all of the reasons above and others listed in Buildpacks [RFC 0093](https://github.com/buildpacks/rfcs/blob/main/text/0093-remove-shell-processes.md), we should try to move away from any shell specific interfaces.
 
-
 ## Rationale and Alternatives
 
 Rationale per above.
@@ -29,11 +28,8 @@ Alternatives - keep using shell specific interfaces until they are deprecated.
 
 The migration path should be relatively easy and most `profile.d` scripts can be easily turned into `exec.d` scripts. Some more details can be found [here](https://github.com/buildpacks/rfcs/blob/main/text/0093-remove-shell-processes.md#layerprofiled)
 
-
 ## Prior Art
 
 - Most libpak based buildpacks already use exec.d interfaces and `direct = true` process types.
 
 ## Unresolved Questions and Bikeshedding
-
-TBD
