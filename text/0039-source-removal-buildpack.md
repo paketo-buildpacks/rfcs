@@ -35,7 +35,7 @@ ecosystem and as needed by particular users.
 ## Implementation
 
 Currently ForestEckhardt's Source Removal buildpack always passes detection and
-has three actions.
+has four actions.
 
 1. If no configuration is set (i.e. `BP_INCLUDE_FILES` and `BP_EXCLUDE_FILES`
    are not set), then all the content of the `workspace` will be deleted.
@@ -43,19 +43,14 @@ has three actions.
    pattern globs specified in the environment variables will be deleted.
 3. If `BP_EXCLUDE_FILES` is set, then all files that **do** match the pattern
    globs specified in the environment variables will be deleted.
+4. If `BP_INCLUDE_FILES` is set and `BP_EXCLUDE_FILES` is set, then firstly all
+   files that **do not** match the pattern globs specified in the environment
+   variables will be deleted, secondly all files that **do** match the pattern
+   globs specified in the environment variables will be deleted in that order.
 
 This buildpack would fall under the Utility Teams maintainership.
-
 
 ## Prior Art
 
 - [Paketo Go Build Buildpack](https://github.com/paketo-buildpacks/go-build/blob/main/source_deleter.go)
 - [Google Clear Source](https://github.com/GoogleCloudPlatform/buildpacks/blob/main/pkg/clearsource/clearsource.go)
-
-## Unresolved Questions and Bikeshedding
-
-- Should we promote directly into the `paketo-buildpacks` organization?
-
-{{REMOVE THIS SECTION BEFORE RATIFICATION!}}
-
-
