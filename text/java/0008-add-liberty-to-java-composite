@@ -1,0 +1,46 @@
+# Add open liberty buildpack to the Java buildpack
+
+## Summary
+
+[RFC 0031](https://github.com/paketo-buildpacks/rfcs/blob/main/text/0031-liberty-buildpack.md) is currently being implemented.   The liberty runtime is an application server similar to tomcat.  This RFC proposes
+to add the open liberty buildpack to the Java buildpack as an alternate app server.  
+
+## Motivation
+
+There are a few motivations for this change:
+
+1. The Open Liberty buildpack is not available out-of-the-box and requires manual steps to create a builder or project to use it. 
+2. Including the open liberty buildpack in the composite java buildpack will make it easier for customers to find and use.  
+3. Other application servers can be added to the Java buildpack.
+
+## Detailed Explanation
+
+Currently, the Java buildpack only contributes tomcat.  There is interest in the community for support for other java application servers.  We can provide a more well-rounded java buildpack, and generate more
+interest in Paketo cloud native buildpacks if we can make it easier for user to use other java application servers.  
+
+## Rationale and Alternatives
+
+Alternatives:
+
+- Do nothing. Users of the open liberty buildpack will have to manually create a builder and/or project.
+- Create a new composite buildpack (was in the origin liberty buildpack RFC)
+
+## Implementation
+
+We can introduce a new optional environment variable `BP_APPLICATION_SERVER` to specify what app server the user would like the Java buildpack to contribute.  The detect method in each buildpack will validate itself
+against the value of `BP_APPLICATION_SERVER` and contribute if it matches.   A default app server should be defined(tomcat?).
+
+| App server         | tag          | Notes                                                                                |
+| ------------       | ------------ | ------------------------------------------------------------------------------------ |
+| tomcat             | tomcat       |  tomcat buildpack                                                                    |
+| open liberty       | ol           |  open liberty buildpack 															   |
+| websphere liberty  | wlp			|  open liberty buildpack															   |
+| tomcatee           | tomcatee     |  future tomcatee buildpack														   |
+
+## Prior Art
+
+- None
+
+## Unresolved Questions and Bikeshedding
+
+- None
