@@ -29,7 +29,7 @@ requires specifying a buildpack manually.
 
 ## Implementation
 
-In addition to the current criteria for each buildpack, the detect method will also validate itself against the value of `BP_APPLICATION_SERVER` and contribute only if it matches. 
+In addition to the current criteria for each buildpack, the detect method will also validate itself against the value of `BP_JAVA_APP_SERVER` and contribute only if it matches. 
 Tomcat will remain the default application server.
 
 | App server         | tag          	| Buildpack                             |
