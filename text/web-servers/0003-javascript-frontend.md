@@ -130,7 +130,3 @@ need to specify the `BP_NODE_RUN_SCRIPTS` environment variable indicating how
 to go about building their application. Finally, users will need to include an
 `nginx.conf` or `httpd.conf` file that is configured to serve the build result
 static files.
-
-## Unresolved Questions and Bikeshedding
-
-* What does this mean for this buildpack's position in the builder?
