@@ -33,7 +33,16 @@ ecosystem and as needed by particular users.
   benefit from such functionality.
 
 ## Implementation
+The Rust Buildpacks will be moved into the `paketo-buildpacks` Github
+organization and become a part of the Utility sub-team.
 
+The following changes will be made:
+- [Source Removal CNB](https://github.com/ForestEckhardt/source-removal) moved to Paketo
+- Buildpack will have `paketo-buildpacks/source-removal` ID
+- Buildpack will be published to `paketobuildpacks/source-removal`
+
+
+### Current Implementation of ForestEckhardt Source Removal Buildpack
 Currently ForestEckhardt's Source Removal buildpack always passes detection and
 has four actions.
 
@@ -47,8 +56,6 @@ has four actions.
    files that **do not** match the pattern globs specified in the environment
    variables will be deleted, secondly all files that **do** match the pattern
    globs specified in the environment variables will be deleted in that order.
-
-This buildpack would fall under the Utility Teams maintainership.
 
 ## Prior Art
 
