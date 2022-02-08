@@ -33,8 +33,9 @@ ecosystem and as needed by particular users.
   benefit from such functionality.
 
 ## Implementation
-The Rust Buildpacks will be moved into the `paketo-buildpacks` Github
-organization and become a part of the Utility sub-team.
+ForestEckhardt's Source Removal buildpack will be moved into the
+`paketo-buildpacks` Github organization and become a part of the Utility
+sub-team.
 
 The following changes will be made:
 - [Source Removal CNB](https://github.com/ForestEckhardt/source-removal) moved to Paketo
