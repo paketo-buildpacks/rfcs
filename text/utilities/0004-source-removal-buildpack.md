@@ -16,7 +16,7 @@ a potential security risk. In order to currently accomplish this, any buildpack
 that wants to remove source code must have logic to remove it from the
 `workspace` so that it does not appear in the final image, however this task is
 complicated because often times there are static files that are required for
-the app to run that should no be deleted from the `workspace`. This leads to
+the app to run that should not be deleted from the `workspace`. This leads to
 multiple implementations of non-trivial file removal logic across different
 buildpacks.
 
