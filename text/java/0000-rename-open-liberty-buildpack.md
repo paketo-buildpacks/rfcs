@@ -2,14 +2,14 @@
 
 ## Summary
 
-The `open-liberty` buildpack can contribute either the Open Liberty or Websphere Liberty runtime.  To avoid confusion the buildpack should simply be named `liberty`.
+The `open-liberty` buildpack can utilize either the Open Liberty or Websphere Liberty runtime.  To avoid confusion the buildpack should simply be named `liberty`.
 
 ## Motivation
 
 There are a few motivations for this change:
 
-1. The open-liberty buildpack name is misleading because the buildpack can contribute Open Liberty or WebSphere Liberty.  
-2. Avoid confusion on what the buildpack contributes.
+1. The open-liberty buildpack name is misleading because the buildpack can utilize Open Liberty or WebSphere Liberty.  
+2. Avoid confusion on the buildpack capabilities.
 3. The buildpack has not been released as 1.0, and is not included in a composite buildpack or builder so a name change now will have minimal impact.  
 
 ## Detailed Explanation
@@ -34,7 +34,8 @@ Alternatives:
 
 ## Prior Art
 
-- None
+- The Java-related buildpacks tend to pick names that represent the tool wrapped by the buildpack (Maven, Tomcat, Spring Boot, etc...). 
+Dropping `open-` from the name keeps us in line with that naming strategy, in fact probably more accurately follows it.
 
 ## Unresolved Questions and Bikeshedding
 
