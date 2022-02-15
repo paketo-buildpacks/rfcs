@@ -57,6 +57,7 @@ Updates to buildpack dependencies will be provided by the [tomee-dependency acti
 
 ## Unresolved Questions and Bikeshedding
 
-* What are the API specifications for the automation tooling to check for new releases and create a PR? 
+* Are 12 versions of Tomee too much?
+* POC - https://github.com/garethjevans/apache-tomee
 
 {{REMOVE THIS SECTION BEFORE RATIFICATION!}}
