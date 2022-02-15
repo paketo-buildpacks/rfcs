@@ -59,5 +59,6 @@ Updates to buildpack dependencies will be provided by the [tomee-dependency acti
 
 * Are 12 versions of Tomee too much?
 * POC - https://github.com/garethjevans/apache-tomee
+* `flavour`, `flavor` or something else?
 
 {{REMOVE THIS SECTION BEFORE RATIFICATION!}}
