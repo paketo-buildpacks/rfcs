@@ -31,8 +31,7 @@ will not enumerate these options.
 ## Rationale and Alternatives
 
 ### Why not Staticfile?
-This proposal sounds a lot like what the existing Staticfile buildpack is
-already doing, allowing users to indicate that they would like a simple
+This proposal sounds a lot like what the [community Staticfile buildpack](https://github.com/paketo-community/staticfile) does, allowing users to indicate that they would like a simple
 configuration for the web server of their choice generated at build time to
 serve their static files.
 
