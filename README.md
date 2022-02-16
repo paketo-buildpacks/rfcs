@@ -18,6 +18,7 @@
 * [0039: Semantic Versioning in Tags for Buildpacks](./text/0039-semantic-version-tags.md)
 * [0040: Auto-generate Reference Documentation](./text/0040-auto-reference-docs.md)
 * [0041: Use Direct Processes and exec.d](./text/0041-direct.md)
+* [0042: Adjust Builder Order](./text/0042-adjust-builder-order.md)
 
 ## Implemented RFCs
 
