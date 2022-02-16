@@ -34,7 +34,7 @@ Other alternatives could be to enhance the existing tomcat buildpack with the op
 
 ## Implementation
 
-The buildpack.toml will include 12 versions of Apache Tomee. There are three active major version streams `7`, `8` & `9`. Each releasing 4 different flavours 
+The buildpack.toml will include 12 versions of Apache Tomee. There are three active major version streams `7`, `8` & `9`. Each releasing 4 different distributions 
 of Apache Tomee: `webprofile`, `microprofile`, `plus` and `plume`.
   
 Apache Tomee released under the [Apache License - v2](https://github.com/apache/tomee/blob/master/LICENSE) and will be included in the buildpack.toml.
@@ -48,7 +48,7 @@ Our intent is to provide a similar configuration as [Apache Tomcat](https://gith
 
 Available configuration environment variables include:
 * `BP_TOMEE_VERSION` - The specific version of Apache Tomee in the form x.x.x (example 7.1.4) or `Y.*` where Y is the major version. Default `8.*`
-* `BP_TOMEE_FLAVOUR` - The flavour of Apache Tomee to install, can be one of `webprofile`, `microprofile`, `plus` or `plume`. Default `webprofile`
+* `BP_TOMEE_DISTRIBUTION` - The distribution of Apache Tomee to install, can be one of `webprofile`, `microprofile`, `plus` or `plume`. Default `webprofile`
 * `BP_TOMEE_CONTEXT_PATH` - The context path to run the application at. Defaults to ROOT
 * `BP_TOMEE_EXT_CONF_SHA256`, `BP_TOMEE_EXT_CONF_STRIP`, `BP_TOMEE_EXT_CONF_URI` & `BP_TOMEE_EXT_CONF_VERSION` - Options to allow a configuration overlay, follows the same pattern as Apache Tomcat.
 * `BP_TOMEE_ACCESS_LOGGING_ENABLED` - Enable the access logging, follows the same pattern as Apache Tomcat. 
@@ -59,6 +59,5 @@ Updates to buildpack dependencies will be provided by the [tomee-dependency acti
 
 * Are 12 versions of Tomee too much?
 * POC - https://github.com/garethjevans/apache-tomee
-* `flavour`, `flavor` or something else?
 
 {{REMOVE THIS SECTION BEFORE RATIFICATION!}}
