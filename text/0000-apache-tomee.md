@@ -57,7 +57,7 @@ Updates to buildpack dependencies will be provided by the [tomee-dependency acti
 
 ## Unresolved Questions and Bikeshedding
 
-* Are 12 versions of Tomee too much?
+* Are 12 versions of Tomee too much? We could start with `webprofile` and add more if there is a need.
 * POC - https://github.com/garethjevans/apache-tomee
 
 {{REMOVE THIS SECTION BEFORE RATIFICATION!}}
