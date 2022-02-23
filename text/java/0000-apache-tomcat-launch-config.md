@@ -33,13 +33,20 @@ The resource configuration is static apart from the `url`, `username` and `passw
 
 ## Rationale and Alternatives
 
-TODO
-{{Discuss 2-3 different alternative solutions that were considered. This is required, even if it seems like a stretch. Then explain why this is the best choice out of available ones.}}
+It is possible to use `BPE_*` parameters with the [environment variables buildpack](https://github.com/paketo-buildpacks/environment-variables), these are written into the image at buildtime.
+
+These values could also be configured by updating `JAVA_TOOL_OPTIONS` variable, but this can be quite cumbersome and error prone if there are multiple values to configure, or if this env var already
+contains configuration.
 
 ## Implementation
 
 The implementation will add a helper to the tomcat buildpack that will look for launch variables named `BPL_TOMCAT_ENV_*`, e.g. `BPL_TOMCAT_ENV_POSTGRES_URL`, the helper 
 will take that variable, convert it to the system property `postgres.url` and append it to the environment variable `JAVA_TOOL_OPTIONS`.
+
+Pseudocode:
+```
+	systemProperty = envVar.removePrefix('BPL_TOMCAT_ENV_').toLowerCase().replaceAll('_', '.')
+```
 
 ## Prior Art
 
@@ -47,6 +54,7 @@ At present we've not found anything similar to this.
 
 ## Unresolved Questions and Bikeshedding
 
-* Sensitive variables may be exposed in the application logs.
+* Sensitive variables may be exposed in the application logs. We should ensure that `JAVA_TOOL_OPTIONS` is not logged, or is masked.
+* The (proposed) Apache Tomee buildpack would also benefit from supporting this.
 
 {{REMOVE THIS SECTION BEFORE RATIFICATION!}}
