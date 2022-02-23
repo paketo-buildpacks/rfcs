@@ -55,9 +55,14 @@ Available configuration environment variables include:
 
 Updates to buildpack dependencies will be provided by the [tomee-dependency action](https://github.com/paketo-buildpacks/pipeline-builder/tree/main/actions/tomee-dependency).
 
+### Implementation on Tiny
+
+As tiny does not contain a shell, the standard startup proceedure using `catalina.sh` will not work. For the initial implementation we will attempt to support tiny by using a similar method to the
+[tomcat on tiny](https://github.com/paketo-buildpacks/apache-tomcat/blob/8a88778c14dd2ed6a8fd632b339c4cb39cdce49d/tomcat/build.go#L179-L206) startup proceedure.
+
 ## Unresolved Questions and Bikeshedding
 
-* Are 12 versions of Tomee too much? We could start with `webprofile` and add more if there is a need.
-* POC - https://github.com/garethjevans/apache-tomee
+None
 
-{{REMOVE THIS SECTION BEFORE RATIFICATION!}}
+## POC
+* https://github.com/garethjevans/apache-tomee
