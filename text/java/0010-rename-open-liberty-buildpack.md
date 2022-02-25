@@ -1,4 +1,4 @@
-# Rename open liberty buildpack to liberty
+# Rename Open Liberty buildpack to Liberty
 
 ## Summary
 
