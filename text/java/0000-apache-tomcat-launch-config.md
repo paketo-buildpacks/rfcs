@@ -41,12 +41,21 @@ contains configuration.
 ## Implementation
 
 The implementation will add a helper to the tomcat buildpack that will look for launch variables named `BPL_TOMCAT_ENV_*`, e.g. `BPL_TOMCAT_ENV_POSTGRES_URL`, the helper 
-will take that variable, convert it to the system property `postgres.url` and append it to the environment variable `JAVA_TOOL_OPTIONS`.
+will take that variable, convert it to the system property `postgres.url` and append it to tomcat/tomee startup procedure.
 
 Pseudocode:
 ```
 	systemProperty = envVar.removePrefix('BPL_TOMCAT_ENV_').toLowerCase().replaceAll('_', '.')
 ```
+
+In order to avoid any potentially sensitive variables from being logged on startup via `JAVA_TOOL_OPTIONS`, we will write the new properties to end of the file `catalina.properties`.
+
+### Configuration from Bindings
+
+It would also be beneficial to support the setting of the system properties from a binding.  In this approach there are two possible options we would look at:
+
+1) Where the binding value is to be used directly.
+2) Where the binding value specifies a path that should be used.
 
 ## Prior Art
 
@@ -54,7 +63,6 @@ At present we've not found anything similar to this.
 
 ## Unresolved Questions and Bikeshedding
 
-* Sensitive variables may be exposed in the application logs. We should ensure that `JAVA_TOOL_OPTIONS` is not logged, or is masked.
 * The (proposed) Apache Tomee buildpack would also benefit from supporting this.
 
 {{REMOVE THIS SECTION BEFORE RATIFICATION!}}
