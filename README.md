@@ -12,7 +12,6 @@
 * [0031: Liberty Buildpack](./text/0031-liberty-buildpack.md)
 * [0032: Reloadable Process Types](./text/0032-reloadable-process-types.md)
 * [0033: Implement a Bill of Materials Across Paketo](./text/0033-bill-of-materials.md)
-* [0035: Python Paketo Buildpack Promotion](./text/0035-python-promotion.md)
 * [0037: Remote Debug](./text/0037-remote-debug.md)
 * [0038: Support for CycloneDX and Syft SBoM](./text/0038-cdx-syft-sbom.md)
 * [0039: Semantic Versioning in Tags for Buildpacks](./text/0039-semantic-version-tags.md)
@@ -44,6 +43,7 @@
 * [0029: Semantic Versioning of Buildpacks and Builders](./text/0029-semantic-versioning.md)
 * [0030: Buildpackless Builders](./text/0030-buildpackless-builders.md)
 * [0034: Update Hash Field in Bill of Materials](./text/0034-hash-field-bom.md)
+* [0035: Python Paketo Buildpack Promotion](./text/0035-python-promotion.md)
 * [0036: Explorations Repository](./text/0036-explorations.md)
 
 ## Superseded RFCs
