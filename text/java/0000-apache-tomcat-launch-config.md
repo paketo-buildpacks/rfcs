@@ -57,6 +57,7 @@ It would also be beneficial to support the setting of the system properties from
 1) Where the binding value is to be used directly.
 2) Where the binding value specifies a path that should be used.
 
+The binding would be set by a user at runtime only.
 ## Prior Art
 
 At present we've not found anything similar to this.
