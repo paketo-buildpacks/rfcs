@@ -40,24 +40,28 @@ contains configuration.
 
 ## Implementation
 
-The implementation will add a helper to the tomcat buildpack that will look for launch variables named `BPL_TOMCAT_ENV_*`, e.g. `BPL_TOMCAT_ENV_POSTGRES_URL`, the helper 
-will take that variable, convert it to the system property `postgres.url` and append it to tomcat/tomee startup procedure.
+### At build time:
+
+* Make a temp directory
+* Copy `$CATALINA_HOME/conf/catalina.properties` to the <temp dir>
+* Ensure that `<temp dir>/catalina.properties` is group writable
+* Pass the `<temp dir>/catalina.properties` location through to the launch time via an env variable `BPI_CATALINA_CONFIG`
+
+### At launch time:
+
+* Read the location of the `<temp dir>/catalina.properties`
+* Read from all bindings and append values to `tmp-dir/catalina.properties.`
+* Read from all environment variables named `BPL_TOMCAT_ENV_*` and append values to `tmp-dir/catalina.properties.`
+* Append `-Dcatalina.config=file://<tmpdir>/catalina.properties` to `CATALINA_OPTS`
+
+
+The process of taking an enviromnent variable and converting it to a system property will be as follows:
 
 Pseudocode:
 ```
 	systemProperty = envVar.removePrefix('BPL_TOMCAT_ENV_').toLowerCase().replaceAll('_', '.')
 ```
 
-In order to avoid any potentially sensitive variables from being logged on startup via `JAVA_TOOL_OPTIONS`, we will write the new properties to end of the file `catalina.properties`.
-
-### Configuration from Bindings
-
-It would also be beneficial to support the setting of the system properties from a binding.  In this approach there are two possible options we would look at:
-
-1) Where the binding value is to be used directly.
-2) Where the binding value specifies a path that should be used.
-
-The binding would be set by a user at runtime only.
 ## Prior Art
 
 At present we've not found anything similar to this.
