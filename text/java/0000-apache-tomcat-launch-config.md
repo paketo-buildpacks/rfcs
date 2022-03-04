@@ -43,7 +43,7 @@ contains configuration.
 ### At build time:
 
 * Make a temp directory
-* Copy `$CATALINA_HOME/conf/catalina.properties` to the <temp dir>
+* Copy `$CATALINA_HOME/conf/catalina.properties` to the `<temp dir>`
 * Ensure that `<temp dir>/catalina.properties` is group writable
 * Pass the `<temp dir>/catalina.properties` location through to the launch time via an env variable `BPI_CATALINA_CONFIG`
 
