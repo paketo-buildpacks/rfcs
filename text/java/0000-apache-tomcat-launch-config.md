@@ -42,17 +42,14 @@ contains configuration.
 
 ### At build time:
 
-* Make a temp directory
-* Copy `$CATALINA_HOME/conf/catalina.properties` to the `<temp dir>`
-* Ensure that `<temp dir>/catalina.properties` is group writable
-* Pass the `<temp dir>/catalina.properties` location through to the launch time via an env variable `BPI_CATALINA_CONFIG`
+* Copy the included `resources/catalina.properties` into `$CATALINA_BASE/conf/catalina.properties`
+* Ensure that `$CATALINA_BASE/conf/catalina.properties` is group writable
 
 ### At launch time:
 
-* Read the location of the `<temp dir>/catalina.properties`
-* Read from all bindings and append values to `tmp-dir/catalina.properties.`
-* Read from all environment variables named `BPL_TOMCAT_ENV_*` and append values to `tmp-dir/catalina.properties.`
-* Append `-Dcatalina.config=file://<tmpdir>/catalina.properties` to `CATALINA_OPTS`
+* Read the location of the `$CATALINA_BASE/conf/catalina.properties` using the `$CATALINA_BASE` env var
+* Read from all bindings and append values to `$CATALINA_BASE/conf/catalina.properties.`
+* Read from all environment variables named `BPL_TOMCAT_ENV_*` and append values to `$CATALINA_BASE/conf/catalina.properties.`
 
 
 The process of taking an enviromnent variable and converting it to a system property will be as follows:
