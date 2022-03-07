@@ -8,19 +8,19 @@ At the moment, the Paketo Project is maintaining images (buildpack, builder, sta
 
 Multiple reasons:
 
-1. It is impractical from a cost and resources perspective for the project to maintain all images throughout the history of time.
+1. It is impractical from a cost and resources perspective for the project to maintain all images throughout the history of time. Time continues on infinitely, and eventually enough resources will accumulate to where this becomes a burden to the project.
 2. It is highly unlikely that images going back to the beginning of the project are still usable. Most buildpacks reference external dependencies and those dependencies may no longer exist.
 3. Older stacks, buildpacks and builder images very likely are full of vulnerable software and should no longer be used.
 4. If users have requirements to retain images for longer periods of time, they can relocate them to their own container image registry before the image retention policy expires the image.
 
 ## Detailed Explanation
 
-This RFC proposes that we retain all images published by the project for at least one year.
+This RFC proposes that we retain all images published by the project for at least two year.
 
 Edge cases:
 
-- If the latest image is older than one year, the project will retain that image until a newer version of the image is published or until the sub-team publishing the image officially retires that project. Images for retired projects will be retained for at least six months from the date the project is retired.
-- Existing images that are older than one year at the time this RFC is approved will be given a 60 day grace period and then deleted.
+- If the latest image is older than two years, the project will retain that image until a newer version of the image is published or until the sub-team publishing the image officially retires that project. Images for retired projects will be retained for at least one year from the date the project is retired.
+- Existing images that are older than two years at the time this RFC is approved will be given a 120 day grace period and then deleted.
 - The project may opt to retain any image for longer periods of time at it's discretion, but does not have any obligation to do so.
 
 An announcment will be made through Slack and the project Blog so that users can prepare for this change.
@@ -49,4 +49,4 @@ None. We have been retaining images back to the projects beginning.
 
 ## Unresolved Questions and Bikeshedding
 
-1. Is one year the right retention period? Longer? Shorter? The general idea is that we pick a period of time that minimizes impact to users but maximizes the amount of stuff we can delete.
+1. Is two years the right retention period? Longer? Shorter? The general idea is that we pick a period of time that minimizes impact to users. We want the time period to be such that at least 99% of users are no longer using these images. We are not strictly looking to minimize costs, but just put an upper bound on what the project needs to support.
