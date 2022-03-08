@@ -73,7 +73,8 @@ same task:
   * requires: none
 
   This buildpack generates `httpd.conf`. Users need to declare the intention to
-  use httpd.
+  use httpd. The path to the HTTPD configuration will be made available via a
+  shared environment variable `PHP_HTTPD_PATH`.
 
 * **php-nginx**:
   Sets up Nginx configuration to serve PHP applications.
@@ -81,18 +82,25 @@ same task:
   * requires: none
 
   This buildpack generates `nginx.conf`. Users need to declare the intention to
-  use nginx.
+  use nginx. The path to the Nginx configuration will be made available via a
+  shared environment variable `PHP_NGINX_PATH`.
 
 
 * **php-start**:
   Sets the web server start command as well as the FPM start command.
   * provides: none
-  * requires: `php`, `php-fpm` (optional), [`httpd`, and `http-config`] OR
-    [`nginx` and `nginx-config`] at launch
+  * requires: `php`, `php-fpm` (optional), and `httpd-config` at build, and
+    `php-fpm` (optional), `httpd`, and `httpd-config` and launch.
+    OR
+  * requires: `php`, `php-fpm` (optional), and `nginx-config` at build, and
+    `php-fpm` (optional), `nginx`, and `nginx-config` and launch.
 
   This buildpack sets up a start command (type `web`) to run HTTPD or Nginx,
   and potentially FPM in cases where both process should be run in the same
-  container. In the cases where FPM should be run in it's own container, the
+  container. It will use buildpack-set environment variables during build to
+  determine which start command(s) to run.
+
+  In the cases where FPM should be run in it's own container, the
   FPM start command will be delegated to the PHP FPM Buildpack, and PHP Start
   will only start the web-server.
 
