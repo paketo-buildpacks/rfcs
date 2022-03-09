@@ -25,6 +25,8 @@ Edge cases:
 
 An announcment will be made through Slack and the project Blog so that users can prepare for this change.
 
+The approval of a retention policy will not extend the duration of time that we continue publishing images to GCR. Usage of GCR has been deprecated with Paketo buildpacks since [RFC 0015 was accepted](https://github.com/paketo-buildpacks/rfcs/blob/main/text/0015-dockerhub-distribution.md). RFC 0015 and the work around it will determine when the project stops using GCR.
+
 ## Rationale and Alternatives
 
 - Do nothing. Images will accumulate. It will sap project resources.
@@ -50,3 +52,5 @@ None. We have been retaining images back to the projects beginning.
 ## Unresolved Questions and Bikeshedding
 
 1. Is two years the right retention period? Longer? Shorter? The general idea is that we pick a period of time that minimizes impact to users. We want the time period to be such that at least 99% of users are no longer using these images. We are not strictly looking to minimize costs, but just put an upper bound on what the project needs to support.
+
+2. As part of the GCR migration to Docker Hub, there is the question of do we move older images over to Docker Hub? If so, how many? Should this policy be used to answer that question? For example, if the retention policy is two years, would we then be responsible for moving at least two years worth of images over from GCR to Docker Hub?
