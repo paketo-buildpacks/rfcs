@@ -30,7 +30,6 @@ We are proposing the following:
 1. Archive Debug & JMX buildpacks. Remove them from the Java and Java Azure composite buildpacks.
 2. Do not create Java NMT or Java Flight Recorder buildpacks.
 3. Implement Debug, JMX, Java NMT and Java Flight Recorder functionality through libjvm.
-4. Implement an interface in libjvm that is flexible so JVM provider buildpacks can opt-out of any feature their particular JVM does not support. The default will be to support all options.
 
 ## Rationale and Alternatives
 
@@ -55,4 +54,6 @@ There is existing functionality implemented through libjvm.
 
 ## Unresolved Questions and Bikeshedding
 
-N/A
+1. Implement an interface in libjvm that is flexible so JVM provider buildpacks can opt-out of any feature their particular JVM does not support. The default will be to support all options.
+
+Upon review, step 4 of the implementation would not provide sufficient additional benefit, as all openjdk-based providers support the added features.
