@@ -54,6 +54,6 @@ There is existing functionality implemented through libjvm.
 
 ## Unresolved Questions and Bikeshedding
 
-4. Implement an interface in libjvm that is flexible so JVM provider buildpacks can opt-out of any feature their particular JVM does not support. The default will be to support all options.
+1. Implement an interface in libjvm that is flexible so JVM provider buildpacks can opt-out of any feature their particular JVM does not support. The default will be to support all options.
 
 Upon review, step 4 of the implementation would not provide sufficient additional benefit, as all openjdk-based providers support the added features.
