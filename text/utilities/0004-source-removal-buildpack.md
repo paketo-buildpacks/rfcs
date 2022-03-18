@@ -48,7 +48,7 @@ Currently ForestEckhardt's Source Removal buildpack always passes detection and
 has four actions.
 
 1. If no configuration is set (i.e. `BP_INCLUDE_FILES` and `BP_EXCLUDE_FILES`
-   are not set), then all the content of the `workspace` will be deleted.
+   are not set), then all the content of the `workspace` will be remain intact.
 2. If `BP_INCLUDE_FILES` is set, then all files that **do not** match the
    pattern globs specified in the environment variables will be deleted.
 3. If `BP_EXCLUDE_FILES` is set, then all files that **do** match the pattern
@@ -57,6 +57,10 @@ has four actions.
    files that **do not** match the pattern globs specified in the environment
    variables will be deleted, secondly all files that **do** match the pattern
    globs specified in the environment variables will be deleted in that order.
+
+Both the include and exclude functionality have been extracted into top level
+function `sourceremoval.Include()` and `sourceremoval.Exclude()` meaning that
+the other buildpacks could leverage the logic internally if they so wish.
 
 ## Prior Art
 
