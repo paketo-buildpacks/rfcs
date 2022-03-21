@@ -52,3 +52,12 @@ outputs.
 
 Additionally, when the variable is set, these buildpacks will include the image
 label `io.paketo.sbom.disabled` with a value of `true`.
+
+## Other Notes and Details
+
+In the Buildpacks Spec v0.7/ Platform Spec v0.8, the restorer phase of the
+lifecycle [restores SBOMs from previous
+builds](https://github.com/buildpacks/spec/blob/buildpack/v0.7/platform.md#outputs-2).
+If a layer with an SBOM is restored by the lifecycle and the buildpack chooses
+to reuse that layer, it does not need to explicitly remove that restored SBOM
+from the layer.
