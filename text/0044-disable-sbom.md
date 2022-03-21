@@ -23,6 +23,11 @@ omitted from their output should refrain from generating or attaching an SBOM
 in their outputs. This would apply to both new (Syft, CycloneDX, and SPDX
 formats) and old (label) SBOM outputs.
 
+Additionally, when this variable is set to `true` a buildpack should set an
+image label of `io.paketo.sbom.disabled` to `true`. This label interface would
+allow downstream consumers of the image to understand that SBOM generation had
+been explicitly disabled.
+
 ## Rationale and Alternatives
 
 Alternatively, we could not provide a mechanism to disable SBOM generation.
@@ -44,3 +49,6 @@ Any buildpacks wishing to implement this feature will be required to honor the
 `BP_GENERATE_SBOM` environment variable. When set to `false` these buildpacks
 will neither generate their SBOM documents, nor attach them to any of their
 outputs.
+
+Additionally, when the variable is set, these buildpacks will include the image
+label `io.paketo.sbom.disabled` with a value of `true`.
