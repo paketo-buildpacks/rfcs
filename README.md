@@ -2,7 +2,6 @@
 
 ## Accepted RFCs
 
-* [0006: Web Servers Buildpack Subteam](./text/0006-web-servers.md)
 * [0010: Dependency Mappings](./text/0010-dependency-mappings.md)
 * [0015: Distribute Buildpacks via Docker Hub](./text/0015-dockerhub-distribution.md)
 * [0017: Paketo Community Go HTTP Function Buildpack](./text/0017-go-http-fn.md)
@@ -25,6 +24,7 @@
 * [0002: Paketo Governance](./text/0002-governance.md)
 * [0004: Leiningen (Clojure) Buildpack](./text/0004-clojure.md)
 * [0005: Ruby Paketo Buildpack Promotion](./text/0005-ruby-promotion.md)
+* [0006: Web Servers Buildpack Subteam](./text/0006-web-servers.md)
 * [0007: Paketo Buildpack Naming](./text/0007-buildpack-naming.md)
 * [0008: Paketo Community](./text/0008-paketo-community.md)
 * [0009: Dep Server to provide buildpack dependency metadata](./text/0009-dep-server.md)
