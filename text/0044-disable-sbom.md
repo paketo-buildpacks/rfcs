@@ -46,7 +46,7 @@ flag that worked uniformly across all buildpacks.
 ## Implementation
 
 Any buildpacks wishing to implement this feature will be required to honor the
-`BP_GENERATE_SBOM` environment variable. When set to `false` these buildpacks
+`BP_DISABLE_SBOM` environment variable. When set to `true` these buildpacks
 will neither generate their SBOM documents, nor attach them to any of their
 outputs.
 
