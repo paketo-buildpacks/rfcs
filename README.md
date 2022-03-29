@@ -18,6 +18,7 @@
 * [0041: Use Direct Processes and exec.d](./text/0041-direct.md)
 * [0042: Adjust Builder Order](./text/0042-adjust-builder-order.md)
 * [0043: Expanding the Criteria for Reproducible Builds](./text/0043-reproducible-builds.md)
+* [0044: Provide Global Mechanism to Disable SBOM Generation](./text/0044-disable-sbom.md)
 
 ## Implemented RFCs
 
