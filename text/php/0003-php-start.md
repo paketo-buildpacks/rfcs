@@ -69,7 +69,7 @@ same task:
 
 * **php-httpd**:
   Sets up HTTPD configuration to serve PHP applications.
-  * provides: `httpd-config`
+  * provides: `php-httpd-config`
   * requires: none
 
   This buildpack generates `httpd.conf`. Users need to declare the intention to
@@ -78,7 +78,7 @@ same task:
 
 * **php-nginx**:
   Sets up Nginx configuration to serve PHP applications.
-  * provides: `nginx-config`
+  * provides: `php-nginx-config`
   * requires: none
 
   This buildpack generates `nginx.conf`. Users need to declare the intention to
@@ -89,11 +89,11 @@ same task:
 * **php-start**:
   Sets the web server start command as well as the FPM start command.
   * provides: none
-  * requires: `php`, `php-fpm` (optional), and `httpd-config` at build, and
-    `php-fpm` (optional), `httpd`, and `httpd-config` and launch.
+  * requires: `php`, `php-fpm` (optional), and `php-httpd-config` at build, and
+    `php-fpm` (optional), `httpd`, and `php-httpd-config` and launch.
     OR
-  * requires: `php`, `php-fpm` (optional), and `nginx-config` at build, and
-    `php-fpm` (optional), `nginx`, and `nginx-config` and launch.
+  * requires: `php`, `php-fpm` (optional), and `php-nginx-config` at build, and
+    `php-fpm` (optional), `nginx`, and `php-nginx-config` and launch.
 
   This buildpack sets up a start command (type `web`) to run HTTPD or Nginx,
   and potentially FPM in cases where both process should be run in the same
@@ -191,3 +191,8 @@ of code duplication unaddressed.
 - https://github.com/paketo-buildpacks/php/issues/503
 - [PHP FPM Buildpack](https://github.com/paketo-buildpacks/php-fpm)
 - [Original PHP Web Buildpack](https://github.com/paketo-buildpacks/php-web)
+
+## Edits
+EDIT 03/31/2022: Modify the provision names from the `php-httpd` and
+`php-nginx` buildpacks to include the `php-` prefix to ensure clarity around
+the configuration being PHP-specific.
