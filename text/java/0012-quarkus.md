@@ -1,8 +1,8 @@
 # Quarkus Buildpack
 
 ## Summary
-Lightweight Quarkus Buildpack which would be part of `java` and `java-native-image` group.
-The buildpack would just set environment variables for the `maven`and `native-image` buildpacks.
+Provide a Quarkus Buildpack which will be part of the order groups for `paketo-buildpacks/java` and `paketo-buildpacks/java-native-image`.
+The primary purpose of this buildpack is to environment variables for the `paketo-buildpacks/maven` and `paketo-buildpacks/native-image` buildpacks. Building a Quarkus application is presently possible but requires setting multiple environment variables to properly configure the buildpacks. This proposed buildpack will enable users to build Quarkus applications without additional configuration.
 
 Proof of concept could be found at: [quarkus-bp][b]
 
@@ -32,7 +32,7 @@ The Quarkus Buildpack will be moved into the paketo-buildpacks Github organizati
 The following changes will be made:
 * [Quarkus Buildpack][b] moved to Paketo Buildpacks org
 * The Buildpack will be published to gcr.io/paketo-buildpacks/quarkus
-* The Buildpack will be added to the `java` and `java-native-image` buildpacks groups just before the `maven` buildpack.
+* The Buildpack will be added to the `paketo-buildpacks/java` and `paketo-buildpacks/java-native-image` buildpacks groups just before the `paketo-buildpacks/maven` buildpack.
 
 [b]: https://github.com/matejvasek/quarkus-bp
 
