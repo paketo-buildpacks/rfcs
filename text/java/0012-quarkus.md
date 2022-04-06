@@ -47,6 +47,9 @@ This would allow better control over build:
 
 However, it would be much more complicate to implement, and it would lead to duplicity.
 
+Another approach could be to have two Quarkus buildpacks: one pre maven/gradle build and one post build.
+With these we might be able to handle various build types (fast/legacy/uber jar) and also handle layering.
+
 ## Implementation
 
 This buildpack will be adopted by the Java Buildpacks team and transferred to the `paketo` GitHub organization.
