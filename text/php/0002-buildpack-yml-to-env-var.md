@@ -138,18 +138,23 @@ This will replace the following structure in `buildpack.yml`:
 composer:
   install_options: ["--no-dev", "--prefer-install=auto"]
 ```
-### `BP_COMPOSER_GLOBAL_INSTALL_OPTIONS`
-```shell
-$BP_COMPOSER_GLOBAL_INSTALL_OPTIONS="--only-name --type"
-```
 
-Note: This will be parsed using this [shellwords library](https://github.com/mattn/go-shellwords).
+### `BP_COMPOSER_INSTALL_GLOBAL`
+```shell
+BP_COMPOSER_INSTALL_GLOBAL="friendsofphp/php-cs-fixer squizlabs/php_codesniffer=*"
+```
 
 This will replace the following structure in `buildpack.yml`:
 ```yaml
 composer:
-  install_global: ["--only-name", "--type"]
+  install_global:
+    - friendsofphp/php-cs-fixer
+    - squizlabs/php_codesniffer=*
 ```
+
+This will also replace the prior env variable `BP_COMPOSER_GLOBAL_INSTALL_OPTIONS`.
+The purposes of the `BP_COMPOSER_INSTALL_GLOBAL` variable is to specify packages for
+global installation, not to provide options.
 
 ### Configuration Removal
 The following structure in `buildpack.yml` will not be receiving a buildpack
@@ -203,3 +208,6 @@ migrating to the environment variable configuration.
 - Should we remove the `BP_PHP_SERVER` configuration in favor a multi-buildpack
   build as outlined in [this comment thread](https://github.com/paketo-buildpacks/php/issues/472)
   on the issue for this RFC.
+
+## Edits
+EDIT 04/05/2022: Replace `BP_COMPOSER_GLOBAL_INSTALL_OPTIONS` with `BP_COMPOSER_INSTALL_GLOBAL`
