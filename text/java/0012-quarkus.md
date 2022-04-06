@@ -2,7 +2,7 @@
 
 ## Summary
 Provide a Quarkus Buildpack which will be part of the order groups for `paketo-buildpacks/java` and `paketo-buildpacks/java-native-image`.
-The primary purpose of this buildpack is to environment variables for the `paketo-buildpacks/maven` and `paketo-buildpacks/native-image` buildpacks. Building a Quarkus application is presently possible but requires setting multiple environment variables to properly configure the buildpacks. This proposed buildpack will enable users to build Quarkus applications without additional configuration.
+The primary purpose of this buildpack is to set environment variables for the `paketo-buildpacks/maven` and `paketo-buildpacks/native-image` buildpacks. Building a Quarkus application is presently possible but requires setting multiple environment variables to properly configure the buildpacks. This proposed buildpack will enable users to build Quarkus applications without additional configuration.
 
 Proof of concept could be found at: [quarkus-bp][b]
 
