@@ -60,22 +60,15 @@ buildpacks[<sup>2</sup>](#note-2):
   Build: Installs [`composer`](https://getcomposer.org), a dependency manager for PHP
     and makes it available on the `$PATH`
 
-* **composer-global**:
-  Detect: When `BP_COMPOSER_INSTALL_GLOBAL` is set
-  * provides: none
-  * requires:
-    * `php` at build
-    * `composer` at build
-  Build: Runs `composer global` to ensure that global PHP packages are available on the `$PATH`
-      for composer install scripts
-
 * **composer-install**:
   Detect: when `composer.json` is present
-  * provides: none
+  * provides: `composer-packages`
   * requires:
     * `php` at build, with version suggestions from `composer.lock` and `composer.json`
     * `composer` at build
-  Build: Runs `composer install` to resolve and install project dependencies
+  Build: Runs `composer install` to resolve and install project dependencies.
+  May also run `composer global` to ensure PHP packages are available on the `$PATH` for
+  composer install scripts, and/or `composer config` to configure a GitHub oauth token.
 
 * **php-fpm**:
   Configures `php-fpm.conf` (config file in `php.ini` syntax), and sets a start
@@ -148,11 +141,6 @@ This would result in the following order groupings in the PHP language family me
     optional = true
 
   [[order.group]]
-    id = "paketo-buildpacks/composer-global"
-    version = ""
-    optional = true
-
-  [[order.group]]
     id = "paketo-buildpacks/composer-install"
     version = ""
     optional = true
@@ -196,11 +184,6 @@ This would result in the following order groupings in the PHP language family me
     optional = true
 
   [[order.group]]
-    id = "paketo-buildpacks/composer-global"
-    version = ""
-    optional = true
-
-  [[order.group]]
     id = "paketo-buildpacks/composer-install"
     version = ""
     optional = true
@@ -240,11 +223,6 @@ This would result in the following order groupings in the PHP language family me
 
   [[order.group]]
     id = "paketo-buildpacks/composer"
-    version = ""
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/composer-global"
     version = ""
     optional = true
 
@@ -312,5 +290,4 @@ limitations. With external session handlers, multiple application nodes can
 connect to a central data store.
 
 ## Edits
-EDIT 04/05/2022: Add `composer-global` and pretty-format the provides/requires sections
-for Composer buildpacks to add clarity
+EDIT 04/05/2022: Buildpack `composer-install` now provides `composer-packages`

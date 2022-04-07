@@ -126,6 +126,7 @@ This will replace the following structure in `buildpack.yml`:
 composer:
   version: 1.10.x
 ```
+
 ### `BP_COMPOSER_INSTALL_OPTIONS`
 ```shell
 $BP_COMPOSER_INSTALL_OPTIONS="--no-dev --prefer-install=auto"
@@ -153,7 +154,7 @@ composer:
 ```
 
 This will also replace the prior env variable `BP_COMPOSER_GLOBAL_INSTALL_OPTIONS`.
-The purposes of the `BP_COMPOSER_INSTALL_GLOBAL` variable is to specify packages for
+The purpose of `BP_COMPOSER_INSTALL_GLOBAL` is to specify packages for
 global installation, not to provide options.
 
 ### Configuration Removal
@@ -178,10 +179,12 @@ If the user would like to set a custom `composer` vendoring location they can
 use the
 [`$COMPOSER_VENDOR_DIR`](https://getcomposer.org/doc/03-cli.md#composer-vendor-dir)
 environment variable native to `composer`.
-Note:
-The value of `$COMPOSER_VENDOR_DIR` will be modified by the buildpack in order
-to set up efficient caching; these changes will be logged for the user to
-observe and will also be documented.
+
+The environment variable `COMPOSER_GITHUB_OAUTH_TOKEN` will not be receiving a buildpack
+specific environment variable configuration option, since it is performing the same use case
+as the [`$COMPOSER_AUTH`](https://getcomposer.org/doc/03-cli.md#composer-auth) environment variable
+that is natively supported by `composer`. Therefore the environment variable is being removed
+in favor of the native solution.
 
 ---
 
@@ -210,4 +213,5 @@ migrating to the environment variable configuration.
   on the issue for this RFC.
 
 ## Edits
-EDIT 04/05/2022: Replace `BP_COMPOSER_GLOBAL_INSTALL_OPTIONS` with `BP_COMPOSER_INSTALL_GLOBAL`
+EDIT 04/05/2022: Replace `BP_COMPOSER_GLOBAL_INSTALL_OPTIONS` with `BP_COMPOSER_INSTALL_GLOBAL`.
+Specify that configuration option `COMPOSER_GITHUB_OAUTH_TOKEN` will be removed.

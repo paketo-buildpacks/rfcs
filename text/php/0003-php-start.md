@@ -96,13 +96,15 @@ same task:
   * provides: none
   * requires:
     * `php` at build
-    * `php-fpm` at build and launch (optional on TBD)
+    * `composer-packages` at build (when `composer.json` is present)
+    * `php-fpm` at build and launch (optional)
     * `php-httpd-config` at build and launch
     * `httpd` at launch.
   * -OR-
   * requires:
     * `php` at build
-    * `php-fpm` at build and launch (optional on TBD)
+    * `composer-packages` at build (when `composer.json` is present)
+    * `php-fpm` at build and launch (optional)
     * `php-nginx-config` at build and launch
     * `nginx` at launch
 
@@ -127,11 +129,6 @@ the HTTPD and Nginx order groups:
 
   [[order.group]]
     id = "paketo-buildpacks/composer"
-    version = ""
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/composer-global"
     version = ""
     optional = true
 
@@ -166,11 +163,6 @@ the HTTPD and Nginx order groups:
 
   [[order.group]]
     id = "paketo-buildpacks/composer"
-    version = ""
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/composer-global"
     version = ""
     optional = true
 
@@ -218,4 +210,4 @@ EDIT 03/31/2022: Modify the provision names from the `php-httpd` and
 `php-nginx` buildpacks to include the `php-` prefix to ensure clarity around
 the configuration being PHP-specific.
 
-EDIT 04/05/2022: Pretty-format the provides/requires sections and add `composer-global`
+EDIT 04/05/2022: Add `composer-packages` to the list of dependencies that `php-start` requires.
