@@ -179,6 +179,10 @@ If the user would like to set a custom `composer` vendoring location they can
 use the
 [`$COMPOSER_VENDOR_DIR`](https://getcomposer.org/doc/03-cli.md#composer-vendor-dir)
 environment variable native to `composer`.
+Note:
+The value of `$COMPOSER_VENDOR_DIR` will be modified by the buildpack in order
+to set up efficient caching; these changes will be logged for the user to
+observe and will also be documented.
 
 The environment variable `COMPOSER_GITHUB_OAUTH_TOKEN` will not receive a buildpack
 specific environment variable configuration option, since it performs the same use case

@@ -96,14 +96,14 @@ same task:
   * provides: none
   * requires:
     * `php` at build
-    * `composer-packages` at build (when `composer.json` is present)
+    * `composer-packages` at launch (when `composer.json` is present)
     * `php-fpm` (optional) at build and launch
     * `php-httpd-config` at build and launch
     * `httpd` at launch.
   * -OR-
   * requires:
     * `php` at build
-    * `composer-packages` at build (when `composer.json` is present)
+    * `composer-packages` at launch (when `composer.json` is present)
     * `php-fpm` (optional) at build and launch
     * `php-nginx-config` at build and launch
     * `nginx` at launch
