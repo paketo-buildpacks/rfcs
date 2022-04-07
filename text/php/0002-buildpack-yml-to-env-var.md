@@ -180,10 +180,10 @@ use the
 [`$COMPOSER_VENDOR_DIR`](https://getcomposer.org/doc/03-cli.md#composer-vendor-dir)
 environment variable native to `composer`.
 
-The environment variable `COMPOSER_GITHUB_OAUTH_TOKEN` will not be receiving a buildpack
-specific environment variable configuration option, since it is performing the same use case
+The environment variable `COMPOSER_GITHUB_OAUTH_TOKEN` will not receive a buildpack
+specific environment variable configuration option, since it performs the same use case
 as the [`$COMPOSER_AUTH`](https://getcomposer.org/doc/03-cli.md#composer-auth) environment variable
-that is natively supported by `composer`. Therefore the environment variable is being removed
+that is natively supported by `composer`. Therefore, the environment variable will be removed
 in favor of the native solution.
 
 ---

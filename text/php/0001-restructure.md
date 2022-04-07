@@ -68,7 +68,7 @@ buildpacks[<sup>2</sup>](#note-2):
     * `composer` at build
   Build: Runs `composer install` to resolve and install project dependencies.
   May also run `composer global` to ensure PHP packages are available on the `$PATH` for
-  composer install scripts, and/or `composer config` to configure a GitHub oauth token.
+  composer install scripts.
 
 * **php-fpm**:
   Configures `php-fpm.conf` (config file in `php.ini` syntax), and sets a start
