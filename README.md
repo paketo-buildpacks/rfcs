@@ -11,7 +11,6 @@
 * [0032: Reloadable Process Types](./text/0032-reloadable-process-types.md)
 * [0037: Remote Debug](./text/0037-remote-debug.md)
 * [0038: Support for CycloneDX and Syft SBoM](./text/0038-cdx-syft-sbom.md)
-* [0039: Semantic Versioning in Tags for Buildpacks](./text/0039-semantic-version-tags.md)
 * [0040: Auto-generate Reference Documentation](./text/0040-auto-reference-docs.md)
 * [0041: Use Direct Processes and exec.d](./text/0041-direct.md)
 * [0042: Adjust Builder Order](./text/0042-adjust-builder-order.md)
@@ -46,6 +45,7 @@
 * [0034: Update Hash Field in Bill of Materials](./text/0034-hash-field-bom.md)
 * [0035: Python Paketo Buildpack Promotion](./text/0035-python-promotion.md)
 * [0036: Explorations Repository](./text/0036-explorations.md)
+* [0039: Semantic Versioning in Tags for Buildpacks](./text/0039-semantic-version-tags.md)
 
 ## Superseded RFCs
 
