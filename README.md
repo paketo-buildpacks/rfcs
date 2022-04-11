@@ -9,7 +9,6 @@
 * [0026: Environment Variable Configuration Of Buildpack](./text/0026-environment-variable-configuration-of-buildpacks.md)
 * [0027: Common Logging Levels for Buildpacks](./text/0027-log-levels.md)
 * [0032: Reloadable Process Types](./text/0032-reloadable-process-types.md)
-* [0033: Implement a Bill of Materials Across Paketo](./text/0033-bill-of-materials.md)
 * [0037: Remote Debug](./text/0037-remote-debug.md)
 * [0038: Support for CycloneDX and Syft SBoM](./text/0038-cdx-syft-sbom.md)
 * [0039: Semantic Versioning in Tags for Buildpacks](./text/0039-semantic-version-tags.md)
@@ -51,6 +50,7 @@
 ## Superseded RFCs
 
 * [0003: Replace buildpack.yml with Build Plan (TOML)](./text/0003-replace-buildpack-yml.md)
+* [0033: Implement a Bill of Materials Across Paketo](./text/0033-bill-of-materials.md)
 
 ## Why RFC?
 The RFC (Request For Comments) process is intended to provide a consistent procedure for all major decisions affecting Paketo Buildpacks.
