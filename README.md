@@ -13,7 +13,6 @@
 * [0038: Support for CycloneDX and Syft SBoM](./text/0038-cdx-syft-sbom.md)
 * [0040: Auto-generate Reference Documentation](./text/0040-auto-reference-docs.md)
 * [0041: Use Direct Processes and exec.d](./text/0041-direct.md)
-* [0042: Adjust Builder Order](./text/0042-adjust-builder-order.md)
 * [0043: Expanding the Criteria for Reproducible Builds](./text/0043-reproducible-builds.md)
 * [0044: Provide Global Mechanism to Disable SBOM Generation](./text/0044-disable-sbom.md)
 
@@ -46,6 +45,7 @@
 * [0035: Python Paketo Buildpack Promotion](./text/0035-python-promotion.md)
 * [0036: Explorations Repository](./text/0036-explorations.md)
 * [0039: Semantic Versioning in Tags for Buildpacks](./text/0039-semantic-version-tags.md)
+* [0042: Adjust Builder Order](./text/0042-adjust-builder-order.md)
 
 ## Superseded RFCs
 
