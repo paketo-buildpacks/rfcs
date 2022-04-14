@@ -45,7 +45,10 @@ The originally proposed relevant buildpacks were:
 * **php-httpd**:
   Sets up HTTPD as the web server to serve PHP applications.
   * provides: none
-  * requires: `php` at build; `php`, `php-fpm`, `httpd` at launch
+  * requires:
+    * `php` at build and launch
+    * `php-fpm` at launch
+    * `httpd` at launch
 
   This buildpack generates `httpd.conf` and sets up a start command (type
   `web`) to run PHP FPM and HTTPD Server. It will expose the path to the file
@@ -55,7 +58,10 @@ The originally proposed relevant buildpacks were:
 * **php-nginx**:
   Sets up Nginx as the web server to serve PHP applications.
   * provides: none
-  * requires: `php` at build; `php`, `php-fpm`, `nginx` at launch
+  * requires:
+    * `php` at build and launch
+    * `php-fpm` at launch
+    * `nginx` at launch
 
   This buildpack generates `nginx.conf` and sets up a start command (type
   `web`) to run PHP FPM and Nginx Server. It will expose the path to the file
@@ -85,26 +91,33 @@ same task:
   use nginx. The path to the Nginx configuration will be made available via a
   shared environment variable `PHP_NGINX_PATH`.
 
-
 * **php-start**:
   Sets the web server start command as well as the FPM start command.
   * provides: none
-  * requires: `php`, `php-fpm` (optional), and `php-httpd-config` at build, and
-    `php-fpm` (optional), `httpd`, and `php-httpd-config` and launch.
-    OR
-  * requires: `php`, `php-fpm` (optional), and `php-nginx-config` at build, and
-    `php-fpm` (optional), `nginx`, and `php-nginx-config` and launch.
+  * requires:
+    * `php` at build
+    * `composer-packages` at launch (when `composer.json` is present)
+    * `php-fpm` (optional) at build and launch
+    * `php-httpd-config` at build and launch
+    * `httpd` at launch.
+  * -OR-
+  * requires:
+    * `php` at build
+    * `composer-packages` at launch (when `composer.json` is present)
+    * `php-fpm` (optional) at build and launch
+    * `php-nginx-config` at build and launch
+    * `nginx` at launch
 
   This buildpack sets up a start command (type `web`) to run HTTPD or Nginx,
   and potentially FPM in cases where both process should be run in the same
   container. It will use buildpack-set environment variables during build to
   determine which start command(s) to run.
 
-  In the cases where FPM should be run in it's own container, the
+  In the cases where FPM should be run in its own container, the
   FPM start command will be delegated to the PHP FPM Buildpack, and PHP Start
   will only start the web-server.
 
-The order groupings in the PHP language family meta-buildapck from the original
+The order groupings in the PHP language family meta-buildpack from the original
 Restructure RFC would be modified to include the new PHP Start buildpacks in
 the HTTPD and Nginx order groups:
 ```toml
@@ -196,3 +209,5 @@ of code duplication unaddressed.
 EDIT 03/31/2022: Modify the provision names from the `php-httpd` and
 `php-nginx` buildpacks to include the `php-` prefix to ensure clarity around
 the configuration being PHP-specific.
+
+EDIT 04/05/2022: Add `composer-packages` to the list of dependencies that `php-start` requires.

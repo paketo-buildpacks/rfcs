@@ -126,6 +126,7 @@ This will replace the following structure in `buildpack.yml`:
 composer:
   version: 1.10.x
 ```
+
 ### `BP_COMPOSER_INSTALL_OPTIONS`
 ```shell
 $BP_COMPOSER_INSTALL_OPTIONS="--no-dev --prefer-install=auto"
@@ -138,18 +139,23 @@ This will replace the following structure in `buildpack.yml`:
 composer:
   install_options: ["--no-dev", "--prefer-install=auto"]
 ```
-### `BP_COMPOSER_GLOBAL_INSTALL_OPTIONS`
-```shell
-$BP_COMPOSER_GLOBAL_INSTALL_OPTIONS="--only-name --type"
-```
 
-Note: This will be parsed using this [shellwords library](https://github.com/mattn/go-shellwords).
+### `BP_COMPOSER_INSTALL_GLOBAL`
+```shell
+BP_COMPOSER_INSTALL_GLOBAL="friendsofphp/php-cs-fixer squizlabs/php_codesniffer=*"
+```
 
 This will replace the following structure in `buildpack.yml`:
 ```yaml
 composer:
-  install_global: ["--only-name", "--type"]
+  install_global:
+    - friendsofphp/php-cs-fixer
+    - squizlabs/php_codesniffer=*
 ```
+
+This will also replace the prior env variable `BP_COMPOSER_GLOBAL_INSTALL_OPTIONS`.
+The purpose of `BP_COMPOSER_INSTALL_GLOBAL` is to specify packages for
+global installation, not to provide options.
 
 ### Configuration Removal
 The following structure in `buildpack.yml` will not be receiving a buildpack
@@ -178,6 +184,12 @@ The value of `$COMPOSER_VENDOR_DIR` will be modified by the buildpack in order
 to set up efficient caching; these changes will be logged for the user to
 observe and will also be documented.
 
+The environment variable `COMPOSER_GITHUB_OAUTH_TOKEN` will not receive a buildpack
+specific environment variable configuration option, since it performs the same use case
+as the [`$COMPOSER_AUTH`](https://getcomposer.org/doc/03-cli.md#composer-auth) environment variable
+that is natively supported by `composer`. Therefore, the environment variable will be removed
+in favor of the native solution.
+
 ---
 
 ### Deprecation Strategy
@@ -203,3 +215,7 @@ migrating to the environment variable configuration.
 - Should we remove the `BP_PHP_SERVER` configuration in favor a multi-buildpack
   build as outlined in [this comment thread](https://github.com/paketo-buildpacks/php/issues/472)
   on the issue for this RFC.
+
+## Edits
+EDIT 04/05/2022: Replace `BP_COMPOSER_GLOBAL_INSTALL_OPTIONS` with `BP_COMPOSER_INSTALL_GLOBAL`.
+Specify that configuration option `COMPOSER_GITHUB_OAUTH_TOKEN` will be removed.

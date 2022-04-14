@@ -54,15 +54,21 @@ buildpacks[<sup>2</sup>](#note-2):
   executable whenever possible.
 
 * **composer**:
-  Installs [`composer`](https://getcomposer.org), a dependency manager for PHP
-  and makes it available on the `$PATH`
+  Detect: always
   * provides: `composer`
-  * requires: none
+  * requires: none (will require `composer` if `BP_COMPOSER_VERSION` is set)
+  Build: Installs [`composer`](https://getcomposer.org), a dependency manager for PHP
+    and makes it available on the `$PATH`
 
 * **composer-install**:
-  Resolves project dependencies, and installs them using `composer`.
-  * provides: none
-  * requires: `php`, `composer` at build
+  Detect: when `composer.json` is present
+  * provides: `composer-packages`
+  * requires:
+    * `php` at build, with version suggestions from `composer.lock` and `composer.json`
+    * `composer` at build
+  Build: Runs `composer install` to resolve and install project dependencies.
+  May also run `composer global` to ensure PHP packages are available on the `$PATH` for
+  composer install scripts.
 
 * **php-fpm**:
   Configures `php-fpm.conf` (config file in `php.ini` syntax), and sets a start
@@ -282,3 +288,6 @@ be part of the PHP family of buildpacks.
 from PHP sessions. By default, PHP uses files but they have severe scalability
 limitations. With external session handlers, multiple application nodes can
 connect to a central data store.
+
+## Edits
+EDIT 04/05/2022: Buildpack `composer-install` now provides `composer-packages`
