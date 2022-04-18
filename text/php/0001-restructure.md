@@ -87,7 +87,8 @@ buildpacks[<sup>2</sup>](#note-2):
   server](https://www.php.net/manual/en/features.commandline.webserver.php) to
   serve PHP applications.
   * provides: none
-  * requires: `php` at launch
+  * requires: `php` at launch and `composer-packages` optionally at launch
+    (when composer.json is present) 
 
   This buildpack sets a start command (type `web`) to start the built-in web
   server. This is the default web server.
@@ -291,3 +292,4 @@ connect to a central data store.
 
 ## Edits
 EDIT 04/05/2022: Buildpack `composer-install` now provides `composer-packages`
+EDIT 04/18/2022: PHP Builtin Server Buildpack optionally requires `composer-packages`
