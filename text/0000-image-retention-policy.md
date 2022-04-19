@@ -1,21 +1,21 @@
-# Define an Image Retention Policy for Paketo Images
+# Define an Image & Dependency Retention Policy for Paketo Images
 
 ## Summary
 
-At the moment, the Paketo Project is maintaining images (buildpack, builder, stack, etc..) since the beginning of the project. This RFC proposes that we define an image retention policy that would allow the project to delete old images.
+At the moment, the Paketo Project is maintaining images (buildpack, builder, stack, etc..) and hosted dependencies since the beginning of the project. This RFC proposes that we define an image and dependency retention policy that would allow the project to delete old images and dependencies.
 
 ## Motivation
 
 Multiple reasons:
 
-1. It is impractical from a cost and resources perspective for the project to maintain all images throughout the history of time. Time continues on infinitely, and eventually enough resources will accumulate to where this becomes a burden to the project.
-2. It is highly unlikely that images going back to the beginning of the project are still usable. Most buildpacks reference external dependencies and those dependencies may no longer exist.
-3. Older stacks, buildpacks and builder images very likely are full of vulnerable software and should no longer be used.
-4. If users have requirements to retain images for longer periods of time, they can relocate them to their own container image registry before the image retention policy expires the image.
+1. It is impractical from a cost and resources perspective for the project to maintain all images and dependencies throughout the history of time. Time continues on infinitely, and eventually enough resources will accumulate to where this becomes a burden to the project.
+2. It is highly unlikely that images going back to the beginning of the project are still usable. Many buildpacks reference external dependencies and those dependencies may no longer exist.
+3. Older stacks, buildpacks, builder images and hosted dependencies very likely are full of vulnerable software and should no longer be used.
+4. If users have requirements to retain images for longer periods of time, they can relocate them to their own container image registry before the image retention policy expires the image. Older dependencies can be relocated or users can package up a buildpack image that include the dependencies, again, before the retention policy expires.
 
 ## Detailed Explanation
 
-This RFC proposes that we retain all images published by the project for at least two year.
+This RFC proposes that we retain all images and hosted dependencies referenced by our images published by the project for at least two year.
 
 Edge cases:
 
@@ -29,7 +29,7 @@ The approval of a retention policy will not extend the duration of time that we 
 
 ## Rationale and Alternatives
 
-- Do nothing. Images will accumulate. It will sap project resources.
+- Do nothing. Images and dependencies will accumulate. It will sap project resources.
 - Implement a different strategy. Perhaps based on user access patterns, like we can delete images that have not had a pull for more than 30 days. The benefit of a limit is that it's predictable and easy to implement. It makes it easy for users to understand.
 
 ## Implementation
@@ -45,12 +45,12 @@ This should not require creating a custom tool, as there are some existing tools
 
 The specific tool selected can vary and will be an implementation detail that is intentionally left outside of the scope of this RFC.
 
+Once an image is deleted, any hosted dependencies that were referenced by the image which are no longer used by images that are still within the retention policy may be deleted. For example, if buildpack 1.1.1 uses dependency 2.2.2 and no other buildpacks still within the retention policy (i.e. less than 2 years old) referenece dependency 2.2.2 then the project may delete dependency 2.2.2. from it's hosting. This does not apply to externally hosted dependencies as hosting of those dependencies is outside the project. External hosting can follow its own separate policy.
+
 ## Prior Art
 
-None. We have been retaining images back to the projects beginning.
+None. We have been retaining images and dependencies back to the projects beginning.
 
 ## Unresolved Questions and Bikeshedding
 
-1. Is two years the right retention period? Longer? Shorter? The general idea is that we pick a period of time that minimizes impact to users. We want the time period to be such that at least 99% of users are no longer using these images. We are not strictly looking to minimize costs, but just put an upper bound on what the project needs to support.
-
-2. As part of the GCR migration to Docker Hub, there is the question of do we move older images over to Docker Hub? If so, how many? Should this policy be used to answer that question? For example, if the retention policy is two years, would we then be responsible for moving at least two years worth of images over from GCR to Docker Hub?
+None
