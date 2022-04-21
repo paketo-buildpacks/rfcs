@@ -54,7 +54,7 @@ and the size of the overall offline bundle right now versus the proposed state.
 
 
 As you can see the overall size of the offline buildpack has decreased by
-~90MB, however the overall size of each dependency has increased around
+~90MB (~30%), however the overall size of each dependency has increased around
 ~30-50%. Based on data from
 [Speedtest](https://www.speedtest.net/global-index), with the world average at
 the time of writing being 62.52 Mbps, the average increase in download times
