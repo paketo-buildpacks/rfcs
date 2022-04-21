@@ -18,7 +18,7 @@ It is becoming ever more apparent to me that Microsoft is dead set on not
 having flexibility of file location during `dotnet publish` therefore I think
 that we should capitulate to Microsoft and create an expected .Net Hive
 installation, which is a layer where the file structure matches the layout that
-is present in the official .Net SDK release from Microsoft. I think that this
+is present in the official .Net SDK release from Microsoft (includes the SDK, runtime, and ASP.NET). I think that this
 will make the buildpack less brittle to change in the future and will construct
 a build environment that is more similar to what .Net developers actually have
 installed on their machines and what Microsoft has in their Docker images.
