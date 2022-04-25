@@ -216,7 +216,7 @@ This would result in the following order groupings in the PHP language family me
     version = ""
     optional = true
 
-[[order]] # Built-in web server (web), FPM (php-fpm) & Script (Procfile)
+[[order]] # Built-in web server (web) & Script (Procfile)
 
   [[order.group]]
     id = "paketo-buildpacks/php-dist"
@@ -231,10 +231,6 @@ This would result in the following order groupings in the PHP language family me
     id = "paketo-buildpacks/composer-install"
     version = ""
     optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/php-fpm"
-    version = ""
 
   [[order.group]]
     id = "paketo-buildpacks/php-builtin-server"
@@ -293,3 +289,4 @@ connect to a central data store.
 ## Edits
 EDIT 04/05/2022: Buildpack `composer-install` now provides `composer-packages`
 EDIT 04/18/2022: PHP Builtin Server Buildpack optionally requires `composer-packages`
+EDIT 04/24/2022: Remove FPM from the PHP Builtin Server order group
