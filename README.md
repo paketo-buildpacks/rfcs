@@ -14,6 +14,8 @@
 * [0040: Auto-generate Reference Documentation](./text/0040-auto-reference-docs.md)
 * [0041: Use Direct Processes and exec.d](./text/0041-direct.md)
 * [0044: Provide Global Mechanism to Disable SBOM Generation](./text/0044-disable-sbom.md)
+* [0045: Secure runtime environments](./text/0045-user-ids.md)
+* [0046: Define an Image & Dependency Retention Policy for Paketo Images](./text/0046-image-retention-policy.md)
 
 ## Implemented RFCs
 
