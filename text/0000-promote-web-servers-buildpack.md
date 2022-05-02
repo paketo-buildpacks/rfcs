@@ -24,6 +24,7 @@ The following changes will be made:
   sub-team.
 - Buildpack will have `paketo-buildpacks/web-servers` ID.
 - Buildpack will be published to `paketobuildpacks/web-servers`.
+- Buildpack will be Paketo Full Builder and the stand-alone entries for NGINX and HTTPD will be removed.
 - Versioning of the buildpack will continue as is.
 - Sample apps for common Web Servers buildpacks configurations should be added to the
   [Paketo samples repo](https://github.com/paketo-buildpacks/samples)
