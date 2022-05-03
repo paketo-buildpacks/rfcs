@@ -146,9 +146,9 @@ resulting in the following:
 
 ```
 
-The yarn-berry-install group is placed before the existing one here since it
-detects on the presence of `.yarnrc.yml` and both app types will contain
-`yarn.lock` files.
+The `yarn-berry-install` group is placed before the traditional `yarn-install`
+group since it detects on the presence of `.yarnrc.yml` and both app types
+will contain `yarn.lock` files.
 
 ### Detection
 
@@ -161,8 +161,8 @@ detects on the presence of `.yarnrc.yml` and both app types will contain
 Yarn Berry includes a number of features which seek to remove the necessity of
 `yarn install`. As such, the buildpack should allow users to take advantage of
 these features by avoiding invocations of `yarn install` when it is reasonable
-to do so. For those who have opt not to use the "Plug 'n Play" feature,
-Berry still supports using `node_modules`.
+to do so. For those who opt out of "Plug 'n Play", Berry still supports using
+`node_modules`.
 
 The buildpack should run `yarn install` in the following cases:
 
@@ -205,8 +205,8 @@ buildpack will utilize.
 
 Previously, the `yarn-install` buildpack relied on `yarn-offline-mirror` along
 with the `--offline` flag to facilitate offline builds. This workflow is no
-longer supported nor is it necessary since `.yarn/cache` stores archives of all
-packages now anyway.
+longer supported and is indeed unnecessary since `.yarn/cache` stores archives
+of all packages now anyway.
 
 ### Running Scripts
 
@@ -218,7 +218,7 @@ change.
 
 ### `yarn node` vs `node` 
 
-All direct `node` commands should be run with `yarn node` instead. The default
+All `node` commands run via the shell should be run with `yarn node` instead. The default
 start command in the Yarn Start buildpack may need to be modified.
 
 ## Rationale and Alternatives
