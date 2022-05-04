@@ -64,14 +64,14 @@ paketobuildpacks/{phase}-jammy-{variant}:{version}
 
 For example we could see the following images for Jammy stacks:
 
-* `paketobuildpacks/jammy-build-base:latest`
-* `paketobuildpacks/jammy-run-tiny:1.2.3`
+* `paketobuildpacks/build-jammy-base:latest`
+* `paketobuildpacks/run-jammy-tiny:1.2.3`
 
 This choice is different than the choice made with Bionic to better align the
 image repository references with their logical stack definition. This means
 that, with this naming scheme, it will be much more reasonable to understand
 what is stored at the repository reference
-`paketobuildpacks/jammy-run-base:latest`.
+`paketobuildpacks/run-jammy-base:latest`.
 
 Each stack repository should include a README that outlines the stacks that are
 available including links to each other repository allowing users to discover
