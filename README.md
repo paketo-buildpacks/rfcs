@@ -2,11 +2,9 @@
 
 ## Accepted RFCs
 
-* [0010: Dependency Mappings](./text/0010-dependency-mappings.md)
 * [0015: Distribute Buildpacks via Docker Hub](./text/0015-dockerhub-distribution.md)
 * [0017: Paketo Community Go HTTP Function Buildpack](./text/0017-go-http-fn.md)
 * [0019: Default Behaviour for Buildpack-Set Language Ecosystem Environment Variables](./text/0019-buildpack-set-env-vars-defaults.md)
-* [0026: Environment Variable Configuration Of Buildpack](./text/0026-environment-variable-configuration-of-buildpacks.md)
 * [0027: Common Logging Levels for Buildpacks](./text/0027-log-levels.md)
 * [0032: Reloadable Process Types](./text/0032-reloadable-process-types.md)
 * [0037: Remote Debug](./text/0037-remote-debug.md)
@@ -28,6 +26,7 @@
 * [0007: Paketo Buildpack Naming](./text/0007-buildpack-naming.md)
 * [0008: Paketo Community](./text/0008-paketo-community.md)
 * [0009: Dep Server to provide buildpack dependency metadata](./text/0009-dep-server.md)
+* [0010: Dependency Mappings](./text/0010-dependency-mappings.md)
 * [0012: Builders Subteam](./text/0012-builder-subteam.md)
 * [0013: Contributor Guidelines](./text/0013-contributing-guidelines.md)
 * [0014: Paketo Community Rust Buildpack](./text/0014-rust.md)
@@ -39,6 +38,7 @@
 * [0023: Git Support](./text/0023-git-buildpack.md)
 * [0024: Utility Buildpacks Team](./text/0024-utility-buildpacks-team.md)
 * [0025: Establishing an Emeritus Status](./text/0025-emeritus-status.md)
+* [0026: Environment Variable Configuration Of Buildpack](./text/0026-environment-variable-configuration-of-buildpacks.md)
 * [0028: Co-locate All Paketo RFCs](./text/0028-co-locate-all-rfcs.md)
 * [0029: Semantic Versioning of Buildpacks and Builders](./text/0029-semantic-versioning.md)
 * [0030: Buildpackless Builders](./text/0030-buildpackless-builders.md)
