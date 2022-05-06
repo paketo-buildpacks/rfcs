@@ -38,6 +38,29 @@ When conditions are met, the buildpack will do the following:
 
 The Health Checker buildpack will optionally be added to the language family buildpacks that wish to include support for it. The primary targets will be the Java and Rust buildpacks.
 
+### Example
+
+A user can then utilize the health checker like this:
+
+1. For a Spring Boot app, run `pack build apps/maven -p target/demo-0.0.1-SNAPSHOT.jar -b paketo-buildpacks/java -b docker.io/paketo-buildpacks/health-checker -e BP_HEALTH_CHECKER_ENABLED=true -e BP_HEALTH_CHECKER_THC_ARGS='8080 /actuator/health'` (it won't be necessary to include the `-b` arguments once the buildpack has been integrated with language family buildpacks). You'll see output like this at the end. It's installing the health checker and setting a process type.
+
+    ```
+    Paketo Health Checker Buildpack vDEVELOPMENT
+      https://github.com/paketo-buildpacks/health-checker
+      Build Configuration:
+        $BP_HEALTH_CHECKER_DEPENDENCY  thc                    which health checker to contribute
+        $BP_HEALTH_CHECKER_ENABLED     true                   contributes a health checker if enabled
+        $BP_HEALTH_CHECKER_THC_ARGS    8080 /actuator/health  arguments passed to tiny-health-checker, if used
+      Tiny Health Checker 0.4.0: Contributing to layer
+        Downloading from https://github.com/dmikusa-pivotal/tiny-health-checker/releases/download/v0.4.0/thc-x86_64-unknown-linux-musl
+        Verifying checksum
+        Copying from /tmp/ce75bb97209981e03bf7e8aa52e2bfab78a50a44c7ed1787f4ace212711d61e5/thc-x86_64-unknown-linux-musl to /layers/paketo-buildpacks_health-checker/thc/bin
+      Process types:
+    health-check: thc 8080 /actuator/health (direct)
+    ```
+
+2. You can run this with `docker run --health-cmd '/cnb/process/health-check' --health-interval 5s --health-timeout 2s -it apps/maven`. You could call the health check binary directly, but as you can have different health check dependencies that get installed by the buildpack, using the process type gives you more generic way to call the health check. It also allows for the image to bake in the health check arguments, rather than require the operator to set them. Plus, an operator could always call the binary directly if they wanted.
+
 ## Prior Art
 
 None
