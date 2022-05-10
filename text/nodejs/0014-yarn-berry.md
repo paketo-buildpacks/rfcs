@@ -237,12 +237,13 @@ start command in the Yarn Start buildpack may need to be modified.
   supported. For this reason, it is even more prudent to keep the logic
   separate to facilitate the eventual transition.
 
-- Do nothing.
-
 ## Unresolved Questions and Bikeshedding
 
-- Should the buildpack support building Yarn Berry applications which use
-  `node_modules` as well as Plug 'n' Play?
+- ~~Should the buildpack support building Yarn Berry applications which use
+  `node_modules` as well as Plug 'n' Play?~~ Yes. It seems that some users have
+  foregone Plug 'n' Play and are using Yarn Berry with the node_modules linker.
 
-- Yarn Berry supports setting a global cache. Should we hold off on supporting
-  this workflow until it is requested?
+- ~~Yarn Berry supports setting a global cache. Should we hold off on
+  supporting this workflow until it is requested?~~ Yes. This feature is
+  valuable for the monorepo use-case but is not critical for the initial
+  implementation and can be added once there is demand.
