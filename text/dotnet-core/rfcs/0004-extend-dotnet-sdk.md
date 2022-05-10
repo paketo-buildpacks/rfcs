@@ -2,7 +2,9 @@
 
 ## Proposal
 
-Reconfigure the .Net SDK dependency to be identical to the one that can be downloaded from Microsoft which includes the runtimes that the SDK is dependent on to run.
+Reconfigure the .Net SDK dependency to be identical to the one that can be
+downloaded from Microsoft which includes the runtimes that the SDK is dependent
+on to run.
 
 ## Motivation
 As of [.Net SDK version ~6.0.100 publish no longer properly functions for
@@ -18,10 +20,14 @@ It is becoming ever more apparent to me that Microsoft is dead set on not
 having flexibility of file location during `dotnet publish` therefore I think
 that we should capitulate to Microsoft and create an expected .Net Hive
 installation, which is a layer where the file structure matches the layout that
-is present in the official .Net SDK release from Microsoft (includes the SDK, runtime, and ASP.NET). I think that this
-will make the buildpack less brittle to change in the future and will construct
-a build environment that is more similar to what .Net developers actually have
-installed on their machines and what Microsoft has in their Docker images.
+is present in the official .Net SDK release from Microsoft (includes the SDK,
+runtime, and ASP.NET). We can accomplish this installation structure by using
+the .Net SDK dependency unaltered from Microsoft, as it stands currently we
+remove the included runtime and ASP.NET files in an effort to not have
+duplicated files. I think that this will make the buildpack less brittle to
+change in the future and will construct a build environment that is more
+similar to what .Net developers actually have installed on their machines and
+what Microsoft has in their Docker images.
 
 There are some additional advantages to using the .Net SDK dependency with its
 included runtimes chief among them being that newer versions of the .Net SDK
