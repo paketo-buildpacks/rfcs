@@ -186,6 +186,8 @@ reference this layer, ideally via the `YARN_CACHE_FOLDER` environment variable.
 For Berry projects using `node_modules`, the behaviour will largely mimic the
 existing Yarn Install buildpack, with accommodations for the CLI changes.
 
+The buildpack will generate a filesystem-based SBoM as `yarn-install` does currently.
+
 ### Layer Reuse 
 
 The Yarn Install buildpack currently uses a checksum of the output from `yarn
