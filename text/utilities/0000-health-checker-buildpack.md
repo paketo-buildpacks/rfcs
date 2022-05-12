@@ -27,16 +27,52 @@ Having a buildpack that installs a health checker allows for HTTP-based health c
 
 ## Implementation
 
-The new Health Checker buildpack will participate if all the following conditions are met
+The new Health Checker buildpack will participate if either of the following conditions are met
 
 * A user sets `BP_HEALTH_CHECKER_ENABLED=true`
+* An upstream buildpack requests `hc` in the build plan.
 
 When conditions are met, the buildpack will do the following:
 
 * Contributes a health checker to a layer marked `launch` with command on `$PATH`
 * Contributes a process type called `health-check` which will execute the installed health checker.
 
-The Health Checker buildpack will optionally be added to the language family buildpacks that wish to include support for it. The primary targets will be the Java and Rust buildpacks.
+The Health Checker buildpack will optionally be added to the language family buildpacks that wish to include support for it. The primary targets will be the Java and Rust buildpacks. The buildpack should be added reasonably close to the end of an order group for a given language family.
+
+Other buildpacks in the order group may influence the configuration of the the health checker by modifying the `BP_HEALTH_CHECKER_*` environment variables. It is recommended that buildpacks use the `.default` setting when doing this so that any user specified options will have the highest precedence.
+
+The following configuration options will be available to the buildpack.
+
+| Environment Variable               | Description                                                                                                                                                                                      |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `$BP_HEALTH_CHECKER_ENABLED`       | If set to `true` the buildpack will contribute a health checker binary. Defaults to `false`, so no health checker is contributed.                                                                |
+| `$BP_HEALTH_CHECKER_DEPENDENCY`    | The dependency id in `buildpack.toml` of the health checker to install.                                                                                                                          |
+| `$BP_HEALTH_CHECKER_<dep-id>_ARGS` | A set of arguments to pass through to the `<dep-id>` health checker. These only apply for the specific health checker. This allows specific default arguments for each supported health checker. |
+
+To clarify, there will be one `$BP_HEALTH_CHECKER_<dep-id>_ARGS` env variable for each health checker that is supported by the buildpack. This allows the buildpack to set different defaults per health checker. It also allows other buildpacks to override arguments only for a specific health checker. Like if Spring Boot CNB wants to set one path for the HTTP-based Actuator endpoints and a different configuration for RSocket-based health checks.
+
+#### Default Health Checker
+
+The default health checker that we'll support initially is [tiny-health-checker](https://github.com/dmikusa-pivotal/tiny-health-checker). This has support for minimal HTTP GET health checks. It only allows health checks to `localhost`, but does support a configurable port and path. This is intentional to prohibit it from being used to exfiltrate data in a comprmised container.
+
+Full usage:
+
+```
+USAGE:
+	thc [port] [path]
+
+ARGS:
+
+	port is the port to which a connection will be made, default: 8080
+	path is the path to which a connection will be made, default: /
+
+ENV:
+
+	CONN_TIMEOUT sets the connection timeout, default: 10
+	REQ_TIMEOUT sets the request timeout, defaults: 15
+
+	**NOTE** Host is not configurable and will always be localhost
+```
 
 ### Example
 
