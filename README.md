@@ -14,7 +14,6 @@
 * [0044: Provide Global Mechanism to Disable SBOM Generation](./text/0044-disable-sbom.md)
 * [0045: Secure runtime environments](./text/0045-user-ids.md)
 * [0046: Define an Image & Dependency Retention Policy for Paketo Images](./text/0046-image-retention-policy.md)
-* [0047: Web Servers Buildpack Promotion](./text/0047-promote-web-servers-buildpack.md)
 
 ## Implemented RFCs
 
@@ -49,6 +48,7 @@
 * [0039: Semantic Versioning in Tags for Buildpacks](./text/0039-semantic-version-tags.md)
 * [0042: Adjust Builder Order](./text/0042-adjust-builder-order.md)
 * [0043: Expanding the Criteria for Reproducible Builds](./text/0043-reproducible-builds.md)
+* [0047: Web Servers Buildpack Promotion](./text/0047-promote-web-servers-buildpack.md)
 
 ## Superseded RFCs
 
