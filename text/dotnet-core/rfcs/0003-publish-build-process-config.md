@@ -52,6 +52,12 @@ dotnet publish <project-path> \
   --self-contained false \
   --no-restore \
   --output <output-path>
+
+### Amendment
+In attempting to implement the RFC as written, we uncovered issues with offline
+builds when `dotnet restore` was split from `dotnet publish` (see
+paketo-buildpacks/dotnet-publish#243).  Instead, `dotnet publish` is run
+**without** the `--no-restore` flag.
 ```
 
 Once the commands are separated, the buildpack can provide
@@ -78,6 +84,10 @@ dotnet publish <project-path> \
   --no-restore \
   --output <output-path>
 ```
+### Amendment
+Since `dotnet restore` was not split out from `dotnet publish`, only
+`BP_DOTNET_PUBLISH_FLAGS` was implemented. The environment variable otherwise
+behaves as described here.
 
 ## Source Material
 
