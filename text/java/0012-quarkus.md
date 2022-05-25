@@ -43,12 +43,12 @@ in on single Quarkus Buildpack.
 
 This would allow better control over build:
 * Better enablement for various package types (i.e. other than `fast-jar`).
-* Better control over layering: separating directories according probability of their modification (application code vs. library code).
+* ~~Better control over layering: separating directories according probability of their modification (application code vs. library code).~~
 
 However, it would be much more complicate to implement, and it would lead to duplicity.
 
 Another approach could be to have two Quarkus buildpacks: one pre maven/gradle build and one post build.
-With these we might be able to handle various build types (fast/legacy/uber jar) and also handle layering.
+With these we might be able to handle various build types (fast/legacy/uber jar) ~~and also handle layering~~.
 
 ## Implementation
 
