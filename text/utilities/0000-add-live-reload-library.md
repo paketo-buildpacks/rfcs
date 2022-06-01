@@ -35,8 +35,8 @@ in this case having a generic interface ("live reload") implies that eventually 
 
 ## Implementation
 
-Create a new repository to host the library: `paketo-buildpacks/reload`. The root package `reload` will contain an interface
-that looks something like this:
+Create a new repository to host the library: `paketo-buildpacks/libreload`.
+The root package `reload` will contain an interface that looks something like this:
 
 ```go
 package reload
