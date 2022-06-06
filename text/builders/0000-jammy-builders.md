@@ -49,7 +49,7 @@ Bionic builders.
 
 ### Image Naming and Tagging
 
-The stacks will name and tag their release images with the following pattern:
+The builders will name and tag their release images with the following pattern:
 
 ```
 paketobuildpacks/builder-jammy-{variant}:{version}
