@@ -52,7 +52,7 @@ Bionic builders.
 The builders will name and tag their release images with the following pattern:
 
 ```
-paketobuildpacks/builder-jammy-{variant}:{version}
+paketobuildpacks/builder-{distro}-{builder-variant}:{version}
 ```
 
 For example we could see the following images for Jammy stacks:
@@ -65,6 +65,18 @@ image repository references with their associated builder repository. This
 means that, with this naming scheme, it will be much more reasonable to
 understand what is stored at the repository reference
 `paketobuildpacks/builder-jammy-base:latest`.
+
+Notably, this naming convention can extend to other linux distributions. For
+instance, builders based on a UBI stack could be tagged
+`paketobuildpacks/builder-ubi-base:1.2.3`.
+
+This naming convention does **NOT** include the architecture variant of the
+images stored in each image repository. This is because we intend to publish
+multi-architecture builder images to the same image tags using [image manifest
+lists](https://docs.docker.com/registry/spec/manifest-v2-2/). This is
+consistent with Paketo's approach to multi-architecture stack support, as
+described in [Stack RFC 0003: Stack
+Descriptor](https://github.com/paketo-buildpacks/rfcs/blob/da3339d071ffed23c3cd1b374a6bfcefdea7ac70/text/stacks/0003-stack-descriptor.md).
 
 Each builder DockerHub repository should include a README that outlines the builders and
 stacks that are available including links to each other repository (including
