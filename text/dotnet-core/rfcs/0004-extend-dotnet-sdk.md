@@ -2,9 +2,8 @@
 
 ## Proposal
 
-Reconfigure the .Net SDK dependency to be identical to the one that can be
-downloaded from Microsoft which includes the runtimes that the SDK is dependent
-on to run.
+Replace the current .Net SDK dependency with the one that can be downloaded
+from Microsoft which includes the runtimes that the SDK is dependent on to run.
 
 ## Motivation
 As of [.Net SDK version ~6.0.100 publish no longer properly functions for
@@ -69,13 +68,17 @@ would obviously use the cached resource.
 
 ## Implementation
 
-When constructing the .Net SDK dependency the pipeline should no longer strip
-any files out of the given dependency. It should instead take all of the files
-from the Microsoft release and compress them as we are doing for our current
-.Net SDK dependency. This will allow us to install a fully realized .Net SDK
-into a build only layer meaning that none of the extra SDK libraries or the
+The .Net SDK dependency referenced in the buildpack should be identical to the
+one provided by Microsoft. This will allow us to install a fully realized .Net
+SDK into a build only layer meaning that none of the extra SDK libraries or the
 additional runtimes will be present during build. The runtime buildpacks will
 still construct a runtime .Net root for themselves.
+
+This change means that the .Net Publish buildpack will no longer need to
+require the .Net Runtime and .Net ASPNetcore during build as both of those
+runtimes will now be included in the .Net SDK artifact. As a result the .Net
+Runtime and .Net ASPNetcore will no longer need to make their locations and
+other environment variables available during build.
 
 ## Alternatives
 There are two alternatives that have been discussed among the .Net Maintainers
@@ -97,9 +100,21 @@ We could pass information of the location of all of the dependencies to the
 Dotnet Publish buildpack that it could use to construct a Hive directory for
 itself.
 
-####
+#### Cons
 - Lots of unnecessary file operations.
 - Feels like the most opaque option.
+
+## Unresolved Use Cases
+During the course of the authoring this RFC a use case was brought to our
+attention where users can have a project that requires 2 different runtime
+versions to compile correctly. This means that our current solution will not
+resolve this issue for offline buildpack builds but our current buildpack does
+not cover this use case because we download only 1 corresonding SDK and if it
+cannot reach out to the internet it cannot download nugget packages that is
+requires to be backwards compatible. I still beleive that this is the simplest
+solution to a problem that is breaking out buildpack currently. I would,
+however, like to raise that this is a workflow that should be addressed in the
+future.
 
 ## Source Material
 
