@@ -2,7 +2,7 @@
 
 ## Summary
 
-Add a standalone library for buildpack authors to quickly incorporate process reload into their buildpacks.
+Add a standalone library for buildpack authors to quickly incorporate process reload into their `packit v2`-based buildpacks.
 
 ## Motivation
 
@@ -15,7 +15,8 @@ into the new buildpack. This RFC proposes a helper library to implement live rel
 
 ## Detailed Explanation
 
-Create a new repository to host the library: `paketo-buildpacks/reload`. See [Implementation](#implementation) for further details.
+Create a new repository to host the library: `paketo-buildpacks/libreload-packit`.
+See [Implementation](#implementation) for further details.
 
 Going forward, buildpack authors can rely on this library to assist with reloadable processess, instead of making large 
 PRs that require intimate knowledge of the `watchexec` CLI. Examples:
