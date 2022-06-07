@@ -53,6 +53,7 @@ type ReloadableProcessSpec struct {
 
 type Reloader interface {
 	ShouldEnableLiveReload() (bool, error)
+	GetBuildPlanRequirement() packit.BuildPlanRequirement
 	TransformReloadableProcesses(originalProcess packit.Process, spec ReloadableProcessSpec) (nonReloadable packit.Process, reloadable packit.Process)
 }
 ```
