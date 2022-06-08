@@ -10,10 +10,10 @@ dependency-specific logic that currently resides in the
 [dep-server](https://github.com/paketo-buildpacks/dep-server). This includes
 code for discovering new versions, retrieving dependencies, and compiling the
 dependencies. As a result, maintainers will make/maintain dependency-related
-decisions for the dependencies of relevant buildpacks.
-Additionally, buildpacks should use dependencies directly from upstream hosting (source or binary) whenever
-possible, to cut down on the number of dependencies that are uncessarily
-compiled from source.
+decisions for the dependencies of relevant buildpacks.  Additionally,
+buildpacks should use dependencies directly from upstream hosting (source or
+binary) whenever possible, to cut down on the number of dependencies that are
+uncessarily compiled from source.
 
 ## Motivation
 
@@ -144,7 +144,13 @@ and moved over to the buildpack under a directory called
 machine to compile the code, and should be documented with a README about how
 to use it. The dependency will likely need to be compiled against different
 stacks/architectures, so this should also be enumerated in the RFC and taken
-account of in the new compilation code.
+account of in the new compilation code. It will have the metadata for a
+dependency available as an input for determining source URI, version, and
+compatible stacks.
+
+Maintainers should also consider if the dependency of interest if OS
+distribution-agnostic, or if it will need to be compiled separately depending
+on the distribution or platform it's used on.
 
 The code will eventually be used in a Github Actions workflow, so the location
 needs to be standardized across buildpacks. The workflows and Github Actions to
@@ -152,52 +158,24 @@ use this code will be enumerated in a separate RFC.
 
 ### Bucket Setup
 
-For dependency metadata and the dependencies that must be compiled, there
-should be a dependency-specific bucket set up in Paketo Dependencies project
-within GCP to store data. The directory name will be the name of the dependency
-and it will contain both dependency archives (if compiled), and metadata JSON
-file named `metadata.json`. Credentials will be shared between the dep-server,
-the buildpack, and buildpack maintainers. As a result, the dep-server will need
-to know about all N number of buckets for every dependency once set up.
+The new dependency management automation (described in a subsequent RFC) will
+rely on the `buildpack.toml` and dependency-specific code as the source of
+truth for the latest metadata and known versions. This will lead to greater
+transparency and discoverability in how we update dependencies.
 
-<details>
-<summary>Metadata will be stored the same way it is in the dep-server now, inside of a JSON file:</summary>
+Since metadata and known versions won't be stored data anymore, buckets will
+only be needed to store dependencies that have been compiled or processed in
+some way. For these cases, a dependency-specific bucket set up in Paketo
+Dependencies project within GCP to store data. The directory name will be the
+name of the dependency and it will contain dependency archives (if compiled).
+Push credentials to this bucket will be reserved for the buildpack and
+maintainers, but the contents will be publicly available.
 
-```
-[
-  {
-    "name": <dependency name>,
-    "version": <dependency version>,
-    "sha256":"<dependency SHA256>,
-    "uri": <dependency URI>,
-    "stacks": [
-      {
-        "id": <compatible stack ID>
-      }
-    ],
-    "source": <dependency source URI>,
-    "source_sha256": <dependency source SHA256>,
-    "deprecation_date": <deprecation date>,
-    "created_at": <date dependency was created, if compiled>,
-    "modified_at": <date depdendency was modified at if modified,
-    "cpe": <common platform enumeration>,
-    "purl": <package URL>,
-    "licenses": [<dependency licenses>]
-  },
-  ...
-  ]
+### Remove Known Versions
 
-```
-</details>
-
-### Store Known Versions
-
-Known versions of each dependency are currently stored in a JSON file in the
-same GCP bucket and underlying directory mentioned in the section above. It's
-used to keep track of versions we've seen before or don't want to pick up in
-the dep-server. To avoid storing frequently updated stateful information in the
-Github repository itself, it should be stored in the new dependency GCP bucket
-as well, named `known-versions.json`.
+As mentioned above, dependency workflows will use the `buildpack.toml` as a
+source of the latest versions we support. Because of this change, we will no
+longer need to keep track of all known versions in a separate file.
 
 ### Transfer Version Retrieval Code
 
@@ -209,174 +187,66 @@ buildpack under a directory named `dependency/retrieval`. It should be
 well-documented and useable on a local environment. The location must be
 standardized for use in automation.
 
+#### New Repository
+Eventually, commonalities in version retrieval code (and other parts of the
+dependency process) will be able to be abstracted out into a separate code base
+so that implementations can be standardized. The repository for shared
+dependency code will live in the Paketo Buildpacks Github org and will be named
+`libdependency`.
 
 ### Transfer Metadata Generation Code
 Metadata generation code also comes from
 [dep-server/pkg/dependency](https://github.com/paketo-buildpacks/dep-server/tree/main/pkg/dependency).
 Code to generate/gather all of the metadata for a dependency should be moved
-into the buildpack under the `dependency/metadata` directory.  The
-code should do essentially the same thing that the existent code does, and
-support the same fields.
+into the buildpack under the `dependency/metadata` directory.  The code should
+do essentially the same thing that the existent code does, and support the same
+fields. It should also spit out multiple sets of metadata depending on what the
+buildpacks support. If different source URIs or `stacks` lists are needed
+depending on the stack, this code should contain that logic and return metadata
+for each use case.
 
-The code for getting the  `version`, `URI`, `SHA256`, `ReleaseDate`,
-`DeprecationDate`, and `CPE` fields are all dependency-specific and can live in
-the buildpack `dependency/metadata` location.
+The code for getting the `source URI`, `version`, `URI`, `SHA256`, `ReleaseDate`,
+`DeprecationDate`, `stacks`, and `CPE` fields are all dependency-specific and
+can live in the buildpack `dependency/metadata` location.
 
 The `PURL` and `licenses` fields are more generic across dependencies, so the
 code for generating them should come from a common location, and used as
 library in the dependency-specific metadata code to reduce code duplication.
-The dep-server repository will retain this code, which can be imported as a
-libray in the dependency-specific metadata code can use it as a library.
+Per the version retrieval section above, this will be the new `libdependency`
+repository.
+
+#### Caveat: Compiled Dependencies
+In the case that the dependencies need to be compiled or processed, the
+metadata generation code should omit the `URI` and the `SHA256` from the
+metadata. This will be used in automation (described in detail in a subsequent
+RFC) to let the dependency management system to trigger compilation of the
+dependency. When the dependency is compiled and uploaded to a bucket, the
+bucket URI will be the URI in the metadata, and the compiled dependency SHA256
+will be the SHA256 in the metadata.
 
 ### Smoke Test
 In the dep-server, a smoke test is run against every dependency before the
-metadata is uploaded during the Github Actions process. A similar dependency
-smoke test should be added to the buildpack that will eventually be used in the
-dependency workflows. It should reside inside the buildpack in a directory
-called `/dependency/test` so that workflows can locate the test.
+metadata is uploaded during the Github Actions process.
+
+For all dependencies (compiled or not), a similar dependency smoke test should
+be added to the buildpack that will eventually be used in the dependency
+workflows. It should reside inside the buildpack in a directory called
+`/dependency/test` so that workflows can locate the test.
 
 ### Enable Future Support of Multiple Stacks
 
 Currently, the dep-server contains [a
 file](https://github.com/paketo-buildpacks/dep-server/blob/main/.github/data/dependencies.yml)
-that lays out what stacks each dependency is compatible with. For each
-dependency, a similar `dependency.json` file should be created in the
-buildpack at the path `dependency/dependency.json`. This file structure is
-enumerated in the "Dependency Configurations File" section below. This will be
-useful in the future as buildpacks support more stacks that we will need to
-supply compatible dependencies for.
+that lays out what stacks each dependency is compatible with.
 
-The dependency metadata published will contain a `stacks` field with compatible
-stacks, which end up in the `buildpack.toml`. When used in
-the buildpack, the right dependency is selected depending on the stack that's
-being used for the build. 
+This should be handled in the new system by the metadata generation code. For
+each version that metadata is generated for, it should handle any/all
+permutations of dependencies and stacks.
 
-### Dependency Configurations File
-
-In each buildpack, a JSON file similar to the dep-server workflow
-[dependencies.yml](https://github.com/paketo-buildpacks/dep-server/blob/main/.github/data/dependencies.yml)
-file will be added. The content of this file will be used in the code for
-dependency/metadata retrieval, as well as in workflows that will run.
-Since this file will be used in automation, the format and location should be
-standardized across the project.
-
-The file will contain dependency-specific choices the maintainers have made,
-such as whether the dependency will be compiled by us or pulled/used directly
-from the upstream source, and the upstream source URI of the dependency.
-
-In cases where maintainers have opted to compile dependencies themselves, they
-will need to specify the image to compile the dependency against with the
-`compile-against` field. In this case, the list of stacks that the dependency will be
-compatible with when compiled should be provided, as well as the URI where the
-compilation code will pull the source code from.
-
-If the dependency is going to be used from upstream
-directly, the `compile-against` field is set to `use-upstream`. There can be
-multiple source URIs, which are associated with compatible stacks. This would
-come in handy if different source dependencies are needed depending on the
-operating system.
-
-```
-[
-  {
-    "name": "<dependency-name>",
-    "variants": [
-      {
-        "compile-against": "<'use-upstream' or the image to build the dependency against>",
-        "uri": "<source-uri>",
-        "compatible-stacks": [
-          "<all compatible stacks>"
-        ]
-      }
-    ]
-  }
-]
-```
-
-<details>
-<summary> Example 1: in the Golang case, if maintainers opt to compile the dependency
-ourselves from source, and there are AMD64 and ARM64 variants for Bionic-based
-and Jammy-based stacks the `dependency.json` file might look like:</summary>
-
-```
-[
-  {
-    "name": "go",
-    "variants": [
-      {
-        "compile-against": "paketobuildpacks/build-bionic-full:latest",
-        "uri": "https://go.dev/dl/go<version>.src.tar.gz",
-        "compatible-stacks": [
-          "io.buildpacks.stacks.bionic",
-          "io.paketo.stacks.tiny"
-        ]
-      },
-      {
-        "compile-against": "paketobuildpacks/build-jammy-full:latest",
-        "uri": "https://go.dev/dl/go<version>.src.tar.gz",
-        "compatible-stacks": [
-          "io.buildpacks.stacks.jammy",
-          "io.buildpacks.stacks.jammy.tiny"
-        ]
-      },
-      {
-        "compile-against": "<some Bionic ARM64 build image>",
-        "uri": "https://go.dev/dl/go<version>.src.tar.gz",
-        "compatible-stacks": [
-          "<some Bionic ARM64 stack ID>"
-        ]
-      },
-      {
-        "compile-against": "<some Jammy ARM64 build image>",
-        "uri": "https://go.dev/dl/go<version>.src.tar.gz",
-        "compatible-stacks": [
-          "<some Jammy ARM64 stack ID>"
-        ]
-      }
-    ]
-  }
-]
-```
-</details>
-
-This example shows the expanding complexity of compiling dependencies ourselves
-when multiple OS and architecture combinations are supported.
-
-<details>
-<summary> Example 2: Conversely, in the same Golang case, if the dependency is used
-directly from its upstream URI, and there are AMD64 and ARM64 variants for
-Bionic-based and Jammy-based stacks the `dependency.json` file might look like:</summary>
-
-```
-[
-  {
-    "name": "go",
-    "variants": [
-      {
-        "compile-against": "use-upstream",
-        "uri": "https://go.dev/dl/go%s.linux-amd64.tar.gz",
-        "compatible-stacks": [
-          "io.buildpacks.stacks.bionic",
-          "io.paketo.stacks.tiny",
-          "io.buildpacks.stacks.jammy",
-          "io.buildpacks.stacks.jammy.tiny"
-        ]
-      },
-      {
-        "compile-against": "use-upstream",
-        "uri": "https://go.dev/dl/go%s.linux-arm64.tar.gz",
-        "compatible-stacks": [
-          "<some Bionic ARM64 stack ID>",
-          "<some Jammy ARM64 stack ID>"
-        ]
-      }
-    ]
-  }
-]
-```
-</details>
-This example shows the reduced complexity of using the dependency directly from
-upstream.
+For example, if separate dependencies are avaiable from a CDN for Ubuntu 18.04
+and 22.04, and the buildpack supports both, then the metadata generation could
+should produce two batches of metadata for each version, one for each
+distribution.
 
 ### New Buildpack Directory Contents
 
@@ -385,7 +255,6 @@ additions:
 ```
 buildpack
 └───dependency/
-│   │   dependency.json
 │   └───compilation/
 │   │   │   *.go
 │   │   │   ...
@@ -395,7 +264,7 @@ buildpack
 │   └───metadata/
 │   │   │   *.go
 │   │   │   ...
-│   └───test/
+│   └───test/ (if dependency is compiled)
 │       │   *.go
 ```
 
@@ -428,10 +297,4 @@ repository is already large, as it accounts for every dependency in the
 project, potentially making it hard to contribute and maintain.
 
 ## Unresolved Questions and Bikeshedding (Optional)
-- How will this need to change if the CNB concept of stacks is removed?
-- Is there a better way to represent the content of `dependency.json`,
-  especially around communicating the seam between stack availabilty and which
-  dependency source URI is used.
-- Would a separate repository be better than having all of this in one
-  buildpack?
 - Who is going to pay for the GCP buckets?
