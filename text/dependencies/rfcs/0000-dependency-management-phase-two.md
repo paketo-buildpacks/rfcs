@@ -15,13 +15,16 @@ Per top-level [RFC 0000:
 Overview](https://github.com/paketo-buildpacks/rfcs/blob/dependency-management-top-level/text/dependencies/rfcs/0000-dependency-management-overview.md),
 the second phase of the dependency management process update will be to
 completely rework the existing set of actions and workflows from the
-[dep-server](https://github.com/paketo-buildpacks/dep-server).
+[dep-server](https://github.com/paketo-buildpacks/dep-server) such that the
+dep-server is no longer need because the entire process runs alongside the
+buildpacks.
 
-This phase of dependency management update is focused on addressing the
-painpoint of maintainability. Dependencies maintainers will own the new
-workflows and actions, ensuring every relevant buildpack follows the same
-overall system architecture, while giving buildpacks maintainers freedom to make
-dependency-specific choices separately and debug issues with full authority.
+This phase will address concerns around the opaque complexity of the dep-server
+process. Additionally, it addresses the painpoint of maintainability.
+Dependencies maintainers will own the new workflows and actions, ensuring every
+relevant buildpack follows the same overall system architecture, while giving
+buildpacks maintainers freedom to make dependency-specific choices separately
+and debug issues with full authority.
 
 The new actions will also be simple to run locally in the event of
 Github Actions degradations, making the dependency-management system more
@@ -63,12 +66,34 @@ in the buildpack's Github Actions:
   dep-server, this workflow will discover them and open a PR to update the
   `buildpack.toml`.
 
-### New Plan
-The new set of workflows will closely mirror the existing set of workflows with
-some modifications.  Workflows will still be responsible for getting new
-versions, pulling dependencies from a URI, optionally compiling them, testing
-them, and then publishing metadata.
+### New Plan Overview
+The new process for managing dependencies will use the `buildpack.toml` as a
+source of truth for the latest versions we support, instead of using a separate
+`known-versions.json` file. Metadata will also be generated and updated in
+place with a pull request to the `buildpack.toml`, rather than being pushed to
+an intermediary `metadata.json` file. The overall process will be closer to
+what someone would do if they were updating the dependencies themselves, rather
+than with automation. The overall steps will be:
 
+1. Pick up all versions of the dependency, using code from the Phase 1 RFC in
+   `<buildpack>/dependency/retrieval`
+2. Compare the list of all versions with the version constraints and supported
+  versions in the `buildpack.toml` to determine what versions can be updated.
+3. Generate metadata for each of the versions to be added using code from Phase
+   1 in `<buildpack>/dependency/metadata`.
+4. If the `URI` and `SHA256` are missing from the metadata, the code will be
+  compiled with the code from `<buildpack>/dependency/compilation`.
+5. Test the dependency (whether compiled or not) using the test from
+   `<buildpack>/dependency/test`
+6. (If compiled) Upload the dependency to the dependency GCP bucket
+7. (If compiled) Add the GCP bucket access URI and the SHA256 of the dependency to the
+    metadta `URI` and `SHA256` fields
+8. Update the `buildpack.toml` with the new versions and metadata
+
+This new plan eliminates extra steps of storing metadata in a file for later
+use, and then separately updating the dependencies on a timer.
+
+### Workflows and Actions
 Pending the Phase 1 RFC is accepted, and it's decided dependency logic will
 live alongside the buildpack, workflows will be rolled out to all of the
 buildpacks from
@@ -83,155 +108,88 @@ The github-config repository `CODEOWNERS` file will be updated to set the
 `actions/dependency` and `implementation/.github/workflows/<all
 dependency-related workflows>`.
 
-### New Workflows and Actions
-This section explains on a high level how the new workflows and associated
-actions will work. The implementation details may be subject to slight change,
-but the overall structure and main components of the automation should stay consistent
-with what's in this proposal.
 
-1. **Get New Versions**
+Each of the step s outlined in the overview will be converted into workflow
+steps.
 
-   Description: This workflow will be extremely similar to the current `Get New
-   Versions` worklow.
+Workflow 1:
+1. Picking up new versions with buildpack code will be a workflow step, which
+   runs on a timer at least once per day.
 
-   Workflow:
-   * Runs twice per day
-   * Needs access to the `known-versions.json` file from GCP (see Phase 1 RFC)
-   * Will leverage a `Retrieve Versions` action outlined below
-   * Updates the `known-versions.json` file with newly discovered versions
-   * Trigger build workflows for each new version
----
+2. Figuring out which versions will be added to the `buildpack.toml` will be
+   rolled into an action that outputs versions. It will leverage parts of the
+   existing `jam update-dependencies` logic.
 
-   Action: **Retrieve Versions**
+3. For individual versions, a Github Actions [`matrix
+   strategy`](https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs#using-a-matrix-strategy)
+   will be used to iterate over each version to be added, to generate metadata
+   using the code from within the buildpacks.
 
-     Inputs:
-     * dependency name
-     * known versions list
-     * version retrieval code from the buildpack under
-       `dependency/retrieval`
+   The metadata generation code from the buildpack will contain logic to spit
+   out "variants" for each dependency version, depending on the stacks
+   (OS/architectures) supported by the buildpack.
 
-     Action function:
-     * Runs the version retrieval code from the buildpack
-     * Compares output versions to the `known-versions.json`
-     * Returns a list of new versions
----
-2. **Get Dependency and Gather Metadata**
+   For example, if the dependency is used from source but has two different
+   artifacts for ARM64 and AMD64 variants, and the buildpack supports both
+   architectures, then the metadata generation code should spit out two batches of
+   metadata for each new version. One with the AMD64 upstream source URI/SHA256, and
+   the other with the ARM64 upstream URI/source SHA256.
 
-   Description: This workflow has the bulk of the dependency management logic
-   to perform compilation, dependency testing, artifact uploading, and metadata
-   gathering.
+5. In the same matrix loop, dependency compilation will be kicked off with the
+   code from the buildpacks on the basis of whether the metadata contains the
+   `SHA256` and `URI` of the dependency.
 
-   The `dependency.json` file from the buildpack will define "variants" of
-   each dependency. Variants in this context mean dependencies of the same
-   version for different OS/architectures. There are two main pathways for this workflow:
+6. A smoke test will be run against the dependency in both the
+   compiled/non-compiled cases via a step that simply runs the test from
+   `<buildpack>/dependency/test`.
 
-   1. Dependencies are used directly from upstream and undergo NO
-      post-processing. In this case, "variants" will differ in the `uri` that
-      they're pulled from (the AMD64 or ARM64 versions) and will have different
-      sets of compatible stacks.
+7. (If compiled) The dependency will be uploaded via an action
 
-   2. Dependencies are compiled or processed in some way. In this case
-      "variants" will likely have the same generic source URI but will differ
-      in the image that they are compiled against.
+8. (If compiled) The metadata is updated with the SHA256 and GCP bucket URI in
+   a workflow step
 
-   The workflow should be built to handle both of these scenarios.
+9. Updating the `buildpack.toml` with the new versions and metadata will also
+   be delegated to a new action
 
-   Workflow:
-   * Triggered by previous workflow (or by manual trigger) with dependency version
+10. A pull request will be opened with the changes to the `buildpack.toml`. The
+    usual suite of integration and unit tests will be run against the pull
+    request as in all other cases.
 
-   * [Job 1]: Parse the array of `variants` of the `dependency/dependency.json`
-     file from the buildpack and outputs a JSON
-     [`matrix`](https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs#using-a-matrix-strategy).
 
-   * [Job 2]: Needs the matrix output from `Job 1` and will employ a [`matrix`
-     `strategy`](https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs#example-using-a-single-dimension-matrix)
-     from the JSON to iterate over each variant.
+### Updating Dependencies Manually
+All of these steps will run as a workflow with the option for a manual
+dispatch, but can be run easily manually on a local system.  Additionally, we
+could eventually create a script inside of the `<buildpack>/scripts` directory
+to perform the main steps of the `buildpack.toml` update process locally. This
+will replace the need for the `jam update-dependencies` command that the
+automation uses currently. Since dependency-related logic will live alongside
+the buildpack, it makes more sense for manual dependency-update scripts to live
+there as well in order to leverage code.
 
-     The rest of the steps below will run as a part of `Job 2` for each variant:
-
-   * If the variant `compile-against` field from the `dependency.json` is
-     set to `use-upstream`:
-     * Pull the dependency from the upstream source URI
-
-   * If the variant `compile-against` field from the `dependency.json` is set to
-     an image name (instead of `use-upstream`):
-     * Dependency must be compiled or modified
-     * Run the `Compile or Modify Action` which leverages the dependency
-       compilation code from the buildpack under `dependency/compilation`. It
-       will likely need to take in the variant `compile-against` image and the source `uri`.
-     * The output should be a dependency artifact.
-     * As a future direction, if the `compile-against` image requires a
-       different architecture (such as ARM64 stack image varieties), the
-       workflow will eventually include a step to run compilation in a VM of
-       that architecture. This will be fleshed out in a future RFC.
-
-   * Run a smoke test against the dependency artifact, from the buildpack under
-     `dependency/test`. Fail the workflow if the test does not pass.
-   * If the dependency was compiled/modified, upload the compiled dependency to
-     the dependency-specific GCP bucket using the related action
-   * Gather metdata about the dependency by leveraging the buildpack dependency
-     metadata generation code in the `dependency/metadata` location. The code
-     should take the list of compatible stacks for the variant in as an
-     argument.
-     * For dependencies that did not undergo compilation and are used directly
-       from their upstream source, the `uri` and `source_uri` field will be the
-       same.
-   * Publish metadata by pushing metadata to a `metadata.json` file in the
-     dependency-specific GCP bucket.
-   * Triggers the `Update Dependencies` workflow
-
----
-
-   Action: **Compile or Modify Dependency**
-
-     Inputs:
-     * dependency name
-     * image to compile against
-     * upstream URI
-     * version (from workflow dispatch)
-
-     Action Function: This action will leverage the dependency
-     compilation code from the buildpack under `dependency/compilation` and
-     pass it the dependency version and upstream URI. The image to compile
-     against is an input, and will be used as the `FROM` image in the action
-     Dockerfile.
----
-
-   Action: **Upload Dependency**
-
-     Inputs:
-     * dependency archive
-     * credentials for GCP Bucket
-     * GCP bucket location
-
-     Action Function: If `use-upstream` is false, upload the output from the
-     compilation step to the dependency specific GCP bucket
-
----
-
-   Action: **Upload Metadata**
-
-     Inputs:
-     * dependency metadata (name, version, URI, source URI, SHA256, source
-       SHA256, stacks, deprecation date, CPE, PURL, licenses)
-     * credentials for GCP Bucket
-     * GCP bucket location
-
-     Action Function: Add the dependency metadata to the `metadata.json` for the
-     dependency and upload it to the dependency-specific GCP bucket
-
----
-
-3. **Update Dependencies**
-
-   Workflow:
-   * Triggered by previous workflow (or by manual trigger)
-   * Runs exactly the same way as the current workflow does with `jam
-     update-dependencies`, but will be triggered by depenency updates, rather
-     than running on a timer.
 
 ### Rationale and Alternatives
 
-TODO
+As stated above, this proposal makes almost all of the process available
+directly in Github Actions. This makes the dependency management process much
+more visible to everyone, since dependencies, metadata, and versions aren't
+behind a credential-protected bucket. It will also heavily lean on code
+maintained by buildpacks maintainers to give the needed flexibility for all of
+the dependencies. The pull request model works well with the current process
+used in Paketo.
+
+An alternative to this proposal would be to keep more of the existent
+infrastructure in place, such as keeping the `jam update-dependencies` command
+and expanding it to work for dependency variants (for different stacks). The
+metadata, known versions, and compiled dependencies would still be pushed to
+buckets. The only advantage of this strategy is that there's potentially less
+code change needed.
+
+A final alternative would be to deviate from using Github Actions, since there
+are sometimes issues with high-volume jobs and outages. This option has the
+distinct disadvantage of deviating from the process used in the rest of the
+project, which would proliferate the concerns around maintainability and
+visibilty and would require quite a bit of overhead to set up a new system.
 
 ## Unresolved Questions and Bikeshedding (Optional)
+- Will running all the steps in one workflow make it difficult to isolate
+  failures?
