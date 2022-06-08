@@ -39,7 +39,7 @@ support it has steadily increased.
 
 `yarn-berry-install`
 
-Provides: `yarn_packages` OR `node_modules` Requires: `node`, during `build` and `launch`
+Provides: `yarn_cache` OR `node_modules` Requires: `node` during `build`
 
 The buildpack does not require `yarn` since the Berry release itself is meant
 to be checked into version control under `.yarn/releases`. Node v16.10 and
@@ -169,16 +169,19 @@ The buildpack should run `yarn install` in the following cases:
 - If an application uses `node_modules`, which may be determined by the
   presence of a `node_modules` directory or through `.yarnrc.yml` configuration.
 
+- If the `yarn.lock` has changed when using `node_modules`.
+
 - If there is no local cache (`.yarn/cache` by default, but can be configured) in
   the working directory, whether `.pnp.cjs` exists or not.
 
 - If there is no `.pnp.cjs` in the working directory, even if a local cache exists.
 
-- If the `yarn.lock` has changed.
-
 The buildpack should NOT run `yarn install` when:
 
-- Both a `.pnp.cjs` file and a local cache are present in the working directory.
+- Both a `.pnp.cjs` file and a local cache are present in the working
+  directory. The buildpack should assume that these two artifacts indicate a
+  desire to leverage Plug'n'Play and should not need to run `yarn install`
+  whether or not the `yarn.lock` has changed between builds.
 
 
 The buildpack will store the Yarn cache in a layer and configure Yarn to
