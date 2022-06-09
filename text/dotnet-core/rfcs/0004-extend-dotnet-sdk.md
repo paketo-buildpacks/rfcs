@@ -110,9 +110,9 @@ attention where users can have a project that requires 2 different runtime
 versions to compile correctly. This means that our current solution will not
 resolve this issue for offline buildpack builds but our current buildpack does
 not cover this use case because we download only 1 corresonding SDK and if it
-cannot reach out to the internet it cannot download nugget packages that is
-requires to be backwards compatible. I still beleive that this is the simplest
-solution to a problem that is breaking out buildpack currently. I would,
+cannot reach out to the internet it cannot download nuget packages that is
+required to be backwards compatible. I still believe that this is the simplest
+solution to a problem that is breaking the buildpack currently. I would,
 however, like to raise that this is a workflow that should be addressed in the
 future.
 
