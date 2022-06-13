@@ -110,14 +110,15 @@ itself.
 ## Unresolved Use Cases
 During the course of the authoring this RFC a use case was brought to our
 attention where users can have a project that requires 2 different .NET Runtime
-versions at build time to compile correctly. The current version of the .NET
-Core buildpack does not support this use case, since only one version of the
-.NET Runtime is installed during a given build. This proposed change to the
-.NET SDK buildpack **does not** fully support this use case. Multi-runtime apps
-may work for online builds, since the .NET SDK can download needed compile-time
-dependencies. However, offline builds will fail because the SDK cannot download
-the missing .NET Runtime dependencies. This is considered out of scope for this
-RFC, but could be supported in the future.
+versions at build time to compile correctly, an example of this type of app can 
+be seen [here](https://github.com/macsux/multi-version-dotnet-project). 
+The current version of the .NET Core buildpack does not support this use case, 
+since only one version of the .NET Runtime is installed during a given build. 
+This proposed change to the.NET SDK buildpack **does not** fully support this 
+use case. Multi-runtime apps may work for online builds, since the .NET SDK can 
+download needed compile-timedependencies. However, offline builds will fail 
+because the SDK cannot download the missing .NET Runtime dependencies. This 
+is considered out of scope for this RFC, but could be supported in the future.
 
 ## Source Material
 
