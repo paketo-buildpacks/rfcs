@@ -175,7 +175,9 @@ maintainers, but the contents will be publicly available.
 
 As mentioned above, dependency workflows will use the `buildpack.toml` as a
 source of the latest versions we support. Because of this change, we will no
-longer need to keep track of all known versions in a separate file.
+longer need to keep track of all known versions in a separate file. The Phase 2
+RFC outlines the workflows to use the `buildpack.toml` to track the latest
+versions in the buildpacks, in order to retrieve version updates.
 
 ### Transfer Version Retrieval Code
 
