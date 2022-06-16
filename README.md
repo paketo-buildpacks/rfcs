@@ -49,6 +49,7 @@
 * [0042: Adjust Builder Order](./text/0042-adjust-builder-order.md)
 * [0043: Expanding the Criteria for Reproducible Builds](./text/0043-reproducible-builds.md)
 * [0047: Web Servers Buildpack Promotion](./text/0047-promote-web-servers-buildpack.md)
+* [0048: Additional Github Issue Templates](./text/0048-issue-templates.md)
 
 ## Superseded RFCs
 
