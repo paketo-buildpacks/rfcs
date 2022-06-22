@@ -85,7 +85,145 @@ dependency compilation, and code usability.
    management process should ideally able to run locally with ease, in the
    event of Github Actions outages.
 
-### Dependencies Directly From Upstream
+### Overarching Plan
+
+The various parts of the dependency management process can be distilled into a
+few high-level jobs: (1) new version retrieval, (2) metadata gathering, (3)
+compilation, (4) dependency testing, and a very important new addition is (5),
+performing these steps such that dependencies are compatible with different
+stacks/operating systems/architectures. All 5 of these steps require different
+solutions depending on the dependency, which is why they will become the
+responsibility of the **buildpack author/maintainer**.
+
+Buildpack authors will be responsible for creating code to perform each of
+these steps, which will live in a new buildpack directory called
+`dependency`. It will be the job of generalized workflows, actions, and tooling
+to orchestrate these steps in an automated fashion, to keep the
+`buildpack.toml` up-to-date with new dependency versions.
+
+In order to run the steps in a generalized workflow, each step will need to
+conform to a standardized set of inputs and outputs. Each can be written in any
+language, but should have a simple way to be executed via a Makefile so it can
+be called in a consistent manner. A `Makefile` will be created with targets for
+each step, with each step being a bash script in this example:
+
+`<buildpack>/dependency/Makefile`:
+```
+retrieve:
+	@./retrieval/retrieve.sh $(buildpackTomlPath) $(output)
+compile:
+	@./compilation/compile.sh $(version) $(outputDir) $(target)
+test:
+	@./test/test.sh $(tarballName) $(version)
+```
+
+#### 1. Version Retrieval (`make retrieve`)
+  * Description: Discovers dependency versions newer than `buildpack.toml`
+    versions (within constraints) and returns each with a set of generated
+    metadata in the form of a `metadata.json` file.
+  * Inputs:
+    * `buildpackTomlPath`  - the path to the  `buildpack.toml` file
+    * `output` - the path to a file into which an output metadata JSON will be
+      written
+  * Outputs:
+    * `output` - a `metadata.json` file containing entries for each new version
+      discovered at the `output` path.
+
+#### 2. Compilation (`make compile`)
+  * Description: Compiles a specific version of the dependency to the target
+    platform. Optional for dependencies that need it [Dependencies Directly
+    From
+    Upstream](https://github.com/paketo-buildpacks/rfcs/blob/cb117e4f45d2bc4e8d7551667100b5c8b9d7e89b/text/dependencies/rfcs/0000-dependency-management-phase-one.md#dependencies-directly-from-upstream)
+    section for more information. The future workflow that uses this code will
+    ensure that `outputDir` will exist and be writeable. For running locally,
+    this should be done by the user.
+  * Inputs:
+    * `version`  - the specific version to compile
+    * `outputDir` - the relative or absolute directory path for the output
+      tarball and other artifacts
+    * `target` - the target platform variant, which will only be used to
+      descriptively name the output artifact.
+  * Outputs:
+    The following files should be made available in the `outputDir`:
+    * Dependency artifact - There should be exactly one tarball, with a name of
+      `${dependency}-<description>.tgz`, where <description> can be any
+      combination of OS, architecture, target platform, version, etc that the
+      buildpack author desires. The dependency name will be highly dependent on
+      if the dependency needs to be compiled separately for different
+      OS/architecture combinations.
+    * Artifact SHASUM -  A file with the same name as the dependency artifact,
+      with a `sha256` suffix, containing the SHA256 of the compiled dependency.
+
+#### 3. Test Dependency (`make test`)
+  * Description: Performs some verification that the dependency is correctly
+    built and functions as expected. Optional for dependencies that have not
+    been compiled or processed.
+  * Inputs:
+    * `tarballPath` - the location of the tarball to test
+    * `version` - the dependency version
+
+### Transfer/Combine Version Retrieval and Metadata Generation
+
+The new  version retrieval code will merge together the job of discovering
+versions and getting metadata for each version. It will pick up newer versions
+than what the `buildpack.toml` contains, and outputs JSON-formatted metadata
+for each dependency. This code should be ported from the dep-server repository
+to the buildpack under a directory named `dependency/retrieval`, taking in the
+path to the `buildpack.toml` file and the path to the output file. It should be
+well-documented and useable on a local environment. The location must be
+standardized for use in automation.
+
+Buildpack authors should feel free to reuse (or rewrite) the code from the
+dep-server for these parts as they see fit. The language that it is written in is
+up to maintainers; however, if written in Go it will be easier to leverage
+future abstraction libraries that may arise.
+
+Version discovery code comes from
+[dep-server/pkg/dependency](https://github.com/paketo-buildpacks/dep-server/tree/main/pkg/dependency).
+Each dependency has a slightly different way new versions are made
+discoverable. The code will use the `buildpack.toml` dependency constraint
+metadata and versions in the `buildpack.toml` already to determine new
+versions.
+
+Metadata generation code also comes from
+[dep-server/pkg/dependency](https://github.com/paketo-buildpacks/dep-server/tree/main/pkg/dependency).
+Code to generate/gather all of the metadata for a dependency should be moved and combined
+into the retrieval code.  The code should
+do essentially the same thing that the existent code does, and support the same
+metadata fields.
+The supported metadata fields are: `source URI`, `source SHA256`, `version`,
+`URI`, `SHA256`, `ReleaseDate`, `DeprecationDate`, `stacks`, `purl`, `licenses`
+and `CPE`.
+
+#### Caveat: Compiled Dependencies
+In the case that the dependencies need to be compiled or processed, the
+metadata generation code should omit the `URI` and the `SHA256` from the
+metadata. This will be used in automation (described in detail in a subsequent
+RFC) to let the dependency management system to trigger compilation of the
+dependency. When the dependency is compiled and uploaded to a bucket, the
+bucket URI will be the URI in the metadata, and the compiled dependency SHA256
+will be the SHA256 in the metadata.
+
+#### Support Multiple Stacks
+The metadata generation portion of the code should also be smart enough to spit out
+multiple sets of metadata per version if there are multiple variants of a
+version from different upstream URIs. For each version that metadata is
+generated for, it should handle any/all permutations of dependencies and
+stacks.
+
+For example, if separate dependencies are avaiable from a CDN for Ubuntu 18.04
+and 22.04, and the buildpack supports both, then the metadata generation could
+should produce two batches of metadata for each version, one for each
+distribution.
+
+#### New Repository
+Eventually, commonalities in version retrieval code (and other parts of the
+dependency process) will be able to be abstracted out into a separate code base
+so that implementations can be standardized (if written in Golang). The
+repository for shared dependency code will live in the Paketo Buildpacks Github
+org and will be named `libdependency`.
+
+### Use Dependencies Directly From Upstream
 When possible, dependencies should be used directly from their upstream source,
 rather than undergoing any additional compilation or modifications performed by
 Paketo-maintained code.  For each dependency, the corresponding buildpack
@@ -138,23 +276,61 @@ this behaviour lives now.
 ### Transfer Compilation Code
 
 For any dependencies that must still be compiled or processed in some way, the
-code from the Cloud Foundry repositories should be rewritten,
-and moved over to the buildpack under a directory called
-`dependency/compilation`. The code should be easily runnable from a local
-machine to compile the code, and should be documented with a README about how
-to use it. The dependency will likely need to be compiled against different
+code from the Cloud Foundry repositories should be rewritten, and moved over to
+the buildpack under a directory called `dependency/compilation`. The code
+should be easily runnable from a local machine to compile the code, and should
+be documented with a README about how to use it. As outlined in the
+[Overarching
+Plan](https://github.com/paketo-buildpacks/rfcs/blob/dependency-management-step-one/text/dependencies/rfcs/0000-dependency-management-phase-one.md#overarching-plan)
+section, it will take in the `version`, the `outputDir` to put the dependency,
+and the `target` image to compile against.
+
+The code will eventually be used in a Github Actions workflow, so the location,
+inputs, and outputs needs to be standardized across buildpacks. The workflows
+and Github Actions to use this code will be enumerated in a separate RFC.
+
+The dependency will likely need to be compiled against different
 stacks/architectures, so this should also be enumerated in the RFC and taken
-account of in the new compilation code. It will have the metadata for a
-dependency available as an input for determining source URI, version, and
-compatible stacks.
+account of in the new compilation code. This should include information about
+the different images we will need to compile against, as well as the stacks
+that will be compatible with that dependency. Maintainers should also consider
+if the dependency of interest is OS distribution-agnostic, or if it will need
+to be compiled separately depending on the distribution or platform it's used
+on.
 
-Maintainers should also consider if the dependency of interest if OS
-distribution-agnostic, or if it will need to be compiled separately depending
-on the distribution or platform it's used on.
+##### Specifiy variants with the `targets.json` file
+A file under the path `<buildpack>/dependency/targets.json` will be an
+enumeration of the different variants of a dependency, based on the different
+stacks the buildpack supports. This will be parsed and used by workflows
+described in Phase 2, but also serves as a manifest of the different version
+variants of each dependency.
+```
+[
+  {
+    "target": <generic name of the group, to be used in tarball naming if compiled>,
+    "image": <image to compile against>,
+    "stacks": [ <list of compatible stacks>]
+  },
+  ...
+]
+```
 
-The code will eventually be used in a Github Actions workflow, so the location
-needs to be standardized across buildpacks. The workflows and Github Actions to
-use this code will be enumerated in a separate RFC.
+The images listed in the `target.json` file will directly be used as the image
+used during the compilation step during Github Action runs. When compiling a
+dependency locally, users should be able to pull the image themselves and run
+the compilation code on the container.
+
+### Image Preparation
+In the event that a dependency is compiled as outlined in the section above,
+the compilation will take place on a Docker image of the buildpack maintainers'
+choosing. Hopefully, the image that will be used will contain everything needed
+for compilation (as is the case with the Paketo Full Stack build image, which
+is used for compilation now so that no modifications are needed). In the event
+that the image used for compilation doesn't have everything it needs,
+maintainers can provde an optional preparation script inside of
+`<buildpack>/dependency/prepare.sh` to install any helper packages. The
+preparation steps will differ depending on the image and the dependency
+compilation process.
 
 ### Bucket Setup
 
@@ -179,53 +355,6 @@ longer need to keep track of all known versions in a separate file. The Phase 2
 RFC outlines the workflows to use the `buildpack.toml` to track the latest
 versions in the buildpacks, in order to retrieve version updates.
 
-### Transfer Version Retrieval Code
-
-Version discovery code comes from
-[dep-server/pkg/dependency](https://github.com/paketo-buildpacks/dep-server/tree/main/pkg/dependency).
-Each dependency has a slightly different way new versions are made
-discoverable. This code should be ported from the dep-server repository to the
-buildpack under a directory named `dependency/retrieval`. It should be
-well-documented and useable on a local environment. The location must be
-standardized for use in automation.
-
-#### New Repository
-Eventually, commonalities in version retrieval code (and other parts of the
-dependency process) will be able to be abstracted out into a separate code base
-so that implementations can be standardized. The repository for shared
-dependency code will live in the Paketo Buildpacks Github org and will be named
-`libdependency`.
-
-### Transfer Metadata Generation Code
-Metadata generation code also comes from
-[dep-server/pkg/dependency](https://github.com/paketo-buildpacks/dep-server/tree/main/pkg/dependency).
-Code to generate/gather all of the metadata for a dependency should be moved
-into the buildpack under the `dependency/metadata` directory.  The code should
-do essentially the same thing that the existent code does, and support the same
-fields. It should also spit out multiple sets of metadata depending on what the
-buildpacks support. If different source URIs or `stacks` lists are needed
-depending on the stack, this code should contain that logic and return metadata
-for each use case.
-
-The code for getting the `source URI`, `version`, `URI`, `SHA256`, `ReleaseDate`,
-`DeprecationDate`, `stacks`, and `CPE` fields are all dependency-specific and
-can live in the buildpack `dependency/metadata` location.
-
-The `PURL` and `licenses` fields are more generic across dependencies, so the
-code for generating them should come from a common location, and used as
-library in the dependency-specific metadata code to reduce code duplication.
-Per the version retrieval section above, this will be the new `libdependency`
-repository.
-
-#### Caveat: Compiled Dependencies
-In the case that the dependencies need to be compiled or processed, the
-metadata generation code should omit the `URI` and the `SHA256` from the
-metadata. This will be used in automation (described in detail in a subsequent
-RFC) to let the dependency management system to trigger compilation of the
-dependency. When the dependency is compiled and uploaded to a bucket, the
-bucket URI will be the URI in the metadata, and the compiled dependency SHA256
-will be the SHA256 in the metadata.
-
 ### Smoke Test
 In the dep-server, a smoke test is run against every dependency before the
 metadata is uploaded during the Github Actions process.
@@ -233,22 +362,9 @@ metadata is uploaded during the Github Actions process.
 For all dependencies (compiled or not), a similar dependency smoke test should
 be added to the buildpack that will eventually be used in the dependency
 workflows. It should reside inside the buildpack in a directory called
-`/dependency/test` so that workflows can locate the test.
-
-### Enable Future Support of Multiple Stacks
-
-Currently, the dep-server contains [a
-file](https://github.com/paketo-buildpacks/dep-server/blob/main/.github/data/dependencies.yml)
-that lays out what stacks each dependency is compatible with.
-
-This should be handled in the new system by the metadata generation code. For
-each version that metadata is generated for, it should handle any/all
-permutations of dependencies and stacks.
-
-For example, if separate dependencies are avaiable from a CDN for Ubuntu 18.04
-and 22.04, and the buildpack supports both, then the metadata generation could
-should produce two batches of metadata for each version, one for each
-distribution.
+`/dependency/test` and takes in the path to the dependency tarball and it's
+version. For dependencies that are not compiled, maintainers can decide how
+rigorous (or not) the test should be.
 
 ### New Buildpack Directory Contents
 
@@ -258,16 +374,14 @@ additions:
 buildpack
 └───dependency/
 │   └───compilation/
-│   │   │   *.go
 │   │   │   ...
 │   └───retrieval/
-│   │   │   *.go
 │   │   │   ...
-│   └───metadata/
-│   │   │   *.go
+│   └───test/
 │   │   │   ...
-│   └───test/ (if dependency is compiled)
-│       │   *.go
+│   └───Makefile
+│   └───targets.json
+│   └───prepare.sh (optional)
 ```
 
 ### Rationale and Alternatives
