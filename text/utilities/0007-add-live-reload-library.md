@@ -27,7 +27,7 @@ PRs that require intimate knowledge of the `watchexec` CLI. Examples:
 
 ## Rationale and Alternatives
 
-1. Include the library code in packit. See [PR 343](https://github.com/paketo-buildpacks/packit/pull/343). 
+1. Include the library code in packit. See [PR 343](https://github.com/paketo-buildpacks/packit/pull/343).
 While we did consider the possibility of including the interface ("live reload") in Packit, we knew that the implementation
 ("watchexec") was too tightly coupled with `watchexec` to live in Packit.
 2. Include the library code in [the `watchexec` buildpack](https://github.com/paketo-buildpacks/watchexec).
@@ -68,7 +68,7 @@ of detail they desire to enforce in the tests.
 
 ## Prior Art
 
-N/A, although often "common code" has lived in a Packit subpackage. 
+N/A, although often "common code" has lived in a Packit subpackage.
 
 ## Unresolved Questions and Bikeshedding
 
