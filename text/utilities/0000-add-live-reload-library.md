@@ -18,7 +18,7 @@ into the new buildpack. This RFC proposes a helper library to implement live rel
 Create a new repository to host the library: `paketo-buildpacks/libreload-packit`.
 See [Implementation](#implementation) for further details.
 
-Going forward, buildpack authors can rely on this library to assist with reloadable processess, instead of making large 
+Going forward, buildpack authors can rely on this library to assist with reloadable processes, instead of making large
 PRs that require intimate knowledge of the `watchexec` CLI. Examples:
 
 - [npm-start](https://github.com/paketo-buildpacks/npm-start/pull/160)
@@ -52,8 +52,12 @@ type ReloadableProcessSpec struct {
 }
 
 type Reloader interface {
+	// ShouldEnableLiveReload will return true when live reload is enabled (such as when `BP_LIVE_RELOAD_ENABLED=true`)
 	ShouldEnableLiveReload() (bool, error)
-	GetBuildPlanRequirement() packit.BuildPlanRequirement
+
+	// TransformReloadableProcesses will take in a packit.Process and transform it to a reloadable packit.Process
+	// with the appropriate modifications as per the live reload implementation.
+	// Also returns the nonReloadable version of the process.
 	TransformReloadableProcesses(originalProcess packit.Process, spec ReloadableProcessSpec) (nonReloadable packit.Process, reloadable packit.Process)
 }
 ```
