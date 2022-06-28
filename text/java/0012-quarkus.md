@@ -45,7 +45,7 @@ This would allow better control over build:
 * Better enablement for various package types (i.e. other than `fast-jar`).
 * ~~Better control over layering: separating directories according probability of their modification (application code vs. library code).~~
 
-However, it would be much more complicated to implement, and it would lead to duplicity.
+However, it would be much more complicated to implement, and it would lead to duplication.
 
 Another approach could be to have two Quarkus buildpacks: one pre maven/gradle build and one post build.
 With these we might be able to handle various build types (fast/legacy/uber jar) ~~and also handle layering~~.
