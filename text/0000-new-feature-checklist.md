@@ -20,8 +20,16 @@ can go about adding a new feature that will be easily rolled out.
 
 Add a new section to the
 [CONTRIBUTING.md](https://github.com/paketo-buildpacks/.github/blob/main/CONTRIBUTING.md)
-file. The contents of the new section should be as follows:
+file. The section should be added after "How do I contribute?".
+
+The contents of the new section should be as follows:
 ```markdown
+## How do new features get added?
+
+Small features can be added directly to buildpacks, simply open an enhancement issue.
+
+Larger features, more complicated features, and features that cross multiple buildpacks have a more defined process. If you are looking to propose and/or contribute a larger feature, please follow the checklist below.
+
 - [ ] (If necessary) Open an RFC in the [RFCs repository](https://github.com/paketo-buildpacks/rfcs) to discuss the addition of the feature
 - [ ] (Optional) Open tracking issue in relevant buildpack repository
 - [ ] Open PR adding new feature to codebase
