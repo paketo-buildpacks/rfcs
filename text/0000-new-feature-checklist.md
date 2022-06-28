@@ -18,9 +18,9 @@ can go about adding a new feature that will be easily rolled out.
 
 ## Implementation
 
-Add a NEW_FEATURE_CHECKLIST.md to the [community
-repository](https://github.com/paketo-buildpacks/community). The contents of
-that document should be as follows:
+Add a new section to the
+[CONTRIBUTING.md](https://github.com/paketo-buildpacks/.github/blob/main/CONTRIBUTING.md)
+file. The contents of the new section should be as follows:
 ```markdown
 - [ ] (If necessary) Open an RFC in the [RFCs repository](https://github.com/paketo-buildpacks/rfcs) to discuss the addition of the feature
 - [ ] (Optional) Open tracking issue in relevant buildpack repository
