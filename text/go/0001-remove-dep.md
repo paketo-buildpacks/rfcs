@@ -1,8 +1,8 @@
-# Deprecate the `dep` and `dep-ensure` Buildpacks
+# Remove the `dep` and `dep-ensure` Buildpacks
 
 ## Proposal
 
-The `dep` and `dep-ensure` Buildpacks should be deprecated.
+The `dep` and `dep-ensure` Buildpacks should be removed.
 
 ## Motivation
 
@@ -12,7 +12,7 @@ deprecated and archived by the team working on it (See the [Github
 Repository](https://github.com/golang/dep) and the [`dep`
 documentation](https://golang.github.io/dep/docs/introduction.html)). Because
 this tool has been deprecated and `go mod` has been widely adopted by the Go
-community, we should deprecate our buildpacks.
+community, we should remove our buildpacks.
 
 ## Implementation
 
