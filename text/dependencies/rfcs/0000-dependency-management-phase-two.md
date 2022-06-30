@@ -67,33 +67,61 @@ in the buildpack's Github Actions:
   `buildpack.toml`.
 
 ### New Plan Overview
-The new process for managing dependencies will use the `buildpack.toml` as a
-source of truth for the latest versions we support, instead of using a separate
-`known-versions.json` file. Metadata will also be generated and updated in
-place with a pull request to the `buildpack.toml`, rather than being pushed to
-an intermediary `metadata.json` file. The overall process will be closer to
-what someone would do if they were updating the dependencies themselves, rather
-than with automation. The overall steps will be:
 
-1. Pick up all versions of the dependency, using code from the Phase 1 RFC in
-   `<buildpack>/dependency/retrieval`
-2. Compare the list of all versions with the version constraints and supported
-  versions in the `buildpack.toml` to determine what versions can be updated.
-3. Generate metadata for each of the versions to be added using code from Phase
-   1 in `<buildpack>/dependency/metadata`.
-4. If the `URI` and `SHA256` are missing from the metadata, the code will be
-  compiled with the code from `<buildpack>/dependency/compilation`.
-5. Test the dependency (whether compiled or not) using the test from
-   `<buildpack>/dependency/test`
-6. (If compiled) Upload the dependency to the dependency GCP bucket
-7. (If compiled) Add the GCP bucket access URI and the SHA256 of the dependency to the
-    metadta `URI` and `SHA256` fields
-8. Update the `buildpack.toml` with the new versions and metadata
+Overall, the workflows for dependency management will heavily rely on the
+buildpack-specific steps laid out in Phase 1, and will focus on orchestrating
+the steps together in a flexible manner for different potential dependency
+options. The different "options" refer to dependencies that either come from
+upstream directly or must be compiled/modified, and then whether
+multiple variants for different OS/architecture combinations are needed.
+
+The new process for managing dependencies will also use the `buildpack.toml` as
+a source of truth for the latest versions we support, instead of using a
+separate `known-versions.json` file. Metadata will be generated and added to
+the `buildpack.toml` all in one workflow, rather than being pushed to an
+intermediary `metadata.json` file and being added in a separate workflow. The
+overall process will be closer to what someone would do if they were updating
+the dependencies themselves, rather than with automation.
+
+The outlined steps below are an overarching guideline for how the process will
+work as a single workflow:
+
+1. On a timer or by workflow dispatch, retrieve new versions and related
+   metadata using dependency-specfic code from Phase 1 via `make retrieve`.
+   This will output a set of metadata for as many new versions exist within
+   `buildpack.toml` version constraints.
+2. Using a Github Actions [`matrix
+   strategy`](https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs#using-a-matrix-strategy),
+   for each metadata entry, and each OS target group from [the
+   `targets.json`](https://github.com/paketo-buildpacks/rfcs/blob/dependency-management-step-one/text/dependencies/rfcs/0000-dependency-management-phase-one.md#specifiy-variants-with-the-targetsjson-file),
+   if the `SHA256` and `URI` metadata fields are empty, trigger compilation.
+   (Note: Eventually, this may be extended to include support for setting up a
+   separate VM or workflow trigger in order to support building on other
+   architectures, such as ARM64).
+3. Dependency compilation as a job takes in the dependency version, an image to
+   compile on, and compatible stacks, and will also leverage the workflow
+   `runs-on` flag to run on the provided `image`.
+4. Optional image preparation is run to get needed packages onto the image
+   environment using the buildpack-provided [preparation
+   script](https://github.com/paketo-buildpacks/rfcs/blob/dependency-management-step-one/text/dependencies/rfcs/0000-dependency-management-phase-one.md#image-preparation).
+5. The dependency is compiled on the image, using dependency-specific code from
+   Phase 1 via `make compile`.
+5. The dependency is tested using the test from
+   dependency-specific tests from Phase 1, via `make test`. If the dependency
+   is not compiled, it is at the buildpack maintainer's discretion whether it
+   needs to be tested. All compiled dependencies will be tested.
+6. (If compiled) Upload the dependency to the dependency bucket
+7. (If compiled) The dependency `SHA256` and the bucket `URI` are added to metadata
+8. An "Assemble" action will run, taking in metadata, the dependencies, and
+   will update the `buildpack.toml` file with the new versions and metadata.
+   This code will largely reuse parts of the existent `jam update-dependencies`
+   command.
+9. A pull request is opened in the build repository if an update has occurred.
 
 This new plan eliminates extra steps of storing metadata in a file for later
 use, and then separately updating the dependencies on a timer.
 
-### Workflows and Actions
+### Organization
 Pending the Phase 1 RFC is accepted, and it's decided dependency logic will
 live alongside the buildpack, workflows will be rolled out to all of the
 buildpacks from
@@ -108,64 +136,57 @@ The github-config repository `CODEOWNERS` file will be updated to set the
 `actions/dependency` and `implementation/.github/workflows/<all
 dependency-related workflows>`.
 
-
-Each of the step s outlined in the overview will be converted into workflow
-steps.
-
-Workflow 1:
-1. Picking up new versions with buildpack code will be a workflow step, which
-   runs on a timer at least once per day.
-
-2. Figuring out which versions will be added to the `buildpack.toml` will be
-   rolled into an action that outputs versions. It will leverage parts of the
-   existing `jam update-dependencies` logic.
-
-3. For individual versions, a Github Actions [`matrix
-   strategy`](https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs#using-a-matrix-strategy)
-   will be used to iterate over each version to be added, to generate metadata
-   using the code from within the buildpacks.
-
-   The metadata generation code from the buildpack will contain logic to spit
-   out "variants" for each dependency version, depending on the stacks
-   (OS/architectures) supported by the buildpack.
-
-   For example, if the dependency is used from source but has two different
-   artifacts for ARM64 and AMD64 variants, and the buildpack supports both
-   architectures, then the metadata generation code should spit out two batches of
-   metadata for each new version. One with the AMD64 upstream source URI/SHA256, and
-   the other with the ARM64 upstream URI/source SHA256.
-
-5. In the same matrix loop, dependency compilation will be kicked off with the
-   code from the buildpacks on the basis of whether the metadata contains the
-   `SHA256` and `URI` of the dependency.
-
-6. A smoke test will be run against the dependency in both the
-   compiled/non-compiled cases via a step that simply runs the test from
-   `<buildpack>/dependency/test`.
-
-7. (If compiled) The dependency will be uploaded via an action
-
-8. (If compiled) The metadata is updated with the SHA256 and GCP bucket URI in
-   a workflow step
-
-9. Updating the `buildpack.toml` with the new versions and metadata will also
-   be delegated to a new action
-
-10. A pull request will be opened with the changes to the `buildpack.toml`. The
-    usual suite of integration and unit tests will be run against the pull
-    request as in all other cases.
-
-
 ### Updating Dependencies Manually
 All of these steps will run as a workflow with the option for a manual
-dispatch, but can be run easily manually on a local system.  Additionally, we
-could eventually create a script inside of the `<buildpack>/scripts` directory
-to perform the main steps of the `buildpack.toml` update process locally. This
-will replace the need for the `jam update-dependencies` command that the
-automation uses currently. Since dependency-related logic will live alongside
-the buildpack, it makes more sense for manual dependency-update scripts to live
-there as well in order to leverage code.
+dispatch, but can be run easily manually on a local system. Running the steps
+manually will be thoroughly documented. Additionally, some of the steps can
+potentially be scripted and stored inside of the `<buildpack>/scripts`
+directory to perform the main steps of the `buildpack.toml` update process
+locally. This will replace the need for the `jam update-dependencies` command
+that the automation uses currently. Since dependency-related logic will live
+alongside the buildpack, it makes more sense for manual dependency-update
+scripts to live there as well in order to leverage code.
 
+### `buildpack.toml` Updates
+When a buildpack supports multiple stacks that require different dependency
+variants, the `buildpack.toml` will contain multiple entries for each
+dependency version, for each variant. For example's sake only, if the `bundler`
+dependency is compiled, and had two variants, an `ubuntu`-compatible version
+and a `windows`-compatible version, the `buildpack.toml` entry for a version
+would have two entries per version:
+```
+ [[metadata.dependencies]]
+    cpe = "cpe:2.3:a:bundler:bundler:2.3.15:*:*:*:*:ruby:*:*"
+    id = "bundler"
+    licenses = ["MIT", "MIT-0"]
+    name = "Bundler"
+    purl = "pkg:generic/bundler@2.3.15?checksum=05b7a8a409982c5d336371dee433e905ff708596f332e5ef0379559b6968431d&download_url=https://rubygems.org/downloads/bundler-2.3.15.gem"
+    sha256 = "some-sha"
+    source = "https://rubygems.org/downloads/bundler-2.3.15.gem"
+    source_sha256 = "05b7a8a409982c5d336371dee433e905ff708596f332e5ef0379559b6968431d"
+    stacks = ["io.buildpacks.stacks.bionic", "io.buildpacks.stacks.jammy"]
+    uri = "some-GCP-bucket-URI://bundler-2.3.15-ubuntu.tgz"
+    version = "2.3.15"
+
+ [[metadata.dependencies]]
+    cpe = "cpe:2.3:a:bundler:bundler:2.3.15:*:*:*:*:ruby:*:*"
+    id = "bundler"
+    licenses = ["MIT", "MIT-0"]
+    name = "Bundler"
+    purl = "pkg:generic/bundler@2.3.15?checksum=05b7a8a409982c5d336371dee433e905ff708596f332e5ef0379559b6968431d&download_url=https://rubygems.org/downloads/bundler-2.3.15.gem"
+    sha256 = "some-sha"
+    source = "https://rubygems.org/downloads/bundler-2.3.15.gem"
+    source_sha256 = "05b7a8a409982c5d336371dee433e905ff708596f332e5ef0379559b6968431d"
+    stacks = ["some-windows-stack"]
+    uri = "some-GCP-bucket-URI://bundler-2.3.15-windows.tgz"
+    version = "2.3.15"
+```
+
+The `buildpack.toml` will have multiple variant entries for every version, and
+there will be more variants as the buildpack supports more stacks. Variants
+differ by `URI`, `SHA256`, and `stacks`. In order to control increasing
+`buildpack.toml` complexity and duplication, some method to abstract duplicated
+fields might be helpful, and can be introduced in a separate RFC.
 
 ### Rationale and Alternatives
 
@@ -193,3 +214,5 @@ visibilty and would require quite a bit of overhead to set up a new system.
 ## Unresolved Questions and Bikeshedding (Optional)
 - Will running all the steps in one workflow make it difficult to isolate
   failures?
+- Should we introduce a mechanism to perform the workflow for a single input
+  version?
