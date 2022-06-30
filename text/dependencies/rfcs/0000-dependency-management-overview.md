@@ -3,8 +3,8 @@
 ## Proposal
 
 This RFC proposes a three-phased approach to move away from the current
-dependency management system in the Paketo project and instead standardize on a new
-solution that will be more maintainable and extensible.
+dependency management system in the Paketo project and instead standardize on a
+new solution that will be more maintainable, extensible, and transparent.
 
 ## Motivation
 
@@ -44,6 +44,15 @@ resources.
 The Java buildpacks use a different dependency management system. It would be
 great if we followed the same process across the project to simplify choices
 down the line.
+
+#### Overall Complexity
+The dep-server strategy as a whole, including the workflows, Github actions,
+bucket storage, and API endpoint mappings are complicated. A non-trivial part
+of the dependency management process occurs outside of Github, requiring
+credentials to project AWS and GCP accounts to get full access to everything
+involved in keeping our dependencies up to date. This makes it nearly
+impossible for non-core development team members to get a full view into how
+the project manages dependencies.
 
 ## Background: Current Implementation
 <details>
@@ -88,9 +97,9 @@ down the line.
 ## Plan Overview
 
 The plan overview provides high level direction for a new dependency management
-approach, split into three phases that will help to address the concerns cited
-in the Motivation section of the RFC. Due to the complex nature of the
-changes, the proposals details will be split into separate RFCs.
+approach, split into phases that will help to address the concerns cited in
+the Motivation section of the RFC. Due to the complex nature of the changes,
+the proposals details will be split into separate RFCs.
 
 The new system will focus on shifting all dependency-specific logic into the
 buildpacks themselves. Related automation to actually update and build the
@@ -99,8 +108,8 @@ dependency-specific logic in the buildpacks. This allows for buildpack
 maintainers to take ownership on where dependencies come from, if and how
 they're compiled, and the ability to manage all related automation themselves.
 Relatedly, dependencies maintainers will be responsible for setting up general
-project-level dependency concerns like automation, the dep-server, and best
-practices.
+project-level dependency concerns like automation, best
+practices, and maintaining legacy dependencies in the dep-server.
 
 The other focus is to enable Stack flexibility by moving away from supporting
 only Ubuntu 18.04 dependencies, which is what we have now due to the way
@@ -112,11 +121,11 @@ many different OS compatibilities to be used in the buildpack.
 In order to implement these features in the buildpacks, there are three main
 phases:
 
-1. Federated Model Adoption In Buildpacks: [RFC 0000](https://github.com/paketo-buildpacks/rfcs/blob/dependency-management-top-level/text/dependencies/rfcs/0000-dependency-management-overview.md)
+1. Federated Model Adoption In Buildpacks: [Phase 1 RFC](https://github.com/paketo-buildpacks/rfcs/blob/dependency-management-top-level/text/dependencies/rfcs/0000-dependency-management-overview.md)
 
-Buildpacks will adopt a federated approach to dependency management
-by moving the responsibility of dependency-specific logic to buildpacks out of
-the dep-server and related repositories.
+Buildpacks will adopt a federated approach to dependency management by moving
+the responsibility of dependency-specific logic to buildpacks out of the
+dep-server and related repositories.
 - Buildpacks maintainers determine if dependencies can be consumed directly from
   upstream or must be compiled or processed in any way
 - Dependency-specific bucket is set up for metadata and compiled dependencies
@@ -127,25 +136,29 @@ the dep-server and related repositories.
 - Dependencies are made available in a manner compatible with a
   variety of stacks
 
-2. Workflow and Action Generalization: [RFC
-   0000](https://github.com/paketo-buildpacks/rfcs/blob/dependency-management-step-two/text/dependencies/rfcs/0000-dependency-management-phase-two.md)
+2. Workflow and Action Generalization: [Phase 2
+   RFC](https://github.com/paketo-buildpacks/rfcs/blob/dependency-management-step-two/text/dependencies/rfcs/0000-dependency-management-phase-two.md)
 
 All workflows and actions will be moved out of the
 [paketo-buildpacks/dep-server](https://github.com/paketo-buildpacks/dep-server/tree/main/.github)
 repository and moved into
 [paketo-buildpacks/github-config](https://github.com/paketo-buildpacks/github-config)
-with ownership by the Dependencies team. The actions and workflows be
+with ownership by the Tooling team. The actions and workflows be
 generalized will leverage code that lives directly alongside the buildpack.
 Actions will be simple to run locally as well in the event of Github Actions
 degradations.
 
-3. Dep-server Simplificaton: [TBD RFC 0000]()
+Automation will be rewritten in a way that all of the dependency update logic
+will occur in Github Actions and with files located within the buildpack.
 
-The dep-server application will be simplfieid to only be responsible for
-allowing endpoint access to metadata and dependencies in buckets. The
-repository itself will contain only the code for setting up and testing the
-server. Related scripts and/or instruction to set up a dep-server will be
-provided in the repository as well.
+3. Dep-server in Maintenance Mode: [Phase 3
+   RFC](https://github.com/paketo-buildpacks/rfcs/blob/dependency-management-step-three/text/dependencies/rfcs/0000-dependency-management-phase-three.md)
+
+With the completion of phase 1 and 2, the dependency management process will be
+completely contained within Github Actions, and the dep-server will not be used
+as a staging ground for metadata, known versions, and dependencies anymore.
+Because of this, the dep-server can be simplified to just continue hosting
+legacy dependencies, and will no longer receive updated depenendencies.
 
 
 ## Rationale and Alternatives
@@ -182,6 +195,3 @@ more frequently, and allowing for multiple OS/architecture options. The outcome
 would be that everything would stay the same except we'd be able to support
 more compatible stacks. This plan would enable more stacks quickly, but has the
 major drawback of adding even more technical debt to the dep-server.
-
-## Unresolved Questions and Bikeshedding (Optional)
-
