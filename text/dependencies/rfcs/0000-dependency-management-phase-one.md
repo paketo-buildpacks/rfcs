@@ -339,13 +339,10 @@ rely on the `buildpack.toml` and dependency-specific code as the source of
 truth for the latest metadata and known versions. This will lead to greater
 transparency and discoverability in how we update dependencies.
 
-Since metadata and known versions won't be stored data anymore, buckets will
-only be needed to store dependencies that have been compiled or processed in
-some way. For these cases, a dependency-specific bucket set up in Paketo
-Dependencies project within GCP to store data. The directory name will be the
-name of the dependency and it will contain dependency archives (if compiled).
-Push credentials to this bucket will be reserved for the buildpack and
-maintainers, but the contents will be publicly available.
+Since metadata and known versions won't be stored data anymore, a storage
+mechanism will only be needed to store dependencies that have been compiled or
+processed in some way, and made available for download. For these cases, a
+dependency-specific bucket set up to store data will be set up.
 
 ### Remove Known Versions
 
@@ -413,4 +410,4 @@ repository is already large, as it accounts for every dependency in the
 project, potentially making it hard to contribute and maintain.
 
 ## Unresolved Questions and Bikeshedding (Optional)
-- Who is going to pay for the GCP buckets?
+- Who is going to pay for the buckets?
