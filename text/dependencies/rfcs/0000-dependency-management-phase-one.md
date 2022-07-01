@@ -89,11 +89,11 @@ dependency compilation, and code usability.
 
 The various parts of the dependency management process can be distilled into a
 few high-level jobs: (1) new version retrieval, (2) metadata gathering, (3)
-compilation, (4) dependency testing, and a very important new addition is (5),
-performing these steps such that dependencies are compatible with different
-stacks/operating systems/architectures. All 5 of these steps require different
-solutions depending on the dependency, which is why they will become the
-responsibility of the **buildpack author/maintainer**.
+dependency testing, (4) dependency compilation, and a very important new
+addition is (5), performing these steps such that dependencies are compatible
+with different stacks/operating systems/architectures. All 5 of these steps
+require different solutions depending on the dependency, which is why they will
+become the responsibility of the **buildpack author/maintainer**.
 
 Buildpack authors will be responsible for creating code to perform each of
 these steps, which will live in a new buildpack directory called
@@ -102,22 +102,31 @@ to orchestrate these steps in an automated fashion, to keep the
 `buildpack.toml` up-to-date with new dependency versions.
 
 In order to run the steps in a generalized workflow, each step will need to
-conform to a standardized set of inputs and outputs. Each can be written in any
-language, but should have a simple way to be executed via a Makefile so it can
-be called in a consistent manner. A `Makefile` will be created with targets for
-each step, with each step being a bash script in this example:
+conform to a standardized set of inputs and outputs. Version retrieval,
+metadata gathering, and dependency testing can all be written in any language,
+but should have a simple way to be executed via a Makefile so it can be called
+in a consistent manner. A `Makefile` will be created with targets for these
+steps, with each step being a bash script in this example:
 
 `<buildpack>/dependency/Makefile`:
 ```
 retrieve:
 	@./retrieval/retrieve.sh $(buildpackTomlPath) $(output)
-compile:
-	@./compilation/compile.sh $(version) $(outputDir) $(target)
 test:
 	@./test/test.sh $(tarballName) $(version)
 ```
 
-#### 1. Version Retrieval (`make retrieve`)
+Dependency compilation and the problem of performing compilation for different
+operating systems and architectures will be handled in a slightly different
+manner. Instead of using the Makefile approach, compilation will be rolled into
+a Github Action. This will be described in greater detail below.
+
+Overall, this plan will hit on the 5 outlined processes in a way that can be
+generalized for running in automation, while being useable locally.
+
+### Detailed Steps
+
+### 1. Version Retrieval (`make retrieve`)
   * Description: Discovers dependency versions newer than `buildpack.toml`
     versions (within constraints) and returns each with a set of generated
     metadata in the form of a `metadata.json` file.
@@ -128,41 +137,27 @@ test:
   * Outputs:
     * `output` - a `metadata.json` file containing entries for each new version
       discovered at the `output` path.
+      <details>
+      <summary>Schema</summary>
 
-#### 2. Compilation (`make compile`)
-  * Description: Compiles a specific version of the dependency to the target
-    platform. Optional for dependencies that need it [Dependencies Directly
-    From
-    Upstream](https://github.com/paketo-buildpacks/rfcs/blob/cb117e4f45d2bc4e8d7551667100b5c8b9d7e89b/text/dependencies/rfcs/0000-dependency-management-phase-one.md#dependencies-directly-from-upstream)
-    section for more information. The future workflow that uses this code will
-    ensure that `outputDir` will exist and be writeable. For running locally,
-    this should be done by the user.
-  * Inputs:
-    * `version`  - the specific version to compile
-    * `outputDir` - the relative or absolute directory path for the output
-      tarball and other artifacts
-    * `target` - the target platform variant, which will only be used to
-      descriptively name the output artifact.
-  * Outputs:
-    The following files should be made available in the `outputDir`:
-    * Dependency artifact - There should be exactly one tarball, with a name of
-      `${dependency}-<description>.tgz`, where <description> can be any
-      combination of OS, architecture, target platform, version, etc that the
-      buildpack author desires. The dependency name will be highly dependent on
-      if the dependency needs to be compiled separately for different
-      OS/architecture combinations.
-    * Artifact SHASUM -  A file with the same name as the dependency artifact,
-      with a `sha256` suffix, containing the SHA256 of the compiled dependency.
+      ```
+      {
+        "name": <dependency name>,
+        "version": <version>,
+        "sha256": <SHA256>,
+        "uri": <URI of dependency>,
+        "stacks": [{"id": <stack ID> }],
+        "source": <source URI>,
+        "source_sha256": <SHA256 of source dependency>,
+        "deprecation_date": <deprecation date>,
+        "cpe": <CPE>,
+        "purl": <package URL>,
+        "licenses": [ <list of licenses> ]
+      }
 
-#### 3. Test Dependency (`make test`)
-  * Description: Performs some verification that the dependency is correctly
-    built and functions as expected. Optional for dependencies that have not
-    been compiled or processed.
-  * Inputs:
-    * `tarballPath` - the location of the tarball to test
-    * `version` - the dependency version
-
-### Transfer/Combine Version Retrieval and Metadata Generation
+      ```
+      </details>
+#### Transfer/Combine Version Retrieval and Metadata Generation
 
 The new  version retrieval code will merge together the job of discovering
 versions and getting metadata for each version. It will pick up newer versions
@@ -223,7 +218,9 @@ so that implementations can be standardized (if written in Golang). The
 repository for shared dependency code will live in the Paketo Buildpacks Github
 org and will be named `libdependency`.
 
-### Use Dependencies Directly From Upstream
+### 2. Compilation
+
+#### Use Dependencies Directly From Upstream
 When possible, dependencies should be used directly from their upstream source,
 rather than undergoing any additional compilation or modifications performed by
 Paketo-maintained code.  For each dependency, the corresponding buildpack
@@ -273,66 +270,92 @@ this behaviour lives now.
 | yarn              | https://github.com/yarnpkg/yarn/releases/download/v1.15.2 | processed, buildpacks-ci                 |
 </details>
 
-### Transfer Compilation Code
+
+#### Compilation Code
+  * Description: The executable code that compiles a specific version of the
+    dependency to the target OS, for dependencies that need it.
+    This code serves as the `entrypoint` of the Github Action that this will be
+    a part of.
+  * Inputs:
+    * `version`  - the specific version to compile
+    * `outputDir` - the relative or absolute directory path for the output
+      tarball and other artifacts
+    * `target` - the target platform variant, which will only be used to
+      descriptively name the output artifact.
+  * Outputs:
+    The following files should be made available in the `outputDir`:
+    * Dependency artifact - There should be exactly one tarball, with a name of
+      `${dependency}-<description>.tgz`, where <description> can be any
+      combination of OS, architecture, target platform, version, etc that the
+      buildpack author desires. The dependency name will be highly dependent on
+      if the dependency needs to be compiled separately for different
+      OS/architecture combinations.
+    * Artifact SHASUM -  A `${dependency}-<description>.tgz.sha256` file
+      containing the SHA256 of the compiled dependency.
+
+#### Compilation Action
+The compilation step will be written as a Github Action in order to facilitate
+compiling dependencies on different images of buildpack maintainer choosing.
+Some dependencies will need to be compiled separately for different stack
+compatibility, and using a Github Action-style set up allows maintainers to
+define their own Dockerfile(s) for the build environments. The workflow that
+will consume this action will be enumerated in the Phase 2 RFC.
+
+Compilation code will go inside of `<buildpack>/dependency/actions/compile`.
+The directory structure will be:
+- `entrypoint` - either a bash script or a directory that contains the compilation code.
+- `<target>.Dockerfile` - one or more Dockerfiles with the target name as a prefix,
+  defining the build environment for compilation. There will be one Dockerfile
+  for each variant of the dependency.
+- `action.yml` - the Github-specific part of the Github Action, which defines
+  the inputs (`version`, `outputDir`, and `target`). It will be a [`composite`
+  type](https://docs.github.com/en/actions/creating-actions/creating-a-composite-action)
+  action, running individual steps to execute compilation on the target
+  Dockerfile. This is done so that the Dockerfile used can be dynamically
+  selected during the workflow execution.
+  
+  An example `action.yml` file for compilation can be seen
+  [here](https://gist.github.com/sophiewigmore/3d09108ddf0fd00f51d183acc8f8f940).
+
+  The compilation action can easily be run locally to produce artifacts by running:
+  ```
+  $ docker build -t compilation -f <target>.Dockerfile <buildpack>/dependency/actions/compile
+  $ docker run -v <output dir>:$PWD compilation --version <version> --outputDir $PWD --target <target>
+  ```
+
+#### Transfer Compilation Code
 
 For any dependencies that must still be compiled or processed in some way, the
 code from the Cloud Foundry repositories should be rewritten, and moved over to
-the buildpack under a directory called `dependency/compilation`. The code
-should be easily runnable from a local machine to compile the code, and should
-be documented with a README about how to use it. As outlined in the
-[Overarching
-Plan](https://github.com/paketo-buildpacks/rfcs/blob/dependency-management-step-one/text/dependencies/rfcs/0000-dependency-management-phase-one.md#overarching-plan)
-section, it will take in the `version`, the `outputDir` to put the dependency,
-and the `target` image to compile against.
+the entrypoint of the compilation action.
 
-The code will eventually be used in a Github Actions workflow, so the location,
-inputs, and outputs needs to be standardized across buildpacks. The workflows
-and Github Actions to use this code will be enumerated in a separate RFC.
+Since the dependency will possibly need to be compiled against different
+stacks/architectures, the different targets should be enumerated in the
+dependency-specific RFC written by buildpack maintainers. This should include
+information about the different images we will need to compile against, as well
+as the stacks that will be compatible with that dependency.
 
-The dependency will likely need to be compiled against different
-stacks/architectures, so this should also be enumerated in the RFC and taken
-account of in the new compilation code. This should include information about
-the different images we will need to compile against, as well as the stacks
-that will be compatible with that dependency. Maintainers should also consider
-if the dependency of interest is OS distribution-agnostic, or if it will need
-to be compiled separately depending on the distribution or platform it's used
-on.
-
-##### Specifiy variants with the `targets.json` file
+#### Specifiy variants with the `targets.json` file
 A file under the path `<buildpack>/dependency/targets.json` will be an
 enumeration of the different variants of a dependency, based on the different
 stacks the buildpack supports. This will be parsed and used by workflows
 described in Phase 2, but also serves as a manifest of the different version
-variants of each dependency.
+variants of each dependency, regardless of whether the dependency is compiled.
+
+The targets listed in the `target.json` will be used during compilation to
+determine which Dockerfile to run on, and will also appear in the name of the
+compiled dependency.
+
 ```
 [
   {
-    "target": <generic name of the group, to be used in tarball naming if compiled>,
-    "image": <image to compile against>,
+    "target": <generic name of the group, to be used during compilation>,
     "stacks": [ <list of compatible stacks>]
   },
   ...
 ]
 ```
-
-The images listed in the `target.json` file will directly be used as the image
-used during the compilation step during Github Action runs. When compiling a
-dependency locally, users should be able to pull the image themselves and run
-the compilation code on the container.
-
-### Image Preparation
-In the event that a dependency is compiled as outlined in the section above,
-the compilation will take place on a Docker image of the buildpack maintainers'
-choosing. Hopefully, the image that will be used will contain everything needed
-for compilation (as is the case with the Paketo Full Stack build image, which
-is used for compilation now so that no modifications are needed). In the event
-that the image used for compilation doesn't have everything it needs,
-maintainers can provde an optional preparation script inside of
-`<buildpack>/dependency/prepare.sh` to install any helper packages. The
-preparation steps will differ depending on the image and the dependency
-compilation process.
-
-### Bucket Setup
+#### Dependency Storage
 
 The new dependency management automation (described in a subsequent RFC) will
 rely on the `buildpack.toml` and dependency-specific code as the source of
@@ -344,7 +367,7 @@ mechanism will only be needed to store dependencies that have been compiled or
 processed in some way, and made available for download. For these cases, a
 dependency-specific bucket set up to store data will be set up.
 
-### Remove Known Versions
+#### Remove Known Versions
 
 As mentioned above, dependency workflows will use the `buildpack.toml` as a
 source of the latest versions we support. Because of this change, we will no
@@ -352,7 +375,14 @@ longer need to keep track of all known versions in a separate file. The Phase 2
 RFC outlines the workflows to use the `buildpack.toml` to track the latest
 versions in the buildpacks, in order to retrieve version updates.
 
-### Smoke Test
+### 3. Test Dependency (`make test`)
+  * Description: Performs some verification that the dependency is correctly
+    built and functions as expected. Optional for dependencies that have not
+    been compiled or processed.
+  * Inputs:
+    * `tarballPath` - the location of the tarball to test
+    * `version` - the dependency version
+
 In the dep-server, a smoke test is run against every dependency before the
 metadata is uploaded during the Github Actions process.
 
@@ -370,15 +400,18 @@ additions:
 ```
 buildpack
 └───dependency/
-│   └───compilation/
-│   │   │   ...
+│   └───actions/
+│   │   └── compile/
+│   │       ├── entrypoint
+│   │       ├── action.yml
+│   │       ├── Dockerfile
+│   │       └── ...
 │   └───retrieval/
 │   │   │   ...
 │   └───test/
 │   │   │   ...
 │   └───Makefile
 │   └───targets.json
-│   └───prepare.sh (optional)
 ```
 
 ### Rationale and Alternatives
