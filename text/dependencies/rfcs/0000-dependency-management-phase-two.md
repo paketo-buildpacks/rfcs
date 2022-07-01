@@ -95,21 +95,14 @@ work as a single workflow:
    for each metadata entry, and each OS target group from [the
    `targets.json`](https://github.com/paketo-buildpacks/rfcs/blob/dependency-management-step-one/text/dependencies/rfcs/0000-dependency-management-phase-one.md#specifiy-variants-with-the-targetsjson-file),
    if the `SHA256` and `URI` metadata fields are empty, trigger compilation.
-   (Note: Eventually, this may be extended to include support for setting up a
-   separate VM or workflow trigger in order to support building on other
-   architectures, such as ARM64).
-3. Dependency compilation as a job takes in the dependency version, an image to
-   compile on, and compatible stacks, and will also leverage the workflow
-   `runs-on` flag to run on the provided `image`.
-4. Optional image preparation is run to get needed packages onto the image
-   environment using the buildpack-provided [preparation
-   script](https://github.com/paketo-buildpacks/rfcs/blob/dependency-management-step-one/text/dependencies/rfcs/0000-dependency-management-phase-one.md#image-preparation).
-5. The dependency is compiled on the image, using dependency-specific code from
-   Phase 1 via `make compile`.
-5. The dependency is tested using the test from
-   dependency-specific tests from Phase 1, via `make test`. If the dependency
-   is not compiled, it is at the buildpack maintainer's discretion whether it
-   needs to be tested. All compiled dependencies will be tested.
+3. Dependency compilation as a job takes in the dependency version and the
+   targets from the dependency `target.json`, and will perform set up and then
+   run compilation via the compilation action [outlined in Phase
+   1](https://github.com/paketo-buildpacks/rfcs/blob/dependency-management-step-one/text/dependencies/rfcs/0000-dependency-management-phase-one.md#compilation-action).
+4. The dependency is tested using the test from dependency-specific tests from
+   Phase 1, via `make test`. If the dependency is not compiled, it is at the
+   buildpack maintainer's discretion whether it needs to be tested. All
+   compiled dependencies will be tested.
 6. (If compiled) Upload the dependency to the dependency bucket
 7. (If compiled) The dependency `SHA256` and the bucket `URI` are added to metadata
 8. An "Assemble" action will run, taking in metadata, the dependencies, and
@@ -128,8 +121,9 @@ buildpacks from
 [paketo-buildpacks/github-config](https://github.com/paketo-buildpacks/github-config)
 inside the `implementation/.github/workflows` location.
 
-Actions will live in the github-config repository as well, under a
-directory named `dependency`, inside of the `actions` directory.
+Generic actions (like the "assemble" step, for example) will live in the
+github-config repository as well, under a directory named `dependency`, inside
+of the `actions` directory.
 
 The github-config repository `CODEOWNERS` file will be updated to set the
 `@paketo-buildpacks/dependencies-maintainers` to the owners of the
