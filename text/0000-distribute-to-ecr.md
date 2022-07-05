@@ -69,6 +69,8 @@ The only human users with access to the organization will be the steering commit
 
 ### Run Image Mirror
 
+The corresponding ECR run image should be added to each Paketo builder as a run-image mirror.
+
 ## Prior Art
 
 Heroku publishes Cloud Native Buildpack [images][heroku-gallery] to ECR Public in addition to Dockerhub.
