@@ -16,11 +16,16 @@ community, we should remove our buildpacks.
 
 ## Implementation
 
-To deprecate the `dep` tool we should do the following:
+Put in place a 30 day deprecation window in which we print to the logs that the
+`dep` and `dep-ensure` buildpacks will soon be archived and removed from the
+language family.
+
+After this 30 day deprecation window the following should be done to remove the
+`dep` tool:
 - Archive both the `dep` and `dep-ensure` buildpack repositories
 - Remove any and all related order groups from the language family buildpack
 - Remove logic in `go-build` designed to accomodate for a use of the `dep` tool
 - Remove any samples in the samples repository that use the `dep` tool
 - Change the documentation on the website by either removing `dep` specific
   documentation or replace it with an indication that the workflow has been
-  deprecated
+  removed
