@@ -28,7 +28,7 @@ libraries and includes the .NET CLI (which is needed to run Framework Dependent
 Deployments). This move will also further mimic how Microsoft has their
 prebuilt images configured.
 
-## Implementation (Optional)
+## Implementation
 
 The .NET ASP.NET Runtime dependency referenced in the buildpack should be
 identical to the one provided by Microsoft. This will allow us to install a
@@ -38,3 +38,12 @@ interfere with any .NET SDK installation during build. We will archive the
 `dotnet-core-aspnet-runtime` buildpack to mimic the name of the dependency as
 it is provided by Microsoft.
 
+This will mean that the buildpack will no longer need to set the
+`RUNTIME_VERSION` environment variable because that information will no longer
+need to be communicated between buildpacks. Also the buildpacks will no longer
+need to set the `DOTNET_ROOT` environment variable as a well structured
+installation will be present on the PATH.
+
+## Prior Art
+
+* [Restructure spike led by @fg-j uses the .NET ASP.NET Runtime from Microsoft](https://github.com/paketo-buildpacks/dotnet-core/pull/727)
