@@ -63,11 +63,11 @@ ASP.NET Core libraries. What this would mean is that we could require
 require both in the case of an app needing ASP.NET core because the dependency
 would be self contained.
 
-### Pros
+#### Pros
 - Makes is possible to use Microsoft provided dependencies with no modification
 - Keeps a separation allowing for users with apps that just require the runtime to only have the runtime bits
 - Gets rid of complicated symlinking and orchestration logic
 - Removes version resolution interlock between the two buildpacks
-### Cons
+#### Cons
 - Increases the size of the offline buildpack because many of the same library bits are in multiple dependencies
 - There appears to be little to no demand for this kind of granulatiry
