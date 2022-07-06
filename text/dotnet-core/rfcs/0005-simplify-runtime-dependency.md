@@ -47,3 +47,27 @@ installation will be present on the PATH.
 ## Prior Art
 
 * [Restructure spike led by @fg-j uses the .NET ASP.NET Runtime from Microsoft](https://github.com/paketo-buildpacks/dotnet-core/pull/727)
+
+## Alternatives
+
+### Keep two buildpacks, make the dependencies bigger
+This would entail keeping a `dotnet-core-runtime` buildpack and a
+`dotnet-core-aspnetcore` buildpack however the dependency for both of the
+buildpacks would be identical to the ones provided by Microsoft on their
+download page. To lay out what that means, the Runtime dependency provided by
+Microsoft has all of the required libraries for an app that requires just the
+runtime, as well as the .Net CLI. The ASP.NET Core dependency provided by
+Microsoft has all of the same libraries, the Runtime dependency plus the
+ASP.NET Core libraries. What this would mean is that we could require
+`dotnet-core-runtime` **or** `dotnet-core-aspnet` we would no longer need to
+require both in the case of an app needing ASP.NET core because the dependency
+would be self contained.
+
+### Pros
+- Makes is possible to use Microsoft provided dependencies with no modification
+- Keeps a separation allowing for users with apps that just require the runtime to only have the runtime bits
+- Gets rid of complicated symlinking and orchestration logic
+- Removes version resolution interlock between the two buildpacks
+### Cons
+- Increases the size of the offline buildpack because many of the same library bits are in multiple dependencies
+- There appears to be little to no demand for this kind of granulatiry
