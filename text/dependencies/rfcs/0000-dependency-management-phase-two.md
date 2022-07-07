@@ -89,14 +89,16 @@ work as a single workflow:
 1. On a timer or by workflow dispatch, retrieve new versions and related
    metadata using dependency-specfic code from Phase 1 via `make retrieve`.
    This will output a set of metadata for as many new versions exist within
-   `buildpack.toml` version constraints.
+   `buildpack.toml` version constraints. For each new version, multiple
+   metadata entries may exist representing different OS target groups. If a
+   separate dependency is needed to run on different stacks, this will be
+   enumarated as separate metadata entries.
 2. Using a Github Actions [`matrix
    strategy`](https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs#using-a-matrix-strategy),
-   for each metadata entry, and each OS target group from [the
-   `targets.json`](https://github.com/paketo-buildpacks/rfcs/blob/dependency-management-step-one/text/dependencies/rfcs/0000-dependency-management-phase-one.md#specifiy-variants-with-the-targetsjson-file),
-   if the `SHA256` and `URI` metadata fields are empty, trigger compilation.
+   for each metadata entry, if the `SHA256` and `URI` metadata fields are
+   empty, trigger compilation.
 3. Dependency compilation as a job takes in the dependency version and the
-   targets from the dependency `target.json`, and will perform set up and then
+   target name from the `metadata.json`, and will perform set up and then
    run compilation via the compilation action [outlined in Phase
    1](https://github.com/paketo-buildpacks/rfcs/blob/dependency-management-step-one/text/dependencies/rfcs/0000-dependency-management-phase-one.md#compilation-action).
 4. The dependency is tested using the test from dependency-specific tests from
