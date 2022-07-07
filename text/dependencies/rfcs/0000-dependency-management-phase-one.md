@@ -128,7 +128,7 @@ generalized for running in automation, while being useable locally.
 
 ### 1. Version Retrieval (`make retrieve`)
   * Description: Discovers dependency versions newer than `buildpack.toml`
-    versions (within constraints) and returns each with a set of generated
+    versions (within constraints) and for each it returns a set of generated
     metadata in the form of a `metadata.json` file.
   * Inputs:
     * `buildpackTomlPath`  - the path to the  `buildpack.toml` file
@@ -136,7 +136,8 @@ generalized for running in automation, while being useable locally.
       written
   * Outputs:
     * `output` - a `metadata.json` file containing entries for each new version
-      discovered at the `output` path.
+      discovered at the `output` path. There may be multiple entries per
+      version, corresponding to different target OS variants of a dependency.
       <details>
       <summary>Schema</summary>
 
@@ -146,13 +147,14 @@ generalized for running in automation, while being useable locally.
         "version": <version>,
         "sha256": <SHA256>,
         "uri": <URI of dependency>,
-        "stacks": [{"id": <stack ID> }],
+        "stacks": [{"id": <compatible stack ID> }],
         "source": <source URI>,
         "source_sha256": <SHA256 of source dependency>,
         "deprecation_date": <deprecation date>,
         "cpe": <CPE>,
         "purl": <package URL>,
-        "licenses": [ <list of licenses> ]
+        "licenses": [ <list of licenses> ],
+        "target": <generic name of the variant, to be used during compilation>
       }
 
       ```
@@ -162,11 +164,11 @@ generalized for running in automation, while being useable locally.
 The new  version retrieval code will merge together the job of discovering
 versions and getting metadata for each version. It will pick up newer versions
 than what the `buildpack.toml` contains, and outputs JSON-formatted metadata
-for each dependency. This code should be ported from the dep-server repository
-to the buildpack under a directory named `dependency/retrieval`, taking in the
-path to the `buildpack.toml` file and the path to the output file. It should be
-well-documented and useable on a local environment. The location must be
-standardized for use in automation.
+for each dependency version discovered. This code should be ported from the
+dep-server repository to the buildpack under a directory named
+`dependency/retrieval`, taking in the path to the `buildpack.toml` file and the
+path to the output file. It should be well-documented and useable on a local
+environment. The location must be standardized for use in automation.
 
 Buildpack authors should feel free to reuse (or rewrite) the code from the
 dep-server for these parts as they see fit. The language that it is written in is
@@ -190,6 +192,26 @@ The supported metadata fields are: `source URI`, `source SHA256`, `version`,
 `URI`, `SHA256`, `ReleaseDate`, `DeprecationDate`, `stacks`, `purl`, `licenses`
 and `CPE`.
 
+#### Separating OS Variants and Supporting Multiple Stacks
+An additional metaadata field named `target` will be added, which will be the
+generic name for a dependency variant needed to run on a certain stack or OS.
+The metadata generation portion of the code should also be smart enough to spit
+out multiple sets of metadata per version if there are multiple variants of a
+version for different OS distributions.
+
+The `target` will be used to tell subsequent parts of the dependency management
+process that multiple variants of each dependency are needed. Each different
+`target` group will have a different set of compatible stacks in the metadata.
+
+For example, if a dependency needs separate variants for running on Ubuntu
+Bionic versus Ubuntu Jammy Jellyfish, and the buildpack supports both related
+stacks, then for each new dependency version discovered during version
+retrieval, two sets of metadata will be returned. In this example, one entry
+will be for Bionic, with the `target` field set to something like `bionic`,
+with the compatible stacks being `io.buildpacks.stacks.bionic`. The other entry
+will be for Jammy, with the `target` set to something like `jammy`, and the
+compatible stack being `io.buildpacks.stacks.jammy`.
+
 #### Caveat: Compiled Dependencies
 In the case that the dependencies need to be compiled or processed, the
 metadata generation code should omit the `URI` and the `SHA256` from the
@@ -198,18 +220,6 @@ RFC) to let the dependency management system to trigger compilation of the
 dependency. When the dependency is compiled and uploaded to a bucket, the
 bucket URI will be the URI in the metadata, and the compiled dependency SHA256
 will be the SHA256 in the metadata.
-
-#### Support Multiple Stacks
-The metadata generation portion of the code should also be smart enough to spit out
-multiple sets of metadata per version if there are multiple variants of a
-version from different upstream URIs. For each version that metadata is
-generated for, it should handle any/all permutations of dependencies and
-stacks.
-
-For example, if separate dependencies are avaiable from a CDN for Ubuntu 18.04
-and 22.04, and the buildpack supports both, then the metadata generation could
-should produce two batches of metadata for each version, one for each
-distribution.
 
 #### New Repository
 Eventually, commonalities in version retrieval code (and other parts of the
@@ -306,7 +316,9 @@ The directory structure will be:
 - `entrypoint` - either a bash script or a directory that contains the compilation code.
 - `<target>.Dockerfile` - one or more Dockerfiles with the target name as a prefix,
   defining the build environment for compilation. There will be one Dockerfile
-  for each variant of the dependency.
+  for each variant of the dependency. The different targets should correspond with
+  the `target` field output in the metadata-gathering step in version
+  retrieval.
 - `action.yml` - the Github-specific part of the Github Action, which defines
   the inputs (`version`, `outputDir`, and `target`). It will be a [`composite`
   type](https://docs.github.com/en/actions/creating-actions/creating-a-composite-action)
@@ -335,26 +347,6 @@ dependency-specific RFC written by buildpack maintainers. This should include
 information about the different images we will need to compile against, as well
 as the stacks that will be compatible with that dependency.
 
-#### Specifiy variants with the `targets.json` file
-A file under the path `<buildpack>/dependency/targets.json` will be an
-enumeration of the different variants of a dependency, based on the different
-stacks the buildpack supports. This will be parsed and used by workflows
-described in Phase 2, but also serves as a manifest of the different version
-variants of each dependency, regardless of whether the dependency is compiled.
-
-The targets listed in the `target.json` will be used during compilation to
-determine which Dockerfile to run on, and will also appear in the name of the
-compiled dependency.
-
-```
-[
-  {
-    "target": <generic name of the group, to be used during compilation>,
-    "stacks": [ <list of compatible stacks>]
-  },
-  ...
-]
-```
 #### Dependency Storage
 
 The new dependency management automation (described in a subsequent RFC) will
@@ -411,7 +403,6 @@ buildpack
 │   └───test/
 │   │   │   ...
 │   └───Makefile
-│   └───targets.json
 ```
 
 ### Rationale and Alternatives
