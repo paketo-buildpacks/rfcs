@@ -8,7 +8,7 @@ combining the custom built dependencies that we are currently using.
 ## Motivation
 
 Currently, in order to get the .Net buildpack to function correctly at
-launchusing our custom dependencies, we need to build a somewhat convoluted
+launch using our custom dependencies, we need to build a somewhat convoluted
 fake .Net hive that is constructed out of symlinks to dependencies on layers.
 We have built these custom runtime dependencies in the past to allow for users
 to only install the minimal libraries needed. After some discussion with
@@ -37,6 +37,12 @@ interfere with any .NET SDK installation during build. We will archive the
 `dotnet-core-runtime` and `dotnet-core-aspnet` buildpacks and create a new
 `dotnet-core-aspnet-runtime` buildpack to mimic the name of the dependency as
 it is provided by Microsoft.
+
+This will mean that the .Net Execute buildpack will only need to require
+`dotnet-core-aspnet-runtime` as a launch dependency and it will no longer need
+to require  .NET SDK inorder to get the .NET CLI. In turn the .Net Publish
+buildpack will no longer need to require any runtime dependencies because it
+will need to just require the self contained .Net SDK dependency.
 
 This will mean that the buildpack will no longer need to set the
 `RUNTIME_VERSION` environment variable because that information will no longer
