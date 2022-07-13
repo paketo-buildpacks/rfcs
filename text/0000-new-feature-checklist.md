@@ -41,3 +41,15 @@ Larger features, more complicated features, and features that impact multiple bu
 - [ ] Update [website documentation](https://github.com/paketo-buildpacks/paketo-website) to expose the feature in the documentation
 - [ ] (If necessary) Update the samples in the [samples repository](https://github.com/paketo-buildpacks/samples) to expose the feature
 ```
+
+The following flow chart could also be added to clarify who is responsible for
+the various steps:
+
+```mermaid
+flowchart LR
+    A[Open an RFC]-->B[Open Tracking Issue]
+    B-->C[Open Pull Request Adding the New Feature]
+    C-- Maintainer/Contributor Resonsibility -->D[Secure Release of Buildpack/Language Family Buildpack/Builder]
+    D --> E[Update Documentation and Samples]
+    C --> E
+```
