@@ -65,6 +65,21 @@ when the SBOM is encoded as SPDX JSON.
 To preserve build reproducibility while generating SPDX SBOMs, Paketo must
 replace the content in these two fields with reproducible data.
 
+We should use a fixed timestamp to replace the variable timestamp that Syft embeds in the SPDX SBOM. Canonically, it's
+appropriate to use the value of the
+[`$SOURCE_DATE_EPOCH`](https://reproducible-builds.org/docs/source-date-epoch/)
+environment variable. If this is unset, it's reasonable to pick our own fixed
+default.
+
+We should replace the irreproducible UUID that Syft includes in its SPDX
+`documentNamespace` with a UUID that is reproducible. We can generate a name-based UUID according
+to the [RFC4122 UUID Specification](https://datatracker.ietf.org/doc/html/rfc4122). In the specification, UUID versions
+3 and 5 are name-based, meaning that "UUIDs generated at different times from the same name in the
+same namespace MUST be equal." (See [the RFC](https://datatracker.ietf.org/doc/html/rfc4122#section-4.3)). In this case,
+"name" is some identifier that is unique within the "namespace" in which it'll
+be used. The RFC recommends that version 5 (which uses a SHA1 hash algorithm) is preferred. For our purposes, the "name"
+is some representation of the contents of the SBOM. See the Implementation section for further details.
+
 ## Rationale and Alternatives
 
 ### Alternative: Stop Generating SPDX SBOMs
@@ -138,7 +153,7 @@ zero-value time in Golang should be used.
 To produce a value for `documentNamespace` that (somewhat) uniquely identifies
 a given SBOM document, we should generate a [Version 5 SHA1
 UUID](https://go-recipes.dev/how-to-generate-uuids-with-go-be3988e771a6) based
-on the hash of the struct stored in the `FormattedReader`'s `sbom` field and
+on the hash of the struct stored in the `FormattedReader`'s `sbom` field. We should
 replace the Syft-generated UUID with our reproducible one.
 [`mitchellh/hashstructure`](https://github.com/mitchellh/hashstructure) is one
 Golang implementation capable of hashing Golang structs. There are likely
