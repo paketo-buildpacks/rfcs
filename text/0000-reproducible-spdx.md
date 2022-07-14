@@ -50,16 +50,17 @@ reproducibility.
 Currently, Paketo uses `anchore/syft`'s implementation of a SPDX v2.2 SBOM
 generator. Syft combines the type of scanned resource (e.g. directory, file,
 OCI image) with the resource name and a pseudo-randomly generated UUID to
-populate the `documentNamespace` field of the SBOM. For instance, `
-"documentNamespace":
-"https://anchore.com/syft/dir/workspace-eeb24bd3-d91a-469c-8ce5-c8ef19347a70"`
-is a value generated from scanning `/workspace` during a buildpack build. (See
+populate the `documentNamespace` field of the SBOM. For instance, Syft outputs
+```
+"documentNamespace": "https://anchore.com/syft/dir/workspace-eeb24bd3-d91a-469c-8ce5-c8ef19347a70"
+```
+as the SPDX `documentNamespace` when scanning `/workspace` during a buildpack build. (See
 the complete
-[implementation](https://github.com/anchore/syft/blob/64b4852c2a197b639fcfc311685c6f48abaa9085/internal/formats/spdx22json/to_format_model.go))
+[implementation](https://github.com/anchore/syft/blob/64b4852c2a197b639fcfc311685c6f48abaa9085/internal/formats/spdx22json/to_format_model.go)
 of the transformation between Syft's data model and the SPDX specification
 for more detail.) To populate the `created` field, [Syft gets the current
 time](https://github.com/anchore/syft/blob/64b4852c2a197b639fcfc311685c6f48abaa9085/internal/formats/spdx22json/to_format_model.go#L32)
-when the SBOM is generated.
+when the SBOM is encoded as SPDX JSON.
 
 To preserve build reproducibility while generating SPDX SBOMs, Paketo must
 replace the content in these two fields with reproducible data.
