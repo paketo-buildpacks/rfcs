@@ -138,8 +138,8 @@ zero-value time in Golang should be used.
 To produce a value for `documentNamespace` that (somewhat) uniquely identifies
 a given SBOM document, we should generate a [Version 5 SHA1
 UUID](https://go-recipes.dev/how-to-generate-uuids-with-go-be3988e771a6) based
-on the hash of the `FormattedReader.sbom` struct and replace the Syft-generated
-UUID with our reproducible one.
+on the hash of the struct stored in the `FormattedReader`'s `sbom` field and
+replace the Syft-generated UUID with our reproducible one.
 [`mitchellh/hashstructure`](https://github.com/mitchellh/hashstructure) is one
 Golang implementation capable of hashing Golang structs. There are likely
 others. In this way, the `documentNamespace` will contain a UUID that is unique
@@ -162,9 +162,9 @@ into
 
 Note:
 - The domain has been changed from `anchore.com` to `paketo.io` to reflect that
-  we're generating it.
+  we're generating the URI.
 - `syft` has been replaced with `packit` to indicate what tool is generating
-  the URI
+  the URI.
 - The `/dir/workspace-` part of the path, which encodes the scanned resource
   type and basename of the scanned resource, is unchanged.
 - The UUID suffix has been replaced; the new UUID is reproducible.
