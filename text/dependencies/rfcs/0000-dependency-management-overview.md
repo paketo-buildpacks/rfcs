@@ -131,7 +131,8 @@ dep-server and related repositories.
 - Dependency-specific bucket is set up for metadata and compiled dependencies
 - RFC model is enacted for recording dependency rationale for every dependency
 - Remove references to Cloud Foundry compilation code, buildpacks implement
-  dependency compilation code (if needed) in Golang
+  dependency compilation code (if needed) in the language of maintainer's
+  choice.
 - Version retrieval code is removed from the dep-server repository and moved into Buildpacks
 - Dependencies are made available in a manner compatible with a
   variety of stacks
