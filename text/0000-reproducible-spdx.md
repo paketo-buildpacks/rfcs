@@ -193,5 +193,6 @@ Note:
 
 - What should the version 5 UUID of the SBOM be based on? The only data
   currently available to `Read()` is the contents of the SBOM itself.
+- Is hashing the SBOM struct actually reproducible? If it's not, this proposal doesn't solve our problem.
 
 {{REMOVE THIS SECTION BEFORE RATIFICATION!}}
