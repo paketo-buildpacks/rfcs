@@ -85,8 +85,8 @@ A user can then utilize the health checker like this:
         Downloading from https://github.com/dmikusa-pivotal/tiny-health-checker/releases/download/v0.5.0/thc-x86_64-unknown-linux-musl
         Verifying checksum
         Copying from /tmp/ce75bb97209981e03bf7e8aa52e2bfab78a50a44c7ed1787f4ace212711d61e5/thc-x86_64-unknown-linux-musl to /layers/paketo-buildpacks_health-checker/thc/bin
-        Writing env.launch/health-check/THC_PATH.default
-        Writing env.launch/health-check/THC_PORT.default
+        Writing env.launch/health/THC_PATH.default
+        Writing env.launch/health/THC_PORT.default
       Process types:
     health-check: thc (direct)
     ```
