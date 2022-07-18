@@ -137,7 +137,10 @@ generalized for running in automation, while being useable locally.
   * Outputs:
     * `output` - a `metadata.json` file containing entries for each new version
       discovered at the `output` path. There may be multiple entries per
-      version, corresponding to different target OS variants of a dependency.
+      version, corresponding to different target OS variants of a
+      dependency. The metadata must adhere to the following schema in order
+      to work as expected with a generic tool for adding metaata to the
+      `buildpack.toml`.
       <details>
       <summary>Schema</summary>
 
@@ -150,10 +153,10 @@ generalized for running in automation, while being useable locally.
         "stacks": [{"id": <compatible stack ID> }],
         "source": <source URI>,
         "source_sha256": <SHA256 of source dependency>,
-        "deprecation_date": <deprecation date>,
+        "deprecation_date": <optional field, deprecation date>,
         "cpe": <CPE>,
         "purl": <package URL>,
-        "licenses": [ <list of licenses> ],
+        "licenses": [ <list of licenses, by ID> ],
         "target": <generic name of the variant, to be used during compilation>
       }
 
