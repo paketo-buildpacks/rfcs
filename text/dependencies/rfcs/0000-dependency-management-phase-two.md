@@ -107,10 +107,10 @@ work as a single workflow:
    compiled dependencies will be tested.
 6. (If compiled) Upload the dependency to the dependency bucket
 7. (If compiled) The dependency `SHA256` and the bucket `URI` are added to metadata
-8. An "Assemble" action will run, taking in metadata, the dependencies, and
-   will update the `buildpack.toml` file with the new versions and metadata.
-   This code will largely reuse parts of the existent `jam update-dependencies`
-   command.
+8. An "Assemble" step will run, taking in metadata, the dependencies, and will
+   update the `buildpack.toml` file with the new versions and metadata.  The
+   step will pass these inputs into a stripped-down version of the `jam
+   update-dependencies` command.
 9. A pull request is opened in the build repository if an update has occurred.
 
 This new plan eliminates extra steps of storing metadata in a file for later
@@ -123,9 +123,9 @@ buildpacks from
 [paketo-buildpacks/github-config](https://github.com/paketo-buildpacks/github-config)
 inside the `implementation/.github/workflows` location.
 
-Generic actions (like the "assemble" step, for example) will live in the
-github-config repository as well, under a directory named `dependency`, inside
-of the `actions` directory.
+Any generic actions that are created will live in the github-config repository
+as well, under a directory named `dependency`, inside of the `actions`
+directory.
 
 The github-config repository `CODEOWNERS` file will be updated to set the
 `@paketo-buildpacks/dependencies-maintainers` to the owners of the
@@ -135,13 +135,8 @@ dependency-related workflows>`.
 ### Updating Dependencies Manually
 All of these steps will run as a workflow with the option for a manual
 dispatch, but can be run easily manually on a local system. Running the steps
-manually will be thoroughly documented. Additionally, some of the steps can
-potentially be scripted and stored inside of the `<buildpack>/scripts`
-directory to perform the main steps of the `buildpack.toml` update process
-locally. This will replace the need for the `jam update-dependencies` command
-that the automation uses currently. Since dependency-related logic will live
-alongside the buildpack, it makes more sense for manual dependency-update
-scripts to live there as well in order to leverage code.
+manually will be thoroughly documented. The `jam update-dependencies` command
+will be stripped down to perform the `buildpack.toml` metadata update process. 
 
 ### `buildpack.toml` Updates
 When a buildpack supports multiple stacks that require different dependency
