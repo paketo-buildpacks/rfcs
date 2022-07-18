@@ -91,7 +91,7 @@ A user can then utilize the health checker like this:
     health-check: thc (direct)
     ```
 
-2. You can run this with `docker run --health-cmd '/cnb/process/health-check' --health-interval 5s --health-timeout 2s -it apps/maven`. You could call the health check binary directly, but as you can have different health check dependencies that get installed by the buildpack, using the process type gives you more generic way to call the health check. It also allows for the image to bake in the health check configuration, rather than require the operator to set it. Plus, an operator can always override the configuration by setting the appropriate environment variables at runtime.
+2. You can run this with `docker run --health-cmd 'health' --health-interval 5s --health-timeout 2s -it apps/maven`. You could call the health check binary directly, but as you can have different health check dependencies that get installed by the buildpack, using the process type gives you more generic way to call the health check. It also allows for the image to bake in the health check configuration, rather than require the operator to set it. Plus, an operator can always override the configuration by setting the appropriate environment variables at runtime.
 
 ## Prior Art
 
