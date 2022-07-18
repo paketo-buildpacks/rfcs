@@ -156,9 +156,12 @@ UUID](https://go-recipes.dev/how-to-generate-uuids-with-go-be3988e771a6) based
 on the hash of the struct stored in the `FormattedReader`'s `sbom` field. We should
 replace the Syft-generated UUID with our reproducible one.
 [`mitchellh/hashstructure`](https://github.com/mitchellh/hashstructure) is one
-Golang implementation capable of hashing Golang structs. There are likely
-others. In this way, the `documentNamespace` will contain a UUID that is unique
-to the generated SBOM data while being reproducible. If elements like the list
+Golang implementation capable of hashing Golang structs. There are likely others.
+Whichever we choose, it must be capable of deterministically hashing maps,
+since Syft's SBOM representation contains several maps. By constructing a UUID
+from the reproducible struct hash, and the `documentNamespace` from that UUID,
+we'll produce a `documentNamespace` that is unique to the generated SBOM data
+while also being reproducible. If elements like the list
 of detected artifacts, the Syft version used to generate the data, or the
 resource that's being scanned change, the resulting struct hash and UUID will
 change.  To correctly use the Version 5 SHA1 UUID format, we will need to
@@ -188,6 +191,9 @@ Note:
 
 - The Java buildpacks use Syft to generate SBOMs in CycloneDX JSON format, then
   strip out fields that are irreproducible.
+- See https://github.com/paketo-buildpacks/packit/compare/reproducible-spdx for a
+  spike demonstrating SBOM struct hashing. Use this version of `packit` within
+  a buildpack to see the buildpack produce reproducible SPDX SBOMs.
 
 ## Unresolved Questions and Bikeshedding
 
