@@ -16,11 +16,10 @@ Second, working within a single cloud provider ecosystem allows users to take ad
 
 The project has already been given an AWS organization funded by the CFF and we have requested the [custom alias][registry-alias] `paketo-buildpacks` for our public registry. We should take the additional step of contacting support and verifying this account so that our repositories will have a verified badge on the ECR Public Gallery (click on any [heroku buildpack][heroku-gallery] repository in the gallery for an example).
 
-A copy of all image artifacts including releases of buildpack, builder, and stack images should be published there in addition to Dockerhub.
+A copy of all image artifacts including releases of buildpack, builder, and stack images should be published there in addition to Dockerhub. In cases where we have changes the repo/tag schema we should only use the newer names - because ECR images are net new backwards compatibility is not a concern in this context.
 
 Examples:
-- `public.ecr.aws/paketo-buildpacks/builder:base`
-- `public.ecr.aws/paketo-buildpacks/builder:0.3.12-base`
+- `public.ecr.aws/paketo-buildpacks/builder-jammy-base:0.3.13`
 - `public.ecr.aws/paketo-buildpacks/java:latest`
 - `public.ecr.aws/paketo-buildpacks/run-jammy-tiny:latest`
 
