@@ -38,6 +38,15 @@ For simplicity assume:
 
 The CFF will pay `600 * 2GB * $0.10/GB = $120` per month for storage. This is well within reason, even if many of these simplifying assumptions turn out to be wrong and the bill is 5x my rough estimate.
 
+### Other Cloud Providers
+
+The stated rationale for this RFC above could apply just as well to other public cloud provides such as Google Cloud, and Azure. We do not intend to favor Amazon and should expand distribution to other major cloud provider registries given:
+1. Costs are reasonable
+2. We have a request from real world users or potential users
+3. We believe doing so will increase the reach of Paketo buildpacks
+
+Because it is inherently a judgement call to determine what cloud providers are "major" and what costs are "reasonable", given the opportunity and number of potentially impacted users, each new distribution target should be ratified via the RFC process.
+
 ## Rationale and Alternatives
 
 ### Alternative 1 - Do Nothing
@@ -46,9 +55,7 @@ We could not do this and require AWS users to consume Paketo images from Dockerh
 If we go this route we run the risk of letting a third party fill the vacuum, becoming the default distributors of Paketo buildpacks on ECR. This may present a reputational risk to to the project and a security risk to end users.
 
 ### Alternative 2 - Publish to All the Cloud Providers
-The above rationale above could apply just as well to other public cloud provides such as Google Cloud, and Azure. We may well want to publish Paketo images to every major cloud provider registry. However, I suggest we wait and see what the cost/usage and usage numbers looks like in practice before pulling the trigger and adding more distribution channels.
-
-We should start with ECR because the App Runner team has kindly requested it and a Paketo integration with App Runner is a great opportunity for the project to reach new users.
+We could assume the above logic will apply to other cloud providers with large market share such as Google and Azure cloud and approve these additional distribution target now. However, I suggest we decided each case individually and in response to community interest. This allows us to keep costs in check and learn from this experience before committing to publishing every image everywhere.
 
 ### Alternative 3 - Do a Subset of Images
 
