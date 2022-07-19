@@ -4,8 +4,8 @@
 
 The Paketo Node.js Buildpack supports building apps which use
 [Yarn](https://yarnpkg.com/) as a package/project management tool. Over the
-last few years, the developers of Yarn have released new major versions (v2 &
-v3), collectively called Yarn "Berry", which represent a completely new
+last few years, the developers of Yarn have released new major versions (v2 and
+greater), collectively called Yarn "Berry", which represent a completely new
 direction for managing dependencies in Node.js projects. Chief among the
 changes is the introduction of [Plug 'n
 Play](https://yarnpkg.com/features/pnp), a system which removes the reliance on
@@ -18,17 +18,20 @@ advent of Berry. Along with performance improvements and optimizations, many
 CLI operations and methods of configuration have been deprecated or removed,
 including those crucial to the functioning of the buildpack as it exists today. 
 
+* _Throughout this document, Yarn Berry (> 2.x) and Yarn Classic (1.x) will be
+  referred to as "Berry" and "Classic" respectively._
+
 ## Proposal
 
-Yarn Berry seems to represent the direction in which the project is headed, as
+Berry seems to represent the direction in which the project is headed, as
 [stated by its lead
 maintainer](https://dev.to/arcanis/introducing-yarn-2-4eh1#conclusion). Given
-this, and the extent of the changes to the CLI, this RFC proposes that a `yarn-berry-install`
-buildpack be created to enable the new installation workflows.
+this, and the extent of the changes to the CLI, this RFC proposes that Berry
+workflows be included in the `yarn-install` buildpack under two separate codepaths/packages.
 
 ## Motivation
 
-As developers continue to adopt Yarn Berry, demand for the Node.js buildpack to
+As developers continue to adopt Berry, demand for the Node.js buildpack to
 support it has steadily increased.
 
 
@@ -37,129 +40,42 @@ support it has steadily increased.
 
 ### API
 
-`yarn-berry-install`
+`yarn-install`
 
-Provides: `yarn_cache` OR `node_modules` Requires: `node` during `build`
+Provides: `node_pkgs`
+Requires: `node`, `yarn` during `build`
 
-The buildpack does not require `yarn` since the Berry release itself is meant
-to be checked into version control under `.yarn/releases`. Node v16.10 and
-later include
-[Corepack](https://nodejs.org/dist/latest/docs/api/corepack.html), which is the
-preferred method of managing package manager installations across projects. 
+The Node.js buildpacks use `node_modules` as a keyword for providing/requiring
+packages in the build plan across the board. Since Berry explicitly excludes
+`node_modules`, however, it seems reasonable to instead use a generic term for
+node packages such as `node_pkgs`.
 
-
-A new order group will be added to the Nodejs language family buildpack,
-resulting in the following:
-
-```toml
-...
-
-[[order]]
-
-  [[order.group]]
-    id = "paketo-buildpacks/ca-certificates"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/watchexec"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/node-engine"
-
-  [[order.group]]
-    id = "paketo-buildpacks/yarn-berry-install"
-
-  [[order.group]]
-    id = "paketo-buildpacks/node-module-bom"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/node-run-script"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/node-start"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/yarn-start"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/procfile"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/environment-variables"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/image-labels"
-    optional = true
-
-[[order]]
-
-  [[order.group]]
-    id = "paketo-buildpacks/ca-certificates"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/watchexec"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/node-engine"
-
-  [[order.group]]
-    id = "paketo-buildpacks/yarn-install"
-
-  [[order.group]]
-    id = "paketo-buildpacks/node-module-bom"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/node-run-script"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/node-start"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/yarn-start"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/procfile"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/environment-variables"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/image-labels"
-    optional = true
-
-...
-
-```
-
-The `yarn-berry-install` group is placed before the traditional `yarn-install`
-group since it detects on the presence of `.yarnrc.yml` and both app types
-will contain `yarn.lock` files.
+Though the Berry CLI is a complete departure from Classic, the latter may still
+be used as a global orchestrator for per-project Berry installations. The
+[recommended
+workflow](https://yarnpkg.com/getting-started/install#install-corepack) is to
+use Corepack (shipped with Node.js) to manage package manager installations,
+but this feature is experimental and arguably unnecessary in the context of
+buildpack builds where there is only one installation to manage. There are also
+challenges with supporting offline use cases using the Corepack workflow (see
+Rationale & Alternatives). For now, the buildpack should require `yarn` to
+preserve existing functionality & reduce initial engineering cost.
 
 ### Detection
 
-- `.yarnrc.yml` was created with the intention of making it easy to detect
-  whether a project uses Yarn Classic or Berry (Berry ignores `.yarnrc`
-  completely), and should be used for the detection of `yarn-berry-install`.
+The buildpack's detection criteria will remain unchanged, except for the
+replacement of the `node_modules` keyword with `node_pkgs`.
+
 
 ### Build
 
-Yarn Berry includes a number of features which seek to remove the necessity of
-`yarn install`. As such, the buildpack should allow users to take advantage of
+`.yarnrc.yml` was created with the intention of making it easy for tools to
+detect whether a project uses Classic or Berry (Berry ignores `.yarnrc`
+completely). The buildpack should use this artifact to determine which codepath
+to execute.
+
+Berry includes new features which seek to remove the necessity of
+actually running `yarn install`. The buildpack should allow users to take advantage of
 these features by avoiding invocations of `yarn install` when it is reasonable
 to do so. For those who opt out of "Plug 'n Play", Berry still supports using
 `node_modules`.
@@ -167,31 +83,33 @@ to do so. For those who opt out of "Plug 'n Play", Berry still supports using
 The buildpack should run `yarn install` in the following cases:
 
 - If an application uses `node_modules`, which may be determined by the
-  presence of a `node_modules` directory or through `.yarnrc.yml` configuration.
+  presence of a `node_modules` directory , the absence of `.yarnrc.yml` or
+  through explicit `.yarnrc.yml` configuration (via the `nodeLinker` field).
 
 - If the `yarn.lock` has changed when using `node_modules`.
 
-- If there is no local cache (`.yarn/cache` by default, but can be configured) in
+- If there is a `.yarnrc.yml` but no local cache (`.yarn/cache` by default, but may be configured) in
   the working directory, whether `.pnp.cjs` exists or not.
 
-- If there is no `.pnp.cjs` in the working directory, even if a local cache exists.
+- If there is a `.yarnrc.yml` but no `.pnp.cjs` in the working directory, even if a local cache exists.
 
 The buildpack should NOT run `yarn install` when:
 
-- Both a `.pnp.cjs` file and a local cache are present in the working
-  directory. The buildpack should assume that these two artifacts indicate a
+-  `.yarnrc.yml`, `.pnp.cjs` file and a local cache are present in the working
+  directory. The buildpack should assume that these artifacts indicate a
   desire to leverage Plug'n'Play and should not need to run `yarn install`
   whether or not the `yarn.lock` has changed between builds.
 
 
 The buildpack will store the Yarn cache in a layer and configure Yarn to
 reference this layer, ideally via the `YARN_CACHE_FOLDER` environment variable.
+
 For Berry projects using `node_modules`, the behaviour will largely mimic the
 existing Yarn Install buildpack, with accommodations for the CLI changes.
 
 The buildpack will generate a filesystem-based SBoM as `yarn-install` does currently.
 
-### Layer Reuse 
+### Layer Reuse
 
 The Yarn Install buildpack currently uses a checksum of the output from `yarn
 config list` and the contents of `yarn.lock` to decide whether to reuse package layers.
@@ -208,73 +126,110 @@ fail if the `yarn.lock` file needs to be updated. As such, developers must run
 `--frozen-lockfile` has been deprecated in favour of `--immutable`, which this
 buildpack will utilize.
 
+We acknowledge that immutable installs [aren't always
+desirable](https://github.com/paketo-buildpacks/rfcs/pull/194#discussion_r893748926).
+The buildpack should therefore respect any user-set configuration for disabling
+immutable installs.
 
 ### Offline builds
 
 Previously, the `yarn-install` buildpack relied on `yarn-offline-mirror` along
-with the `--offline` flag to facilitate offline builds. This workflow is no
-longer supported and is indeed unnecessary since `.yarn/cache` stores archives
-of all packages now anyway.
+with the `--offline` flag to facilitate offline builds. This workflow is not
+supported in Berry since `.yarn/cache` stores archives of all packages now
+anyway. Airgapped build functionality will remain intact for Classic apps.
+
 
 ### Running Scripts
 
 Berry has [changed the way pre- & post- scripts are
 invoked](https://yarnpkg.com/getting-started/migration#explicitly-call-the-pre-and-post-scripts).
+The Berry docs recommend that users call their pre- and post-start
+scripts explicitly:
 
-The build logic of `yarn-start` will need to be modified to accommodate this
-change.
+E.g.
+```
+{
+  "scripts": {
+    "prestart": "do-something",
+    "start": "yarn prestart && http-server"
+  }
+}
+```
 
-### `yarn node` vs `node` 
+This could clash with the buildpacks start command logic if users actually
+adhere to it and attempting to recreate yarn's logic through the buildpack does
+not seem ideal. Instead, we should document this potential conflict and
+recommend that users modify their scripts to conform to the previous format:
 
-All `node` commands run via the shell should be run with `yarn node` instead. The default
-start command in the Yarn Start buildpack may need to be modified.
+E.g.
+```
+{
+  "scripts": {
+    "prestart": "do-something",
+    "start": "http-server"
+  }
+}
+```
+
+This way, the start command logic in `yarn-start` can remain largely unchanged, except
+to prepend `yarn` where necessary (see below).
+
+### `yarn node` vs `node`
+
+All `node` commands run via the shell should be run with [`yarn node`
+instead](https://yarnpkg.com/getting-started/migration#call-your-scripts-through-yarn-node-rather-than-node).
+The default start command in the Yarn Start buildpack will need to be modified
+to accommodate this.
 
 ## Rationale and Alternatives
 
-- Include logic for Yarn Berry workflows in the existing `yarn-install`
-  buildpack.
+- Use Corepack to install Yarn
 
-  Berry includes breaking changes to the `yarn` CLI used by the buildpack to
-  install dependencies. The changes to CLI options are such that at the very
-  least, the buildpack would need to decide which ones to use based on the type
-  of application being built. Trying to incorporate both workflows will
-  increase the scope of responsibility of the buildpack, likely increasing its
-  complexity at the expense of maintainability. Classic Yarn is now in
-  maintenance mode and, though it is still heavily used now (due to the
-  relatively slow adoption of Berry), its unclear how long it will be
-  supported. For this reason, it is even more prudent to keep the logic
-  separate to facilitate the eventual transition.
-
-## Unresolved Questions and Bikeshedding
-
-
-- Should this buildpack require `yarn`?
-
-Classic Yarn can be used as a global orchestrator of per-project Yarn
-installations. Corepack is shipped with Node v16.10 or greater and is the
-recommended tool for managing these installations. It would be ideal to conform
-to the recommended workflow through Corepack, but doing so adds a bit of
-complexity for offline builds. Corepack  attempts to download Yarn releases
+Corepack is shipped with Node (< 16.10, 14.19) and is the recommended tool for
+managing package manager installations across projects. It would be ideal to
+conform to the recommended workflow through Corepack, but doing so adds a bit
+of complexity for offline builds. Corepack  attempts to download Yarn releases
 directly from the registry, which it cannot do in an offline environment. There
 are [workarounds](https://nodejs.org/api/corepack.html#offline-workflow) for
 this, but they rely on a global [corepack
 cache](https://github.com/nodejs/corepack#corepack-prepare--nameversion) which
-would have to be replicated within the build/run container.
+would have to be replicated within the build/run container. The user would also
+have to provide an archive containing the necessary `yarn` release which could
+then be "hydrated" by corepack.
 
-- What should happen if the user selects a version of Node < 16.10?
+- Have separate names for Classic vs Berry provision
 
-If the ultimate decision is not to require `yarn` by default (the subject of
-the previous item), the buildpack could optionally require `yarn` in this case.
-This would result in a global install of Classic Yarn which can be used as an
-orchestrator.
+It has been proposed here that the name of the provision for the
+module-providing Node.js buildpacks be changed to `node_pkgs` to avoid overloading
+`node_modules` in a context that expressly forbids it (Berry). The alternatives
+to that approach would be to:
 
-- Could slices be utilized to optimize layer reuse for .yarn/releases, local cache, etc.?
+1. Have different names for the buildpack provisions, e.g. `yarn_cache` &
+   `node_modules`, which would then require additional logic in multiple
+   buildpacks to accommodate the two paths. 
 
-- ~~Should the buildpack support building Yarn Berry applications which use
-  `node_modules` as well as Plug 'n' Play?~~ Yes. It seems that some users have
-  foregone Plug 'n' Play and are using Yarn Berry with the `node_modules` linker.
+1. Call the provision `node_modules` whether it is produced by Berry or not
 
-- ~~Yarn Berry supports setting a global cache. Should we hold off on
-  supporting this workflow until it is requested?~~ Yes. This feature is
-  valuable for the monorepo use-case but is not critical for the initial
-  implementation and can be added once there is demand.
+- Create an entirely new `yarn-berry-install` buildpack
+
+Given the breadth of the changes to the `yarn` CLI, it is not unreasonable to
+consider an entirely separate buildpack for Berry workflows. This approach,
+though potentially easier to understand and maintain at the buildpack level,
+adds more overhead at the language-family level.
+
+
+## Unresolved Questions and Bikeshedding
+
+- Offline builds for non-PnP apps
+
+  It is unclear how the buildpack might support offline builds for apps which
+  do not utilize PnP, or do not have a local cache at build-time since Berry does
+  not respect offline mirrors and does not include a `--offline` flag. The
+  `enableGlobalCache` option provides an avenue for running `yarn install` in
+  airgapped environments but there is no way to configure the location of the
+  global cache or to pre-populate it so that it may be provided at build-time.
+
+ Users would either need to use PnP and utilize the local cache or use Yarn
+ Classic to build and run their applications in an airgapped environment.
+
+
