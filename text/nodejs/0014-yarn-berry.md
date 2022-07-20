@@ -50,6 +50,17 @@ packages in the build plan across the board. Since Berry explicitly excludes
 `node_modules`, however, it seems reasonable to instead use a generic term for
 node packages such as `node_pkgs`.
 
+The buildpacks affected by this change to the `node_modules` build plan dependency are:
+
+- `npm-install`
+- `yarn-install`
+- `npm-start`
+- `yarn-start`
+- `node-start`
+- `node-run-script`
+- `node-module-bom`
+- `rails-assets`
+
 Though the Berry CLI is a complete departure from Classic, the latter may still
 be used as a global orchestrator for per-project Berry installations. The
 [recommended
