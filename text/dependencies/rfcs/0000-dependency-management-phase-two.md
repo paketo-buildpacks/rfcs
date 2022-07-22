@@ -4,10 +4,16 @@
 
 The process around dependency version discovery, retrieval, possible
 compilation, and metadata storage should be carried out through a set of
-Dependencies-team maintained Github actions and workflows. The workflows will
+Tooling-team maintained Github actions and workflows. The workflows will
 leverage dependency-specific code outlined in [RFC 0000: Phase
 1](https://github.com/paketo-buildpacks/rfcs/blob/dependency-management-step-one/text/dependencies/rfcs/0000-dependency-management-phase-one.md)
 and will live in a common location to be reused across buildacks.
+
+The automation outlined in this RFC is designed to keep some "source of truth"
+for the latest supported dependency versions and metadata up to date. If the
+"source of truth" for dependency versions and metadata eventually changes in
+the project from the `buildpack.toml`, the details of this RFC can still be
+applied to keeping that new location updated.
 
 ## Motivation
 
@@ -75,10 +81,13 @@ options. The different "options" refer to dependencies that either come from
 upstream directly or must be compiled/modified, and then whether
 multiple variants for different OS/architecture combinations are needed.
 
-The new process for managing dependencies will also use the `buildpack.toml` as
-a source of truth for the latest versions we support, instead of using a
-separate `known-versions.json` file. Metadata will be generated and added to
-the `buildpack.toml` all in one workflow, rather than being pushed to an
+The new process for managing dependencies features the `buildpack.toml` as the
+"source of truth" for the latest versions we support and related metadata,
+instead of using a separate `known-versions.json` file. As mentioned in the
+Proposal section, if the location where metadata and versions are stored
+changes, the outlined steps can be applied for keeping the new location up to
+date as well.  Metadata will be generated and added to this location (the
+`buildpack.toml`) all in one workflow, rather than being pushed to an
 intermediary `metadata.json` file and being added in a separate workflow. The
 overall process will be closer to what someone would do if they were updating
 the dependencies themselves, rather than with automation.
@@ -93,10 +102,10 @@ work as a single workflow:
    metadata entries may exist representing different OS target groups. If a
    separate dependency is needed to run on different stacks, this will be
    enumarated as separate metadata entries.
-2. Using a Github Actions [`matrix
-   strategy`](https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs#using-a-matrix-strategy),
-   for each metadata entry, if the `SHA256` and `URI` metadata fields are
-   empty, trigger compilation.
+2. For each metadata entry, if the `SHA256` and `URI` metadata fields are
+   empty, trigger compilation. This will likely be achieved by using a Github
+   Actions [`matrix
+   strategy`](https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs#using-a-matrix-strategy)
 3. Dependency compilation as a job takes in the dependency version and the
    target name from the `metadata.json`, and will perform set up and then
    run compilation via the compilation action [outlined in Phase
@@ -128,7 +137,7 @@ as well, under a directory named `dependency`, inside of the `actions`
 directory.
 
 The github-config repository `CODEOWNERS` file will be updated to set the
-`@paketo-buildpacks/dependencies-maintainers` to the owners of the
+`@paketo-buildpacks/tooling-maintainers` to the owners of the
 `actions/dependency` and `implementation/.github/workflows/<all
 dependency-related workflows>`.
 
@@ -191,10 +200,10 @@ used in Paketo.
 
 An alternative to this proposal would be to keep more of the existent
 infrastructure in place, such as keeping the `jam update-dependencies` command
-and expanding it to work for dependency variants (for different stacks). The
-metadata, known versions, and compiled dependencies would still be pushed to
-buckets. The only advantage of this strategy is that there's potentially less
-code change needed.
+as it currently exists, and expanding it to work for dependency variants (for
+different stacks). The metadata, known versions, and compiled dependencies
+would still be pushed to buckets. The only advantage of this strategy is that
+there's potentially less code change needed.
 
 A final alternative would be to deviate from using Github Actions, since there
 are sometimes issues with high-volume jobs and outages. This option has the
