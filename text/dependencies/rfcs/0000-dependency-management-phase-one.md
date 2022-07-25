@@ -165,10 +165,10 @@ generalized for running in automation, while being useable locally.
 #### Transfer/Combine Version Retrieval and Metadata Generation
 
 The new  version retrieval code will merge together the job of discovering
-versions and getting metadata for each version. It will pick up newer versions
-than what the `buildpack.toml` contains, and outputs JSON-formatted metadata
-for each dependency version discovered. This code should be ported from the
-dep-server repository to the buildpack under a directory named
+versions and getting metadata for each version. It will pick up all newer
+versions than what the `buildpack.toml` contains, and outputs a JSON file with
+metadata entries for each dependency version discovered. This code should be
+ported from the dep-server repository to the buildpack under a directory named
 `dependency/retrieval`, taking in the path to the `buildpack.toml` file and the
 path to the output file. It should be well-documented and useable on a local
 environment. The location must be standardized for use in automation.
@@ -209,11 +209,11 @@ process that multiple variants of each dependency are needed. Each different
 For example, if a dependency needs separate variants for running on Ubuntu
 Bionic versus Ubuntu Jammy Jellyfish, and the buildpack supports both related
 stacks, then for each new dependency version discovered during version
-retrieval, two sets of metadata will be returned. In this example, one entry
-will be for Bionic, with the `target` field set to something like `bionic`,
-with the compatible stacks being `io.buildpacks.stacks.bionic`. The other entry
-will be for Jammy, with the `target` set to something like `jammy`, and the
-compatible stack being `io.buildpacks.stacks.jammy`.
+retrieval, two sets of metadata for that version will be returned. In this
+example, one entry will be for Bionic, with the `target` field set to something
+like `bionic`, with the compatible stacks being `io.buildpacks.stacks.bionic`.
+The other entry will be for Jammy, with the `target` set to something like
+`jammy`, and the compatible stack being `io.buildpacks.stacks.jammy`.
 
 #### Caveat: Compiled Dependencies
 In the case that the dependencies need to be compiled or processed, the
