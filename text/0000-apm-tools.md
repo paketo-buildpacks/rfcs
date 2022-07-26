@@ -23,19 +23,69 @@ Each buildpack functions in a similar fashion. It will install any required depe
 
 ## Motivation
 
-VMware is vested in the buildpacks community and believes that a great way to grow the buildpacks community is to expand the set of available buildpacks. There have been requests for additional APM tooling support from the community and this will fill that need.
+VMware is invested in the buildpacks community and believes that a great way to grow the buildpacks community is to expand the set of available buildpacks. There have been requests for additional APM tooling support from the community and this will fill that need.
 
 ## Detailed Explanation
 
 This RFC proposes the following changes:
 
 1. Create a new Paketo sub-team called "APM Tools". This team will be the owner for all eight of these buildpacks, as well as the existing APM related buildpacks: Azure Application Insights, Google Stackdriver, and Datadog.
-2. Since the APM tooling buildpacks function across language families, the "APM Tools" sub-team will be seeded with one maintainer from each language family team. This is to ensure that there is representation  and ownership from each language family.
+2. Since the APM tooling buildpacks function across language families, the "APM Tools" sub-team will be seeded with one maintainer from each language family team. This is to ensure that there is representation and ownership from each language family. A language family team may opt-out of this group, if for example they do not have or plan to have integrations witht APM Tools through buildpacks.
 3. Create eight new repositories, one for each buildpack to be contributed. The APM Tools team will own these repositories. The repository names will follow the pattern `Paketo <technology> Buildpack`, ex: `Paketo Apache Skywalking Buildpack`, as is the existing convention. GitHub repository names will be the name of the technology, ex: `apache-skywalking`. Buildpack ID and image registry names will match the GitHub repository name, ex: `docker.io/paketobuildpacks/apache-skywalking`.
 4. VMware will submit a PR to each repository with the code for each buildpack. The PR will include all source code, as well as Github Actions, for the project. Use of a PR is intentional as it will effectively truncate the VMware Git history for each repository.
 5. Cut releases
 6. Contribute documentation. This will involve creating a new section dedicated for APM tools. Existing language families can then link to this shared section.
 7. Contribute samples. To not dramatically grow the number of samples, the plan is to take a single sample for each language family and reuse that by providing instructions in the README.md on how to use that application with each APM tool.
+
+### Detection Criteria & Actions Taken
+
+#### Apache Skywalking
+
+If a binding exists with type of `ApacheSkyWalking`, then the Java agent is contributed and an exec.d helper is added to convert binding secret key/values to properties to configure the agent, `-Dskywalking.<KEY>=<VALUE>`.
+
+#### AppDynamics
+
+If a binding exists with type of `AppDynamics`, then the Java or Node.js agent is contributed and an exec.d helper is added to convert binding secret key/values to configuration environment variables, `APPDYNAMICS_<KEY>=<VALUE>`.
+
+Language specific behavior:
+
+- Java contributes some required XML configuration files & supports pulling in override files externally.
+- Node.js will optionally added in a `require('appdynamics')` to the main module, if not present.
+
+#### Aternity
+
+If a binding exists with type of `AppInternals`, then the Java agent is contributed and an exec.d helper is added to convert binding secret key/values to configuration environment variables, `<KEY>=<VALUE>`.
+
+#### Dynatrace
+
+If a binding exists with type of `Dynatrace`, then the buildpack contributes the Dynatrace OneAgent including the appropriate libraries to a layer and configures `$LD_PRELOAD` to use it. An exec.d helper is added that sets `$DT_TENANT`, `$DT_TENANTTOKEN`, and `$DT_CONNECTION_POINT` at launch time. It also transforms the contents of the binding secret to environment variables with the pattern `DT_<KEY>=<VALUE>`.
+
+Dynatrace buildpack works for .NET, Go, Apache HTTPd, Java, Nginx, NodeJS, and PHP applications.
+
+#### Elastic APM
+
+If a binding exists with type of `ElasticAPM`, then the Java or Node.js agent is contributed and an exec.d helper is added to convert binding secret key/values to configuration environment variables, `ELASTIC_APM_<KEY>=<VALUE>`.
+
+Language specific behavior:
+
+- Node.js will optionally added in a `require('elastic-apm-node').start()` to the main module, if not present.
+
+#### JProfiler
+
+If `$BP_JPROFILER_ENABLED` is set, then the Java agent is contributed and an exec.d helper is added to set required JVM options to enable the agent.
+
+#### New Relic
+
+If a binding exists with type of `NewRelic`, then the Java, Node.js or PHP agent is contributed and an exec.d helper is added to convert binding secret key/values to configuration environment variables, `NEW_RELIC_<KEY>=<VALUE>`.
+
+Language specific behavior:
+
+- Java contributes a required XML configuration files & supports contributing extensions.
+- Node.js will optionally added in a `require('newrelic')` to the main module, if not present.
+
+#### YourKit
+
+If `$BP_YOURKIT_ENABLED` is set, then the Java agent is contributed and an exec.d helper is added to set required JVM options to enable the agent.
 
 ## Rationale and Alternatives
 
