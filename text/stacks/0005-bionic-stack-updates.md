@@ -25,10 +25,17 @@ In Stacks RFC 0004, support for non-CNB stack images was dropped for Jammy
 stacks. We currently ship the Bionic stacks with both a `-cnb` suffixed option,
 which contains CNB metadata to make it a valid "CNB stack image", as well as
 another stack without the `-cnb` suffix and without the metadata. This meant
-for each stack we published two images:
+for each stack image we published the following set of tags:
 ```
 paketobuildpacks/build:<version>-full-cnb
 paketobuildpacks/build:<version>-full
+paketobuildpacks/build:full-cnb
+paketobuildpacks/build:full
+
+paketobuildpacks/run:<version>-full-cnb
+paketobuildpacks/run:<version>-full
+paketobuildpacks/run:full-cnb
+paketobuildpacks/run:full
 ```
 
 This was originally done to make it easier for users to build on top of our
@@ -78,10 +85,14 @@ For the Full Bionic stack, this will mean publishing:
 ```
 paketobuildpacks/build:1.3.39-full-cnb
 paketobuildpacks/build:1.3.39-full
+paketobuildpacks/build:full-cnb
+paketobuildpacks/build:full
 paketobuildpacks/build-bionic-full:1.3.39
 
 paketobuildpacks/run:1.3.39-full-cnb
 paketobuildpacks/run:1.3.39-full
+paketobuildpacks/run:full-cnb
+paketobuildpacks/run:full
 paketobuildpacks/run-bionic-full:1.3.39
 ```
 Additionally, each Bionic stack README should outline the stacks that are
@@ -112,3 +123,9 @@ stacks only, since we have less than 12 months left supporting both.
 
 * [Stacks RFC 0004](https://github.com/paketo-buildpacks/rfcs/tree/main/text/stacks)
 * [`stacks`](https://github.com/paketo-buildpacks/stacks)
+
+
+## Edits
+
+EDIT 07/28/2022: Add in the legacy unversioned `<variant>-cnb` and `<variant>`
+locations to push the images to as well.
