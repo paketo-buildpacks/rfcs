@@ -17,20 +17,20 @@ buildpacks that are responsible for installing parts of the .NET toolchain. The
 .NET Core SDK buildpack installs the .NET Core SDK hosted by Microsoft and
 makes it available at build time.  It's used for compiling application source
 code. The .NET Core Runtime buildpack installs a version of the .NET Core
-Runtime hosted by the Paketo dep-server. It constructs a [.NET Hive][hive] and
+Runtime hosted by the Paketo dep-server. It constructs a.NET installation and
 makes it available to framework-dependent apps at launch time. The .NET Core
 ASP.NET buildpack installs a version of ASP.NET Core that is hosted by the
 Paketo dep-server. This dependency is a *subset* of the dependency hosted by
 Microsoft. Microsoft's version contains _both_ the .NET runtime and ASP.NET
 Core. The .NET Core ASP.NET buildpack adds its dependency to the makeshift .NET
-Hive.  In other words, for most buildpack builds, the .NET Runtime and .NET
+installation.  In other words, for most buildpack builds, the .NET Runtime and .NET
 ASP.NET buildpacks collaborate to recreate the ASP.NET Core dependency that
 Microsoft hosts and ships. Both buildpacks install their dependencies in layers
 **before** application source code is compiled. They come before the
 `dotnet-publish` buildpack in the composite buildpack's [order
 groups](https://github.com/paketo-buildpacks/dotnet-core/blob/565c719806588daaeca96e0bfd64d5743656a046/buildpack.toml).
 
-The decision to stitch together a .NET Hive was motivated by a desire to build
+The decision to stitch together a .NET installation was motivated by a desire to build
 images with the absolute minimal number of dependencies in them; some .NET apps
 don't require ASP.NET, and the current implementation builds these apps into
 images that exclude ASP.NET. This saves a few megabytes on image size. But
@@ -76,7 +76,7 @@ The .NET Runtime buildpack should be archived.
 The ASP.NET buildpack should be archived.
 
 A new buildpack should be created, called .NET Core ASP.NET Runtime
-(`dotnet-core-aspnet-runtime`).  This mimics the name of the as it is provided
+(`dotnet-core-aspnet-runtime`).  This mimics the name of the dependency as it is provided
 by Microsoft. This buildpack should `provide` `dotnet-core-aspnet-runtime`.  If
 `BP_DOTNET_FRAMEWORK_VERSION` is set, it should require
 `dotnet-core-aspnet-runtime` with that version. Otherwise, it should require
