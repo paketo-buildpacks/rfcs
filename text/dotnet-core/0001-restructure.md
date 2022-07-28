@@ -18,19 +18,19 @@ structure would include the following buildpacks in addition to the existing
   * requires: none
 
 * dotnet-core-aspnet: installs an ASPNet verison
-  * provides: `dotnet-aspnet`
+  * provides: `dotnet-aspnetcore`
   * requires: none
 
 * dotnet-publish: resolves versions of runtime, SDK, and ASPNet that are
   required to build and executes `dotnet publish`
   * provides: `dotnet-application`
-  * requires: `dotnet-runtime`, `dotnet-sdk`, `dotnet-aspnet`, `icu`, and
+  * requires: `dotnet-runtime`, `dotnet-sdk`, `dotnet-aspnetcore`, `icu`, and
     `node-engine` only at `build`
 
 * dotnet-execute: sets the start command, requiring the necessary launch-time
   dependencies
   * provides: none
-  * requires: `dotnet-runtime`, `dotnet-sdk`, `dotnet-aspnet`, `icu`, and
+  * requires: `dotnet-runtime`, `dotnet-sdk`, `dotnet-aspnetcore`, `icu`, and
     `node-engine` only at `launch`
 
 This structure would look like the following:
