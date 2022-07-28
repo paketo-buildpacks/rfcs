@@ -4,6 +4,11 @@ This directory contains RFCs that pertain to the [Utilities Subteam](https://git
 
 ## Accepted RFCs
 
+* [0003: Credential Configuration in the Git Buildpack](0003-git-credential-configuration.md)
+* [0004: Git Buildpack Promotion](0004-git-promotion.md)
+* [0005: Source Removal Buildpack](0005-source-removal-buildpack.md)
+* [0006: Add Process Reload Library to Paketo](0006-add-live-reload-library.md)
+* [0007: Health Checker Support](0007-health-checker-buildpack.md)
 
 ## Implemented RFCs
 
