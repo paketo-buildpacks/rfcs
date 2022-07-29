@@ -26,18 +26,25 @@ apps/node-base                        latest     022cb9cea147   41 years ago   2
 apps/node-full                        latest     1324267830ec   41 years ago   803MB
 ```
 
+Additionally image scans would find less CVEs which would make it easier to assess.
+
+| Image | Size Run Image (MB) | Total CVEs | CVEs >= 7 |
+| --- | --- | --- | --- |
+| run-node-tiny | 19.2 |  27 | 14 |
+| paketobuildpacks/run:tiny | 17.4 | 28 | 14 |
+| paketobuildpacks/run:base | 86.7 | 58 | 40 |
+
 ## Detailed Explanation
 
 Install the [`libstdc++6`](https://packages.ubuntu.com/bionic/libstdc++6) and [`libgcc1`](https://packages.ubuntu.com/bionic/libgcc1) packages for the Ubuntu based tiny run image. It looks like this will add around 1.8 MB.
 
-```bash
-run-node-tiny                        latest     43acd28c97af   41 years ago   19.2MB
-paketobuildpacks/run:tiny            latest     fa34fc0b3d7b   41 years ago   17.4MB
-```
+The image scan results when writing this pr "only" showed one additional CVE (5.5) which would need to be assessed.
 
 ## Rationale and Alternatives
 
-1. Node is written in C++, so it needs `libstdc++6`and `libgcc1` at runtime.
+- Node is written in C++, so it needs `libstdc++6`and `libgcc1` at runtime.
+- This would also allow other apps to use the tiny stack, e.g. Rust, C++, SAP JVM
+- This might be solved with the use of `extensions` which is currently discussed
 
 ## Implementation
 
@@ -50,4 +57,4 @@ None
 ## Unresolved Questions and Bikeshedding
 
 - Is it worth to influence other users of the stack?
-- Currently the `npm start` buildpack requires a `bash`, so any Node.js application using a start script would fail.
+- Currently the `npm start` buildpack requires a `bash`, so any Node.js application using a start script would fail, but this might be changed in `npm start`
