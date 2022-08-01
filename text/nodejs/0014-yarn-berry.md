@@ -42,24 +42,8 @@ support it has steadily increased.
 
 `yarn-install`
 
-Provides: `node_pkgs`
+Provides: `node_modules` OR `yarn_pkgs`
 Requires: `node`, `yarn` during `build`
-
-The Node.js buildpacks use `node_modules` as a keyword for providing/requiring
-packages in the build plan across the board. Since Berry explicitly excludes
-`node_modules`, however, it seems reasonable to instead use a generic term for
-node packages such as `node_pkgs`.
-
-The buildpacks affected by this change to the `node_modules` build plan dependency are:
-
-- `npm-install`
-- `yarn-install`
-- `npm-start`
-- `yarn-start`
-- `node-start`
-- `node-run-script`
-- `node-module-bom`
-- `rails-assets`
 
 Though the Berry CLI is a complete departure from Classic, the latter may still
 be used as a global orchestrator for per-project Berry installations. The
