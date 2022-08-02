@@ -1,4 +1,4 @@
-# RFC 000XX - Generate Reproducible SPDX SBOMs
+# RFC 0049 - Generate Reproducible SPDX SBOMs
 
 ## Summary
 
@@ -10,7 +10,7 @@ app images they build, Paketo buildpacks that generate SPDX SBOMs produce
 irreproducible images. This violates a core value proposition of Cloud Native
 Buildpacks. To continue generating SPDX SBOMs while maintaining build
 reproducibility, Paketo buildpacks should replace the irreproducible data in
-Syft-generated SPDX SBOMs with reproducible analogues. 
+Syft-generated SPDX SBOMs with reproducible analogues.
 
 ## Motivation
 As described in [the reproducibility
@@ -54,31 +54,35 @@ populate the `documentNamespace` field of the SBOM. For instance, Syft outputs
 ```
 "documentNamespace": "https://anchore.com/syft/dir/workspace-eeb24bd3-d91a-469c-8ce5-c8ef19347a70"
 ```
-as the SPDX `documentNamespace` when scanning `/workspace` during a buildpack build. (See
-the complete
+as the SPDX `documentNamespace` when scanning `/workspace` during a buildpack
+build. (See the complete
 [implementation](https://github.com/anchore/syft/blob/64b4852c2a197b639fcfc311685c6f48abaa9085/internal/formats/spdx22json/to_format_model.go)
-of the transformation between Syft's data model and the SPDX specification
-for more detail.) To populate the `created` field, [Syft gets the current
+of the transformation between Syft's data model and the SPDX specification for
+more detail.) To populate the `created` field, [Syft gets the current
 time](https://github.com/anchore/syft/blob/64b4852c2a197b639fcfc311685c6f48abaa9085/internal/formats/spdx22json/to_format_model.go#L32)
 when the SBOM is encoded as SPDX JSON.
 
 To preserve build reproducibility while generating SPDX SBOMs, Paketo must
 replace the content in these two fields with reproducible data.
 
-We should use a fixed timestamp to replace the variable timestamp that Syft embeds in the SPDX SBOM. Canonically, it's
-appropriate to use the value of the
+We should use a fixed timestamp to replace the variable timestamp that Syft
+embeds in the SPDX SBOM. Canonically, it's appropriate to use the value of the
 [`$SOURCE_DATE_EPOCH`](https://reproducible-builds.org/docs/source-date-epoch/)
 environment variable. If this is unset, it's reasonable to pick our own fixed
 default.
 
 We should replace the irreproducible UUID that Syft includes in its SPDX
-`documentNamespace` with a UUID that is reproducible. We can generate a name-based UUID according
-to the [RFC4122 UUID Specification](https://datatracker.ietf.org/doc/html/rfc4122). In the specification, UUID versions
-3 and 5 are name-based, meaning that "UUIDs generated at different times from the same name in the
-same namespace MUST be equal." (See [the RFC](https://datatracker.ietf.org/doc/html/rfc4122#section-4.3)). In this case,
+`documentNamespace` with a UUID that is reproducible. We can generate a
+name-based UUID according to the [RFC4122 UUID
+Specification](https://datatracker.ietf.org/doc/html/rfc4122). In the
+specification, UUID versions 3 and 5 are name-based, meaning that "UUIDs
+generated at different times from the same name in the same namespace MUST be
+equal." (See [the
+RFC](https://datatracker.ietf.org/doc/html/rfc4122#section-4.3)). In this case,
 "name" is some identifier that is unique within the "namespace" in which it'll
-be used. The RFC recommends that version 5 (which uses a SHA1 hash algorithm) is preferred. For our purposes, the "name"
-is some representation of the contents of the SBOM. See the Implementation section for further details.
+be used. The RFC recommends that version 5 (which uses a SHA1 hash algorithm)
+is preferred. For our purposes, the "name" is some representation of the
+contents of the SBOM. See the Implementation section for further details.
 
 ## Rationale and Alternatives
 
@@ -194,11 +198,3 @@ Note:
 - See https://github.com/paketo-buildpacks/packit/compare/reproducible-spdx for a
   spike demonstrating SBOM struct hashing. Use this version of `packit` within
   a buildpack to see the buildpack produce reproducible SPDX SBOMs.
-
-## Unresolved Questions and Bikeshedding
-
-- What should the version 5 UUID of the SBOM be based on? The only data
-  currently available to `Read()` is the contents of the SBOM itself.
-- Is hashing the SBOM struct actually reproducible? If it's not, this proposal doesn't solve our problem.
-
-{{REMOVE THIS SECTION BEFORE RATIFICATION!}}
