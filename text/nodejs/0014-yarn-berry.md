@@ -58,9 +58,15 @@ preserve existing functionality & reduce initial engineering cost.
 
 ### Detection
 
-The buildpack's detection criteria will remain unchanged, except for the
-replacement of the `node_modules` keyword with `node_pkgs`.
+The buildpack will pass detection when either of the following criteria is met:
 
+1. A `.yarnrc.yml` is present in the working directory. If present, the
+   buildpack should parse the `.yarnrc.yml` and, depending on the value of the
+   `nodeLinker` field, should provide either `node_modules` (if `nodeLinker` is
+   set to `node-modules` or `pnpm`) or `yarn_pkgs` (if `nodeLinker` is set to
+   `pnp` or is absent).
+
+1. `yarnrc.yml` is absent, but `yarn.lock` is present. In this case, `node_modules` should be provided.
 
 ### Build
 
@@ -191,19 +197,6 @@ cache](https://github.com/nodejs/corepack#corepack-prepare--nameversion) which
 would have to be replicated within the build/run container. The user would also
 have to provide an archive containing the necessary `yarn` release which could
 then be "hydrated" by corepack.
-
-- Have separate names for Classic vs Berry provision
-
-It has been proposed here that the name of the provision for the
-module-providing Node.js buildpacks be changed to `node_pkgs` to avoid overloading
-`node_modules` in a context that expressly forbids it (Berry). The alternatives
-to that approach would be to:
-
-1. Have different names for the buildpack provisions, e.g. `yarn_cache` &
-   `node_modules`, which would then require additional logic in multiple
-   buildpacks to accommodate the two paths. 
-
-1. Call the provision `node_modules` whether it is produced by Berry or not
 
 - Create an entirely new `yarn-berry-install` buildpack
 
