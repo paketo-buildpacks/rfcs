@@ -18,7 +18,7 @@ as installing just the dependency which is an issue in buildpacks such PHP.
 
 Split each of these buildpacks in three seperate buildpacks
 
-### {web-server}-dist
+### {web-server}
 This buildpack will be responsible for installing a distribution of the web
 server in question. By separating this buildpack out we will make the
 dependency ingestible by more buildpack groups and make it easier to write new
