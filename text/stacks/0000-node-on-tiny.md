@@ -57,4 +57,4 @@ None
 ## Unresolved Questions and Bikeshedding
 
 - Is it worth to influence other users of the stack?
-- Currently the `npm start` buildpack requires a `bash`, so any Node.js application using a start script would fail, but this might be changed in `npm start`
+- Currently the `npm start` buildpack requires a `bash`, so any Node.js application using a start script would fail, but this can be changed in `npm start`
