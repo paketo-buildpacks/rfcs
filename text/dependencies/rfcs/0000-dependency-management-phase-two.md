@@ -66,7 +66,9 @@ through a series of API endpoint routing.
 
 Dependencies are updated in the buildpacks in a workflow that runs
 in the buildpack's Github Actions:
-- **Update Dependencies**: Runs every hour and runs [`jam
+- **Update Dependencies**: Runs on a timer (every hour is the suggested
+  interval to prevent GHA slow downs while also polling regularly, but it is up to
+  maintainer discretion) and runs [`jam
   update-dependencies`](https://github.com/paketo-buildpacks/github-config/blob/f85a65d14fd90f6d63f1af2d408ee38f17ce5c0b/actions/dependency/update/action.yml#L45-L46)
   against the `buildpack.toml`. If there are new versions available in the
   dep-server, this workflow will discover them and open a PR to update the
