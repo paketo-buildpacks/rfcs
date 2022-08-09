@@ -5,8 +5,8 @@
 The process around dependency version discovery, retrieval, possible
 compilation, and metadata storage should be carried out through a set of
 Tooling-team maintained Github actions and workflows. The workflows will
-leverage dependency-specific code outlined in [RFC 0000: Phase
-1](https://github.com/paketo-buildpacks/rfcs/blob/main/text/dependencies/rfcs/0003-dependency-management-overview.md)
+leverage dependency-specific code outlined in [RFC 0003: Phase
+1](./0003-dependency-management-overview.md)
 and will live in a common location to be reused across buildacks.
 
 The automation outlined in this RFC is designed to keep some "source of truth"
@@ -17,8 +17,8 @@ applied to keeping that new location updated.
 
 ## Motivation
 
-Per top-level [RFC 0000:
-Overview](https://github.com/paketo-buildpacks/rfcs/blob/main/text/dependencies/rfcs/0003-dependency-management-overview.md),
+Per top-level [RFC 0003:
+Overview](./0003-dependency-management-overview.md),
 the second phase of the dependency management process update will be to
 completely rework the existing set of actions and workflows from the
 [dep-server](https://github.com/paketo-buildpacks/dep-server) such that the
@@ -111,7 +111,7 @@ work as a single workflow:
 3. Dependency compilation as a job takes in the dependency version and the
    target name from the `metadata.json`, and will perform set up and then
    run compilation via the compilation action [outlined in Phase
-   1](https://github.com/paketo-buildpacks/rfcs/blob/main/text/dependencies/rfcs/0004-dependency-management-phase-one.md#compilation-action).
+   1](./0004-dependency-management-phase-one.md#compilation-action).
 4. The dependency is tested using the test from dependency-specific tests from
    Phase 1, via `make test`. If the dependency is not compiled, it is at the
    buildpack maintainer's discretion whether it needs to be tested. All

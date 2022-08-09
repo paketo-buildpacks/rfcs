@@ -121,7 +121,7 @@ many different OS compatibilities to be used in the buildpack.
 In order to implement these features in the buildpacks, there are three main
 phases:
 
-1. Federated Model Adoption In Buildpacks: [Phase 1 RFC](https://github.com/paketo-buildpacks/rfcs/blob/main/text/dependencies/rfcs/0004-dependency-management-phase-one.md)
+1. Federated Model Adoption In Buildpacks: [Phase 1 RFC](./0004-dependency-management-phase-one.md)
 
 Buildpacks will adopt a federated approach to dependency management by moving
 the responsibility of dependency-specific logic to buildpacks out of the
@@ -138,7 +138,7 @@ dep-server and related repositories.
   variety of stacks
 
 2. Workflow and Action Generalization: [Phase 2
-   RFC](https://github.com/paketo-buildpacks/rfcs/blob/main/text/dependencies/rfcs/0005-dependency-management-phase-two.md)
+   RFC](./0005-dependency-management-phase-two.md)
 
 All workflows and actions will be moved out of the
 [paketo-buildpacks/dep-server](https://github.com/paketo-buildpacks/dep-server/tree/main/.github)
@@ -153,7 +153,7 @@ Automation will be rewritten in a way that all of the dependency update logic
 will occur in Github Actions and with files located within the buildpack.
 
 3. Dep-server in Maintenance Mode: [Phase 3
-   RFC](https://github.com/paketo-buildpacks/rfcs/blob/main/text/dependencies/rfcs/0006-dependency-management-phase-three.md)
+   RFC](./0006-dependency-management-phase-three.md)
 
 With the completion of phase 1 and 2, the dependency management process will be
 completely contained within Github Actions, and the dep-server will not be used
