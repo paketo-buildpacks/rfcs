@@ -18,7 +18,7 @@ uncessarily compiled from source.
 ## Motivation
 
 Per top-level [RFC
-0000](https://github.com/paketo-buildpacks/rfcs/blob/dependency-management-top-level/text/dependencies/rfcs/0000-dependency-management-overview.md),
+0003](https://github.com/paketo-buildpacks/rfcs/blob/main/text/dependencies/rfcs/0003-dependency-management-overview.md),
 the current dependency management system employed
 in the project leads to a number of painpoints, predominantly around
 maintainability for Dependencies maintainers, and lack of extensibility by
