@@ -5,6 +5,7 @@ This directory contains RFCs that pertain to the [Java Subteam](https://github.c
 ## Accepted RFCs
 
 * [0007: Memory Calculator Low Profile Mode](0007-low-profile-memory-calc.md)
+* [0012: Quarkus Buildpack](0012-quarkus.md)
 
 ## Implemented RFCs
 
