@@ -7,9 +7,9 @@ This RFC proposes that the
 associated code are simplified and moved into maintenance mode as a part of
 efforts to improve dependency management in the project. With changes outlined
 in [Phase
-1](https://github.com/paketo-buildpacks/rfcs/blob/dependency-management-step-one/text/dependencies/rfcs/0000-dependency-management-phase-one.md)
+1](https://github.com/paketo-buildpacks/rfcs/blob/main/text/dependencies/rfcs/0004-dependency-management-phase-one.md)
 and [Phase
-2](https://github.com/paketo-buildpacks/rfcs/blob/dependency-management-step-two/text/dependencies/rfcs/0000-dependency-management-phase-two.md)
+2](https://github.com/paketo-buildpacks/rfcs/blob/main/text/dependencies/rfcs/0005-dependency-management-phase-two.md)
 the dep-server itself will no longer be the source of dependency updates, and
 will be maintained to continue serving existing legacy dependencies only.  It
 will also become a repository to host cross-dependency libraries.
@@ -18,7 +18,7 @@ will also become a repository to host cross-dependency libraries.
 ## Motivation and Background
 
 Per top-level [RFC 0000:
-Overview](https://github.com/paketo-buildpacks/rfcs/blob/dependency-management-top-level/text/dependencies/rfcs/0000-dependency-management-overview.md),
+Overview](https://github.com/paketo-buildpacks/rfcs/blob/main/text/dependencies/rfcs/0003-dependency-management-overview.md),
 the third phase of the dependency management improvement process is to simplify
 the dep-server and the related codebase. Simplifying the code that lives in the
 repository will allow for easier maintenance and reuse by others.
