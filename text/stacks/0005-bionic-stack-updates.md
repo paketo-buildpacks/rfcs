@@ -22,13 +22,21 @@ different naming, tagging, and repository locations.
 ### CNB Stack Images Only
 
 In Stacks RFC 0004, support for non-CNB stack images was dropped for Jammy
-stacks. We currently ship the Bionic stacks with both a `-cnb` suffixed option,
-which contains CNB metadata to make it a valid "CNB stack image", as well as
-another stack without the `-cnb` suffix and without the metadata. This meant
-for each stack we published two images:
+stacks. We currently ship the Bionic stacks to Dockerhub with both a `-cnb`
+suffixed option, which contains CNB metadata to make it a valid "CNB stack
+image", as well as another stack without the `-cnb` suffix and without the
+metadata. This meant for each stack image we published the following set of
+tags:
 ```
 paketobuildpacks/build:<version>-full-cnb
 paketobuildpacks/build:<version>-full
+paketobuildpacks/build:full-cnb
+paketobuildpacks/build:full
+
+paketobuildpacks/run:<version>-full-cnb
+paketobuildpacks/run:<version>-full
+paketobuildpacks/run:full-cnb
+paketobuildpacks/run:full
 ```
 
 This was originally done to make it easier for users to build on top of our
@@ -71,6 +79,8 @@ Stack Images Only" section:
 ```
 paketobuildpacks/{phase}:{version}-{variant}
 paketobuildpacks/{phase}:{version}-{variant}-cnb
+paketobuildpacks/{phase}:{variant}
+paketobuildpacks/{phase}:{variant}-cnb
 paketobuildpacks/{phase}-bionic-{variant}:{version}
 ```
 
@@ -78,12 +88,23 @@ For the Full Bionic stack, this will mean publishing:
 ```
 paketobuildpacks/build:1.3.39-full-cnb
 paketobuildpacks/build:1.3.39-full
+paketobuildpacks/build:full-cnb
+paketobuildpacks/build:full
 paketobuildpacks/build-bionic-full:1.3.39
 
 paketobuildpacks/run:1.3.39-full-cnb
 paketobuildpacks/run:1.3.39-full
+paketobuildpacks/run:full-cnb
+paketobuildpacks/run:full
 paketobuildpacks/run-bionic-full:1.3.39
 ```
+
+We should also continue publishing the run image mirror for each variant to GCR
+with the following naming scheme:
+```
+paketobuildpacks/run:<variant>-cnb
+```
+
 Additionally, each Bionic stack README should outline the stacks that are
 available, the tags available, and include links to each other repository
 allowing users to discover the stack variants available from any of the stack
@@ -112,3 +133,9 @@ stacks only, since we have less than 12 months left supporting both.
 
 * [Stacks RFC 0004](https://github.com/paketo-buildpacks/rfcs/tree/main/text/stacks)
 * [`stacks`](https://github.com/paketo-buildpacks/stacks)
+
+
+## Edits
+
+EDIT 07/28/2022: Add in the legacy unversioned `<variant>-cnb` and `<variant>`
+locations to push the images to as well.
