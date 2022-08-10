@@ -14,6 +14,8 @@
 * [0044: Provide Global Mechanism to Disable SBOM Generation](./text/0044-disable-sbom.md)
 * [0045: Secure runtime environments](./text/0045-user-ids.md)
 * [0046: Define an Image & Dependency Retention Policy for Paketo Images](./text/0046-image-retention-policy.md)
+* [0050: Rename Buildpacks](./text/0050-buildpack-rename.md)
+* [0051: Contribute APM Tools Buildpacks](./text/0051-apm-tools.md)
 
 ## Implemented RFCs
 
