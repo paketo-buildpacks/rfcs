@@ -15,7 +15,9 @@ This RFC proposes the following changes:
 - Create a new buildpack, `paketo-buildpacks/opentelemetry`.
 - The buildpack will install the OpenTelemetry Agent, which includes everything needed to instrument and export telemetry data.
 - The buildpack will adjust the JVM arguments to enable the OpenTelemetry Agent.
-- Users would configure the OpenTelemetry Agent using the [standard environment variables](https://opentelemetry.io/docs/instrumentation/java/automatic/agent-config/#configuring-the-agent) provided by the OpenTelemetry project itself.
+- Users would configure the OpenTelemetry Agent using one of the following methods:
+    - via the [standard environment variables](https://opentelemetry.io/docs/instrumentation/java/automatic/agent-config/#configuring-the-agent provided by the OpenTelemetry project itself.
+    - via a configuration profile provided via a dedicated `opentelemetry` binding and that will be used to set the `OTEL_JAVAAGENT_CONFIGURATION_FILE` environment variable. 
 - The initial target is for this buildpack to work with the JVM. However, support for other language families is possible in the future.
 
 ## Rationale and Alternatives
@@ -32,6 +34,8 @@ The goal is to add easy support for using an open-source and industry-standard f
 6. Add standard set of CI jobs
 7. Document usage
 8. Publish initial release
+9. Submit sample application [here](https://github.com/paketo-buildpacks/samples/tree/main/java)
+10. Update the Java documentation [here](https://github.com/paketo-buildpacks/paketo-website/blob/main/content/docs/howto/java.md#connect-to-an-apm)
 
 ## Prior Art
 
