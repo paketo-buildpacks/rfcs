@@ -96,6 +96,15 @@ lifetime.
 This stack will adopt whatever official SBOM support is declared upstream by
 the CNB project.
 
+### Mixins
+
+This stack will **NOT** include mixins declared through the
+`io.buildpacks.stack.mixins` image label. This API is being superseded in the
+upstream CNB project with this
+[RFC](https://github.com/buildpacks/rfcs/blob/main/text/0096-remove-stacks-mixins.md).
+In preparation for this, and to ensure we don't perpetuate a deprecated API,
+the Jammy stacks will no longer include this label in their metadata.
+
 ## Rationale and Alternatives
 
 We should at least discuss what it would mean to provide a Debian stack. There
