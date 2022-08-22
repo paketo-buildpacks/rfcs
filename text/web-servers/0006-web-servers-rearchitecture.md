@@ -11,8 +11,20 @@ buildpacks and to allow for easier use of the underlying dependencies.
 Currently Nginx and HTTPD behave as monolithic buildpacks, installing a
 dependency, running configuration, and writing a start command. This is
 antithetical to the Paketo buildpack philosophy as it means that the buildpacks
-are not modular and it is hard to use components of the buildpack easily, such
-as installing just the dependency which is an issue in buildpacks such PHP.
+are not modular and it is hard to use components of the buildpack easily.
+
+For example, the PHP buildpacks have both the Nginx and HTTP as a dependency
+because both can be used and web servers for PHP applications. However, the PHP
+buildpacks only really need the web server dependencies to be installed and
+then custom PHP specific configurtaion will be written to make the selected web
+server work optimally. This means that in order for the current buildpack
+configuration to work we must write the current Nginx and HTTPD buildpacks in
+such a way that their configuration can be overwritten in a later buildpack.
+This means that any an all new features must take into acount their interaction
+with both the Web Servers language domain as well as the PHP language domain.
+This development and interaction would be greatly simplified if the PHP
+buildpacks could just require the dependency that they need without any of the
+attached configuration.
 
 ## Implementation
 
@@ -263,7 +275,9 @@ like:
 ## Rationale and Alternatives
 
 - Do nothing and ensure that the web server dependencies are ingestible by
-  third party buildpacks
+  third party buildpacks by ensuring that all web server specific configuration
+  is able to be overwritten by later buildpacks that may need to set up
+  language family specific configuration.
 
 ## Prior Art
 
