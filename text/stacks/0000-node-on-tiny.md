@@ -15,7 +15,7 @@ To support running Node.js applications with the tiny builder.
 While not all Node.js applications could be supported by that, this could be a feasible approach:
 
 - `tiny`: Run Node.js applications **without** any native extenstions
-- `base`: Run Node.js applications **without** many native extensions
+- `base`: Run Node.js applications **with** some native extensions
 - `full`: Run Node.js applications **with** many native extensions
 
 This should be desirable as some types of Node.js application would benefit of the reduced image size.
@@ -26,13 +26,13 @@ apps/node-base                        latest     022cb9cea147   41 years ago   2
 apps/node-full                        latest     1324267830ec   41 years ago   803MB
 ```
 
-Additionally image scans would find less CVEs which would make it easier to assess.
+Additionally image scans would find less CVEs for the application image which would make it easier to assess. On the other side, no additional CVEs for the run images (compared to `tiny`) were found by addind these libraries.
 
-| Image | Size Run Image (MB) | Total CVEs | CVEs >= 7 |
-| --- | --- | --- | --- |
-| run-node-tiny | 19.2 |  27 | 14 |
-| paketobuildpacks/run:tiny | 17.4 | 28 | 14 |
-| paketobuildpacks/run:base | 86.7 | 58 | 40 |
+| Image | Size Run Image (MB) |
+| --- | --- |
+| run-node-tiny | 19.2 |
+| paketobuildpacks/run:tiny | 17.4 |
+| paketobuildpacks/run:base | 86.7 |
 
 ## Detailed Explanation
 
