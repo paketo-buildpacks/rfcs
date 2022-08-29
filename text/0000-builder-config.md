@@ -16,7 +16,7 @@ Some examples include -
 
 The buildpack logic in `Paketo` largely remains the same, except these environment variables might need to be injected during the `build` and `detect` phases.
 
-The environment variables may ideally also take precendence over any user provided values to ensure that the operators have full control over their builders.
+The environment variables may be able to take precedence over user-provided values, if configured to, which ensures that operators can take full control over their builders if that is required.
 
 ## Detailed Explanation
 
