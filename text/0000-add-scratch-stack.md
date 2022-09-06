@@ -3,7 +3,7 @@
 ## Summary
 
 The Paketo stacks maintainers should create and maintain a scratch stack that
-can run statically-linked applications (e.g. golang). The Builder team does not
+can run statically-linked applications (e.g. golang, Rust). The Builder team does not
 need to create a builder for this image, but may do so if they wish.
 
 Additionally, the golang buildpack should gain support for this new scratch
