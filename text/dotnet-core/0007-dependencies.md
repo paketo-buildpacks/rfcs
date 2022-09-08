@@ -34,7 +34,7 @@ Action workflow once that has been approved.
 
 Remove the Paketo-hosted dependency.
 
-It looks like .NET Core SDL is downloaded directly from a Microsoft by scanning
+It looks like .NET Core SDK is downloaded directly from a Microsoft by scanning
 their [release
 index](https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/releases-index.json)
 and using the information given on the version release pages to find an
