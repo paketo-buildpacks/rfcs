@@ -41,17 +41,18 @@ and using the information given on the version release pages to find an
 official Microsoft release URL. Currently the .NET SDK [upload workflow
 directly uploads the artifact from
 Microsoft](https://github.com/paketo-buildpacks/dep-server/blob/d7402591d0581a5019b1bd620ed1367d5f155213/.github/data/dependencies.yml#L27).
-Therefore, this RFC proposes removing the .NET SDK as a Paketo-hosted
-dependency.
+This is in accordance with [RFC
+0004](https://github.com/paketo-buildpacks/rfcs/blob/main/text/dotnet-core/0004-extend-dotnet-sdk.md)
+in which we decided to consume the .NET SDK directly from upstream. Therefore,
+this RFC proposes removing the .NET SDK as a Paketo-hosted dependency.
 
 ### .NET Core ASP.NET Core Runtime
 
 This is contingent on the implmentation of [.NET RFC
 0006](https://github.com/paketo-buildpacks/rfcs/blob/1d615afaa355f235b216a8fa9346d227299b388f/text/dotnet-core/0005-simplify-runtime-dependency.md)
 in which we will start to consume the .NET Core ASP.NET Core Runtime as it is
-provided by Microsoft. This will be achieved in the same wat as the .NET Core
-SDK was the release index leads to a release page that also contains the URLs
-for the Microsoft hosted dependnecy.
+provided by Microsoft. This will be achieved in the same way as the .NET Core
+SDK by obtaining the upstream download link from the release index.
 
 ### vsdbg
 
