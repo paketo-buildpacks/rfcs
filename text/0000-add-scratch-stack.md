@@ -97,7 +97,7 @@ system just for this stack.
 We will add support for this new stack in the Go buildpack. This will
 enable the following:
 
-1. Golang application developers can utilize this new stack out-of-the-box,
+1. Go application developers can utilize this new stack out-of-the-box,
    without having to modify the Golang buildpack to support this new stack.
 1. The static stack can use the Golang buildpack for its integration tests.
    This will enable meaningful end-to-end integration tests for this stack. We
