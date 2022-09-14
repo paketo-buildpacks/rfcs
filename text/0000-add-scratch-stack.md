@@ -145,7 +145,7 @@ Various literature (e.g.
 [this](https://blog.baeke.info/2021/03/28/distroless-or-scratch-for-go-apps/),
 and
 [this](https://chemidy.medium.com/create-the-smallest-and-secured-golang-docker-image-based-on-scratch-4752223b7324)
-describe the use of "static" images for statically-linked golang applications,
+describe the use of "static" images for statically-linked Go applications,
 with or without the `tzdata` and `ca-certificates` packages.
 
 ## Unresolved Questions and Bikeshedding
