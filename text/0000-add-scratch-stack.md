@@ -102,7 +102,7 @@ enable the following:
 1. The static stack can use the Golang buildpack for its integration tests.
    This will enable meaningful end-to-end integration tests for this stack. We
    want to be able to build and run a test application during the stack
-   integration test, and golang is the best choice for this.
+   integration test, and Go is the best choice for this.
 
 ## Rationale and Alternatives
 
