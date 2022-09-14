@@ -116,7 +116,7 @@ enable the following:
    it. This would satisfy current users at the expense of making the tiny stack
    more useful. It also does not make Paketo more attractive to users who find
    the tiny stack is already too large for their needs.
-1. We could create the new stack but not add support in the Golang buildpack.
+1. We could create the new stack but not add support in the Go buildpack.
    This renders the stack effectively useless for Paketo consumers, as no
    Paketo buildpacks would support it without modifying a buildpack and
    re-packaging it.
