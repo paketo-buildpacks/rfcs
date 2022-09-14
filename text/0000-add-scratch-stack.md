@@ -3,7 +3,7 @@
 ## Summary
 
 The Paketo stacks maintainers should create and maintain a stack (called
-"static") that can run statically-linked applications (e.g. golang, Rust).
+"static") that can run statically-linked applications (e.g. Go, Rust).
 The Paketo builder maintainers will make a buildpackless builder for this
 stack.
 
