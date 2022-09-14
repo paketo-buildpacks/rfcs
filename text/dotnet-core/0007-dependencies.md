@@ -35,29 +35,33 @@ Action workflow once that has been approved.
 Remove the Paketo-hosted dependency.
 
 It looks like .NET Core SDK is downloaded directly from a Microsoft by scanning
-their [release
-index](https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/releases-index.json)
+their [release index](https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/releases-index.json)
 and using the information given on the version release pages to find an
-official Microsoft release URL. Currently the .NET SDK [upload workflow
-directly uploads the artifact from
-Microsoft](https://github.com/paketo-buildpacks/dep-server/blob/d7402591d0581a5019b1bd620ed1367d5f155213/.github/data/dependencies.yml#L27).
-This is in accordance with [RFC
-0004](https://github.com/paketo-buildpacks/rfcs/blob/main/text/dotnet-core/0004-extend-dotnet-sdk.md)
+official Microsoft release URL. This release page also includes a SHA512 which
+can be used for verification of the dependency. Currently the .NET SDK [upload
+workflow directly uploads the artifact from Microsoft](https://github.com/paketo-buildpacks/dep-server/blob/d7402591d0581a5019b1bd620ed1367d5f155213/.github/data/dependencies.yml#L27).
+This is in accordance with [RFC 0004](https://github.com/paketo-buildpacks/rfcs/blob/main/text/dotnet-core/0004-extend-dotnet-sdk.md)
 in which we decided to consume the .NET SDK directly from upstream. Therefore,
 this RFC proposes removing the .NET SDK as a Paketo-hosted dependency.
 
+.NET Core 3.1 does not run on Ubuntu Jammy Jellyfish and therefore will only be
+supported on Ubuntu Bionic Beaver stacks.
+
 ### .NET Core ASP.NET Core Runtime
 
-This is contingent on the implmentation of [.NET RFC
-0006](https://github.com/paketo-buildpacks/rfcs/blob/1d615afaa355f235b216a8fa9346d227299b388f/text/dotnet-core/0005-simplify-runtime-dependency.md)
+This is contingent on the implmentation of [.NET RFC 0006](https://github.com/paketo-buildpacks/rfcs/blob/1d615afaa355f235b216a8fa9346d227299b388f/text/dotnet-core/0005-simplify-runtime-dependency.md)
 in which we will start to consume the .NET Core ASP.NET Core Runtime as it is
 provided by Microsoft. This will be achieved in the same way as the .NET Core
-SDK by obtaining the upstream download link from the release index.
+SDK by obtaining the upstream download link from the release index. This
+release page also includes a SHA512 which can be used for verification of the
+dependency.
+
+.NET Core 3.1 does not run on Ubuntu Jammy Jellyfish and therefore will only be
+supported on Ubuntu Bionic Beaver stacks.
 
 ### vsdbg
 
-The Microsoft [approved
-way](https://docs.microsoft.com/en-us/dotnet/iot/debugging?tabs=self-contained&pivots=vscode#install-the-visual-studio-remote-debugger-on-the-raspberry-pi)
+The Microsoft [approved way](https://docs.microsoft.com/en-us/dotnet/iot/debugging?tabs=self-contained&pivots=vscode#install-the-visual-studio-remote-debugger-on-the-raspberry-pi)
 of downloading the .NET debugger is to use a script that can be obtained at
 aka.ms/getvsdbgsh. This is a domain that is owned by Microsoft and therefore
 relatively trustworthy. Using this script we can download the `vsdbg`
@@ -69,3 +73,6 @@ latest version of the `vsdbg` and examine the version that is downloaded
 through the `version.txt` file that is packaged with the dependency. Once we
 have that version we can construct a static URI for that version to be used by
 the buildpack.
+
+A checksum will have to be calculated from the downloaded artifact in the
+workflow as a source for an upstream checksum has not been found as of yet.
