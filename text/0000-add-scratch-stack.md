@@ -7,7 +7,7 @@ The Paketo stacks maintainers should create and maintain a stack (called
 The Paketo builder maintainers will make a buildpackless builder for this
 stack.
 
-Additionally, the golang buildpack should gain support for this new static
+Additionally, the Go buildpack should gain support for this new static
 stack, both in order to provide a useful experience to Go application
 developers as well as to enable integration tests for this new stack.
 
