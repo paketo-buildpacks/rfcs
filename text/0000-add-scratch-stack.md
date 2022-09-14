@@ -94,7 +94,7 @@ system just for this stack.
 
 ### Go Buildpack
 
-We will add support for this new stack in the golang buildpack. This will
+We will add support for this new stack in the Go buildpack. This will
 enable the following:
 
 1. Golang application developers can utilize this new stack out-of-the-box,
