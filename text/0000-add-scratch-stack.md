@@ -99,7 +99,7 @@ enable the following:
 
 1. Go application developers can utilize this new stack out-of-the-box,
    without having to modify the Golang buildpack to support this new stack.
-1. The static stack can use the Golang buildpack for its integration tests.
+1. The static stack can use the Go buildpack for its integration tests.
    This will enable meaningful end-to-end integration tests for this stack. We
    want to be able to build and run a test application during the stack
    integration test, and Go is the best choice for this.
