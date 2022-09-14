@@ -15,7 +15,7 @@ developers as well as to enable integration tests for this new stack.
 
 Some applications consist of a single
 [statically-linked](https://en.wikipedia.org/wiki/Static_library) executable.
-This is most common in golang, but is also often utilized in rust. It is also
+This is most common in Go, but is also often utilized in rust. It is also
 common in languages/toolchains not supported by Paketo like C/C++. These
 statically-linked binaries can be run on a minimally-modified empty container
 image (AKA "static" image) with few-to-no packages/libraries. Static images
