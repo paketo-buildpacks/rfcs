@@ -110,7 +110,7 @@ enable the following:
    packages to the tiny stack. This would likely be unaceptable to developers
    of applications that can be statically-linked, and will likely turn them
    away from the Paketo project. We have already heard feedback that the tiny
-   stack is larger than some golang developers would like and is already a
+   stack is larger than some Go developers would like and is already a
    reason not to adopt Paketo Buildpacks.
 1. We could keep the tiny stack as-is - not consider adding further packages to
    it. This would satisfy current users at the expense of making the tiny stack
