@@ -132,7 +132,7 @@ enable the following:
 1. Copy most of the existing contents from `paketo-buildpacks/jammy-tiny-stack` into this repository.
 1. Update metadata (e.g. stack name, Support URL, etc).
 1. Remove all packages from the `run` image package list except `tzdata` and `ca-certificates`.
-1. Ensure the integration tests statically links the golang test application.
+1. Ensure the integration tests statically links the Go test application.
 1. Run the automation, which will automatically publish an image.
 
 ## Prior Art
