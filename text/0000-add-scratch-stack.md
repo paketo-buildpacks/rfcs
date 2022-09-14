@@ -92,7 +92,7 @@ Also, on a practical note, leveraging the existing automation that is used in
 all other stacks is simpler for the stacks maintainers than creating a new
 system just for this stack.
 
-### Golang Buildpack
+### Go Buildpack
 
 We will add support for this new stack in the golang buildpack. This will
 enable the following:
