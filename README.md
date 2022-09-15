@@ -15,6 +15,7 @@
 * [0046: Define an Image & Dependency Retention Policy for Paketo Images](./text/0046-image-retention-policy.md)
 * [0050: Rename Buildpacks](./text/0050-buildpack-rename.md)
 * [0052: Graceful Stack Upgrades](./text/0052-graceful-stack-upgrades.md)
+* [0053: Create static stack](./text/0053-add-static-stack.md)
 
 ## Implemented RFCs
 
