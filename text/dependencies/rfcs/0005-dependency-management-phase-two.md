@@ -104,7 +104,7 @@ work as a single workflow:
    metadata entries may exist representing different OS target groups. If a
    separate dependency is needed to run on different stacks, this will be
    enumarated as separate metadata entries.
-2. For each metadata entry, if the `SHA256` and `URI` metadata fields are
+2. For each metadata entry, if the `checksum` and `uri` metadata fields are
    empty, trigger compilation. This will likely be achieved by using a Github
    Actions [`matrix
    strategy`](https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs#using-a-matrix-strategy)
@@ -117,7 +117,7 @@ work as a single workflow:
    buildpack maintainer's discretion whether it needs to be tested. All
    compiled dependencies will be tested.
 6. (If compiled) Upload the dependency to the dependency bucket
-7. (If compiled) The dependency `SHA256` and the bucket `URI` are added to metadata
+7. (If compiled) The dependency `checksum` and the bucket `uri` are added to metadata
 8. An "Assemble" step will run, taking in metadata, the dependencies, and will
    update the `buildpack.toml` file with the new versions and metadata.  The
    step will pass these inputs into a stripped-down version of the `jam
@@ -163,9 +163,9 @@ would have two entries per version:
     licenses = ["MIT", "MIT-0"]
     name = "Bundler"
     purl = "pkg:generic/bundler@2.3.15?checksum=05b7a8a409982c5d336371dee433e905ff708596f332e5ef0379559b6968431d&download_url=https://rubygems.org/downloads/bundler-2.3.15.gem"
-    sha256 = "some-sha"
+    checksum = "sha256:some-sha"
     source = "https://rubygems.org/downloads/bundler-2.3.15.gem"
-    source_sha256 = "05b7a8a409982c5d336371dee433e905ff708596f332e5ef0379559b6968431d"
+    source-checksum = "sha256:05b7a8a409982c5d336371dee433e905ff708596f332e5ef0379559b6968431d"
     stacks = ["io.buildpacks.stacks.bionic", "io.buildpacks.stacks.jammy"]
     uri = "some-GCP-bucket-URI://bundler-2.3.15-ubuntu.tgz"
     version = "2.3.15"
@@ -176,9 +176,9 @@ would have two entries per version:
     licenses = ["MIT", "MIT-0"]
     name = "Bundler"
     purl = "pkg:generic/bundler@2.3.15?checksum=05b7a8a409982c5d336371dee433e905ff708596f332e5ef0379559b6968431d&download_url=https://rubygems.org/downloads/bundler-2.3.15.gem"
-    sha256 = "some-sha"
+    checksum = "sha256:some-sha"
     source = "https://rubygems.org/downloads/bundler-2.3.15.gem"
-    source_sha256 = "05b7a8a409982c5d336371dee433e905ff708596f332e5ef0379559b6968431d"
+    source-checksum = "sha256:05b7a8a409982c5d336371dee433e905ff708596f332e5ef0379559b6968431d"
     stacks = ["some-windows-stack"]
     uri = "some-GCP-bucket-URI://bundler-2.3.15-windows.tgz"
     version = "2.3.15"
@@ -186,7 +186,7 @@ would have two entries per version:
 
 The `buildpack.toml` will have multiple variant entries for every version, and
 there will be more variants as the buildpack supports more stacks. Variants
-differ by `URI`, `SHA256`, and `stacks`. In order to control increasing
+differ by `URI`, `checksum`, and `stacks`. In order to control increasing
 `buildpack.toml` complexity and duplication, some method to abstract duplicated
 fields might be helpful, and can be introduced in a separate RFC.
 
@@ -218,3 +218,6 @@ visibilty and would require quite a bit of overhead to set up a new system.
   failures?
 - Should we introduce a mechanism to perform the workflow for a single input
   version?
+
+## Edits
+- 09/21/2022 - Migrate from `sha256` and `source_sha256` fields to `checksum` and `source-checksum` fields in metadata.

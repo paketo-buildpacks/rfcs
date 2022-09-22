@@ -148,11 +148,11 @@ generalized for running in automation, while being useable locally.
       {
         "name": <dependency name>,
         "version": <version>,
-        "sha256": <SHA256>,
+        "checksum": <algorithm>:<hash of dependency>,
         "uri": <URI of dependency>,
         "stacks": [{"id": <compatible stack ID> }],
         "source": <source URI>,
-        "source_sha256": <SHA256 of source dependency>,
+        "source-checksum": <algorithm>:<hash of source dependency>,
         "deprecation_date": <optional field, deprecation date>,
         "cpe": <CPE>,
         "purl": <package URL>,
@@ -191,8 +191,8 @@ Code to generate/gather all of the metadata for a dependency should be moved and
 into the retrieval code.  The code should
 do essentially the same thing that the existent code does, and support the same
 metadata fields.
-The supported metadata fields are: `source URI`, `source SHA256`, `version`,
-`URI`, `SHA256`, `ReleaseDate`, `DeprecationDate`, `stacks`, `purl`, `licenses`
+The supported metadata fields are: `source URI`, `source checksum`, `version`,
+`URI`, `checksum`, `ReleaseDate`, `DeprecationDate`, `stacks`, `purl`, `licenses`
 and `CPE`.
 
 #### Separating OS Variants and Supporting Multiple Stacks
@@ -217,12 +217,12 @@ The other entry will be for Jammy, with the `target` set to something like
 
 #### Caveat: Compiled Dependencies
 In the case that the dependencies need to be compiled or processed, the
-metadata generation code should omit the `URI` and the `SHA256` from the
+metadata generation code should omit the `URI` and the `checksum` from the
 metadata. This will be used in automation (described in detail in a subsequent
 RFC) to let the dependency management system to trigger compilation of the
 dependency. When the dependency is compiled and uploaded to a bucket, the
-bucket URI will be the URI in the metadata, and the compiled dependency SHA256
-will be the SHA256 in the metadata.
+bucket URI will be the URI in the metadata, and the compiled dependency checksum
+will be the checksum in the metadata.
 
 #### New Repository
 Eventually, commonalities in version retrieval code (and other parts of the
@@ -303,8 +303,9 @@ this behaviour lives now.
       buildpack author desires. The dependency name will be highly dependent on
       if the dependency needs to be compiled separately for different
       OS/architecture combinations.
-    * Artifact SHASUM -  A `${dependency}-<description>.tgz.sha256` file
-      containing the SHA256 of the compiled dependency.
+    * Artifact checksum -  A `${dependency}-<description>.tgz.checksum` file
+      containing the checksum of the compiled dependency in the form of
+      `<algorithm>:<hash>`.
 
 #### Compilation Action
 The compilation step will be written as a Github Action in order to facilitate
@@ -438,3 +439,7 @@ project, potentially making it hard to contribute and maintain.
 
 ## Unresolved Questions and Bikeshedding (Optional)
 - Who is going to pay for the buckets?
+
+
+## Edits
+- 09/21/2022 - Migrate from `sha256` and `source_sha256` fields to `checksum` and `source-checksum` fields in metadata.
