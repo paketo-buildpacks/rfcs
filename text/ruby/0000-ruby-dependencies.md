@@ -52,7 +52,7 @@ compilation.
 The `curl` dependency used in the Passenger buildpack will also be a
 Paketo-hosted dependency. Even though there are hosted Linux
 distribution-agnostic binaries available at https://curl.se/download.html, they
-are provided by third-parties that don't have enough confidence in to wnat to
+are provided by third-parties that we don't have enough confidence in to want to
 leverage in the project.  Ubuntu, which is a trusted source, also [provides
 up-to-date curl binaries](https://packages.ubuntu.com/bionic/curl ), but they
 are provided as `.deb` files which are not easily consumed within the
