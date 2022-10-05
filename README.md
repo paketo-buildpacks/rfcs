@@ -13,7 +13,6 @@
 * [0044: Provide Global Mechanism to Disable SBOM Generation](./text/0044-disable-sbom.md)
 * [0045: Secure runtime environments](./text/0045-user-ids.md)
 * [0046: Define an Image & Dependency Retention Policy for Paketo Images](./text/0046-image-retention-policy.md)
-* [0050: Rename Buildpacks](./text/0050-buildpack-rename.md)
 * [0052: Graceful Stack Upgrades](./text/0052-graceful-stack-upgrades.md)
 
 ## Implemented RFCs
@@ -52,6 +51,7 @@
 * [0043: Expanding the Criteria for Reproducible Builds](./text/0043-reproducible-builds.md)
 * [0047: Web Servers Buildpack Promotion](./text/0047-promote-web-servers-buildpack.md)
 * [0048: Additional Github Issue Templates](./text/0048-issue-templates.md)
+* [0050: Rename Buildpacks](./text/0050-buildpack-rename.md)
 * [0051: Contribute APM Tools Buildpacks](./text/0051-apm-tools.md)
 * [0053: Create static stack](./text/0053-add-static-stack.md)
 
