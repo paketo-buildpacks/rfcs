@@ -4,9 +4,7 @@ This directory contains RFCs that pertain to the [Stacks Subteam](https://github
 
 ## Accepted RFCs
 
-* [0003: Stack Descriptor and Tooling](0003-stack-descriptor.md)
 * [0004: Stacks based on Ubuntu 2022.04: Jammy Jellyfish](0004-jammy-jellyfish.md)
-* [0005: Updates to Stacks based on Ubuntu Bionic](0005-bionic-stack-updates.md)
 * [0006: Add to Tiny Run Image to Enable Node Apps](0006-node-on-tiny.md)
 
 
@@ -14,6 +12,8 @@ This directory contains RFCs that pertain to the [Stacks Subteam](https://github
 
 * [0001: Add io.paketo.stack.packages label](0001-stack-package-metadata.md)
 * [0002: Add libz to the Tiny Run Image](0002-add-libz.md)
+* [0003: Stack Descriptor and Tooling](0003-stack-descriptor.md)
+* [0005: Updates to Stacks based on Ubuntu Bionic](0005-bionic-stack-updates.md)
 
 ## Links
 
