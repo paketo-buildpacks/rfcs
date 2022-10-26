@@ -1,4 +1,4 @@
-# Decide which Python dependencies will be Paketo-hosted
+# Decide which PHP dependencies will be Paketo-hosted
 
 ## Proposal
 
