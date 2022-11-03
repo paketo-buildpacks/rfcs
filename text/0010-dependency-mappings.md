@@ -11,7 +11,11 @@ Consumers of Paketo buildpacks may be building in an environment where certain d
 ## Detailed Explanation
 
 ### Discovery
-If one or more bindings of kind or type `dependency-mapping` are present, buildpacks should respect any URIs found in the binding. The `sha256` of the dependency should be used to lookup mapped URIs.
+If one or more bindings of kind or type `dependency-mapping` are present, buildpacks should respect any URIs found in the binding. The lookup digest should be included as `checksum` in the form of `<algorithm>:<hash>` (or `sha256` in the form of `<hash>`) of the dependency should be used to lookup mapped URIs.
+
+If the digest is provided in the form of `<hash>`, it will be assumed to be of algorithm type `sha256`.
+
+The dependency mapping implementation in the project will continue to support the use of a `sha256` as long as the `sha256` `buildpack.toml` field is supported; however, users of this feature should ideally use a `checksum`.
 
 ### CNB Bindings Specification Example
 Using https://github.com/buildpacks/spec/blob/main/extensions/bindings.md:
@@ -22,8 +26,8 @@ Using https://github.com/buildpacks/spec/blob/main/extensions/bindings.md:
         ├── metadata
         │   └── kind -> "dependency-mapping"
         └── secret
-            ├── b4cb31162ff6d7926dd09e21551fa745fa3ae1758c25148b48dadcf78ab0c24c -> https://example.com/dep-1.tgz
-            └── efa6d87993ff21615e2d8fc0c98e07ff357fc9f3b9bd93c2cf58ba7f2b6fd2e0 -> https://example.com/dep-2.tgz
+            ├── sha256:b4cb31162ff6d7926dd09e21551fa745fa3ae1758c25148b48dadcf78ab0c24c -> https://example.com/dep-1.tgz
+            └── sha256:efa6d87993ff21615e2d8fc0c98e07ff357fc9f3b9bd93c2cf58ba7f2b6fd2e0 -> https://example.com/dep-2.tgz
 ```
 
 ### Service Binding Specification for Kubernetes Example
@@ -32,8 +36,8 @@ Using https://github.com/k8s-service-bindings/spec:
 $SERVICE_BINDING_ROOT
 └── my-dependency-binding
     ├── type -> "dependency-mapping"
-    ├── b4cb31162ff6d7926dd09e21551fa745fa3ae1758c25148b48dadcf78ab0c24c -> https://example.com/dep-1.tgz
-    └── efa6d87993ff21615e2d8fc0c98e07ff357fc9f3b9bd93c2cf58ba7f2b6fd2e0 -> https://example.com/dep-2.tgz
+    ├── sha256:b4cb31162ff6d7926dd09e21551fa745fa3ae1758c25148b48dadcf78ab0c24c -> https://example.com/dep-1.tgz
+    └── sha256:efa6d87993ff21615e2d8fc0c98e07ff357fc9f3b9bd93c2cf58ba7f2b6fd2e0 -> https://example.com/dep-2.tgz
 ```
 
 ## Rationale and Alternatives
@@ -52,3 +56,6 @@ Before downloading a dependency the buildpack searches all bindings of type `dep
 
 
 ## Unresolved Questions and Bikeshedding
+
+## Addendums
+- November 3, 2022: Modify RFC to leverage `checksum` for digest over a `sha256`
