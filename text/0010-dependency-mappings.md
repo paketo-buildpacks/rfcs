@@ -18,7 +18,7 @@ If the digest is provided in the form of `<hash>`, it will be assumed to be of a
 The dependency mapping implementation in the project will continue to support the use of a `sha256` as long as the `sha256` `buildpack.toml` field is supported; however, users of this feature should ideally use a `checksum`.
 
 ### CNB Bindings Specification Example
-Using https://github.com/buildpacks/spec/blob/main/extensions/bindings.md:
+Using https://github.com/buildpacks/spec/blob/main/extensions/bindings.md with a `checksum` digest:
 ```
 <platform>
 └── bindings
@@ -30,14 +30,35 @@ Using https://github.com/buildpacks/spec/blob/main/extensions/bindings.md:
             └── sha256:efa6d87993ff21615e2d8fc0c98e07ff357fc9f3b9bd93c2cf58ba7f2b6fd2e0 -> https://example.com/dep-2.tgz
 ```
 
+With a `sha256` digest:
+```
+<platform>
+└── bindings
+    └── my-dependency-binding
+        ├── metadata
+        │   └── kind -> "dependency-mapping"
+        └── secret
+            ├── b4cb31162ff6d7926dd09e21551fa745fa3ae1758c25148b48dadcf78ab0c24c -> https://example.com/dep-1.tgz
+            └── efa6d87993ff21615e2d8fc0c98e07ff357fc9f3b9bd93c2cf58ba7f2b6fd2e0 -> https://example.com/dep-2.tgz
+```
+
 ### Service Binding Specification for Kubernetes Example
-Using https://github.com/k8s-service-bindings/spec:
+Using https://github.com/k8s-service-bindings/spec with a `checksum` digest:
 ```
 $SERVICE_BINDING_ROOT
 └── my-dependency-binding
     ├── type -> "dependency-mapping"
     ├── sha256:b4cb31162ff6d7926dd09e21551fa745fa3ae1758c25148b48dadcf78ab0c24c -> https://example.com/dep-1.tgz
     └── sha256:efa6d87993ff21615e2d8fc0c98e07ff357fc9f3b9bd93c2cf58ba7f2b6fd2e0 -> https://example.com/dep-2.tgz
+```
+
+With a `sha256` digest:
+```
+$SERVICE_BINDING_ROOT
+└── my-dependency-binding
+    ├── type -> "dependency-mapping"
+    ├── b4cb31162ff6d7926dd09e21551fa745fa3ae1758c25148b48dadcf78ab0c24c -> https://example.com/dep-1.tgz
+    └── efa6d87993ff21615e2d8fc0c98e07ff357fc9f3b9bd93c2cf58ba7f2b6fd2e0 -> https://example.com/dep-2.tgz
 ```
 
 ## Rationale and Alternatives
@@ -58,4 +79,4 @@ Before downloading a dependency the buildpack searches all bindings of type `dep
 ## Unresolved Questions and Bikeshedding
 
 ## Addendums
-- November 3, 2022: Modify RFC to leverage `checksum` for digest over a `sha256`
+- November 3, 2022: Modify RFC to leverage `checksum` for digest as well as a `sha256`
