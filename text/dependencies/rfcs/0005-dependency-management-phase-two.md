@@ -113,10 +113,10 @@ work as a single workflow:
    run compilation via the compilation action [outlined in Phase
    1](./0004-dependency-management-phase-one.md#compilation-action).
 4. The dependency is tested using the test from dependency-specific tests from
-   Phase 1, via `make test`. If the dependency is not compiled, it is at the
-   buildpack maintainer's discretion whether it needs to be tested. All
-   compiled dependencies will be tested.
-6. (If compiled) Upload the dependency to the dependency bucket
+   Phase 1 via the testing action described in Phase 1. If the dependency is
+   not compiled, it is at the buildpack maintainer's discretion whether it
+   needs to be tested.
+6. (If compiled) Upload the dependency to the dependency bucket`
 7. (If compiled) The dependency `checksum` and the bucket `uri` are added to metadata
 8. An "Assemble" step will run, taking in metadata, the dependencies, and will
    update the `buildpack.toml` file with the new versions and metadata.  The

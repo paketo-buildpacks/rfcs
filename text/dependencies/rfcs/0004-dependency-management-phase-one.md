@@ -103,7 +103,7 @@ to orchestrate these steps in an automated fashion, to keep the
 
 In order to run the steps in a generalized workflow, each step will need to
 conform to a standardized set of inputs and outputs. Version retrieval,
-metadata gathering, and dependency testing can all be written in any language,
+and metadata gathering can be written in any language,
 but should have a simple way to be executed via a Makefile so it can be called
 in a consistent manner. A `Makefile` will be created with targets for these
 steps, with each step being a bash script in this example:
@@ -112,14 +112,13 @@ steps, with each step being a bash script in this example:
 ```
 retrieve:
 	@./retrieval/retrieve.sh $(buildpackTomlPath) $(output)
-test:
-	@./test/test.sh $(tarballName) $(version)
 ```
 
-Dependency compilation and the problem of performing compilation for different
+Dependency compilation, as well as dependency testing against different
 operating systems and architectures will be handled in a slightly different
-manner. Instead of using the Makefile approach, compilation will be rolled into
-a Github Action. This will be described in greater detail below.
+manner. Instead of using the Makefile approach, both dependency compilation and
+testing will be rolled into their own Github Actions. This will be described in
+greater detail below.
 
 Overall, this plan will hit on the 5 outlined processes in a way that can be
 generalized for running in automation, while being useable locally.
@@ -284,7 +283,7 @@ this behaviour lives now.
 </details>
 
 
-#### Compilation Code
+#### Compilation Code (Github Action)
   * Description: The executable code that compiles a specific version of the
     dependency to the target OS, for dependencies that need it.
     This code serves as the `entrypoint` of the Github Action that this will be
@@ -371,7 +370,7 @@ longer need to keep track of all known versions in a separate file. The Phase 2
 RFC outlines the workflows to use the `buildpack.toml` to track the latest
 versions in the buildpacks, in order to retrieve version updates.
 
-### 3. Test Dependency (`make test`)
+### 3. Test Dependency (Github Action)
   * Description: Performs some verification that the dependency is correctly
     built and functions as expected. Optional for dependencies that have not
     been compiled or processed.
@@ -382,12 +381,53 @@ versions in the buildpacks, in order to retrieve version updates.
 In the dep-server, a smoke test is run against every dependency before the
 metadata is uploaded during the Github Actions process.
 
+
 For all dependencies (compiled or not), a similar dependency smoke test should
 be added to the buildpack that will eventually be used in the dependency
-workflows. It should reside inside the buildpack in a directory called
-`/dependency/test` and takes in the path to the dependency tarball and it's
-version. For dependencies that are not compiled, maintainers can decide how
-rigorous (or not) the test should be.
+workflows. It should reside inside the buildpack dependency directory, under
+`actions`, and takes in the path to the dependency tarball and it's version. For
+dependencies that are not compiled, maintainers can decide how rigorous (or
+not) the test should be.
+
+#### Testing Action
+The dependency testing step will be written as a Github Action in order to
+facilitate testing dependencies on different run images they will actually be
+used in with the buildpacks. Some dependencies will be compiled with dynamic
+linking or other features that can only be tested on specific OS environments.
+As a result, using a Github Action-style set up allows maintainers to define
+their own Dockerfile(s) for the build environments. The overarching workflow
+that will consume this action will be enumerated in the Phase 2 RFC, but the
+action can also be run locally.
+
+Testing code will go inside of `<buildpack>/dependency/actions/test`.
+The directory structure will be:
+- `entrypoint` - either a bash script or a directory that contains the test code.
+- `<x>.Dockerfile` - one or more Dockerfiles defining the environment for
+  testing. This should be based on the most minimal stack run image supported
+  by the buildpack. If the dependency is compiled, it would make sense to have
+  one Dockerfile for each `target` variant of the dependency. The different
+  targets should correspond with the `target` field output in the
+  metadata-gathering step in version retrieval.
+- `action.yml` - the Github-specific part of the Github Action, which defines
+  the inputs (`tarballPath` and `version`). It will be a [`composite`
+  type](https://docs.github.com/en/actions/creating-actions/creating-a-composite-action)
+  action, running individual steps to test the dependency on the target
+  Dockerfiles.
+  **The test action should be hardcoded to test the dependency on the right
+  Dockerfiles**.
+  - If a single dependency needs to be tested against multiple stacks, the test
+    action is responsible for running tests on all Dockerfiles.
+  - If the there are separate dependencies to be tested on different stacks,
+    then the test code should have logic to test dependencies against the right
+    Dockerfile.
+
+  // TODO are these steps accurate?
+  The testing action can easily be run locally to test a dependency by:
+  ```
+  $ docker build -t testing -f <x>.Dockerfile <buildpack>/dependency/actions/test
+  $ docker run -v <output dir>:$PWD testing --version <version> --tarballPath <path to tarball>
+  ```
+  These steps should be well-documented in a README inside of the testing action directory.
 
 ### New Buildpack Directory Contents
 
@@ -398,13 +438,15 @@ buildpack
 └───dependency/
 │   └───actions/
 │   │   └── compile/
+│   │   │   ├── entrypoint
+│   │   │   ├── action.yml
+│   │   │   ├── Dockerfile
+│   │   └── test/
 │   │       ├── entrypoint
 │   │       ├── action.yml
 │   │       ├── Dockerfile
 │   │       └── ...
 │   └───retrieval/
-│   │   │   ...
-│   └───test/
 │   │   │   ...
 │   └───Makefile
 ```
