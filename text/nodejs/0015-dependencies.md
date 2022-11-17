@@ -3,21 +3,25 @@
 ## Proposal
 
 The following dependencies should be removed as Paketo-hosted dependencies:
-* [node-engine](https://github.com/paketo-buildpacks/node-engine/blob/main/buildpack.toml)
 * [yarn](https://github.com/paketo-buildpacks/yarn/blob/main/buildpack.toml)
 * [cycloneDX (node-module-bom)](https://github.com/paketo-buildpacks/node-module-bom/blob/main/buildpack.toml)
+
+The following dependency should be Paketo-hosted for bionic only and pulled directly from upstream for jammy
+* [node-engine](https://github.com/paketo-buildpacks/node-engine/blob/main/buildpack.toml)
 
 ## Rationale
 
 ### node-engine
 
-Remove the Paketo-hosted dependency.
+Keep the bionic dependency as a Paketo-hosted dependency only and pull jammy from upstream
 
 The Paketo node-engine buildpack supports using the system's CA store, which is not a default feature in node.
 This feature is currently enabled by compiling node from source with the `--openssl-use-def-ca-store` flag.
-However, this could also be achieved by simply setting the `NODE_OPTIONS` environment variable to `--use-openssl-ca`, which
-may make it easier to use this dependency directly from upstream.
-Therefore, this RFC proposes removing node as a Paketo-hosted dependency.
+But it can also be enabled by setting `NODE_OPTIONS` to `--use-openssl-ca`.
+Node can be pulled directly from upstream for jammy.
+However, versions 18+ are not compatible with bionic without compiling from source.
+Therefore, this RFC proposes making the bionic dependency a Paketo-hosted dependency
+and pulling the jammy dependency directly from upstream.
 
 ### yarn
 
