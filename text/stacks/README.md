@@ -6,7 +6,7 @@ This directory contains RFCs that pertain to the [Stacks Subteam](https://github
 
 * [0004: Stacks based on Ubuntu 2022.04: Jammy Jellyfish](0004-jammy-jellyfish.md)
 * [0006: Add to Tiny Run Image to Enable Node Apps](0006-node-on-tiny.md)
-
+* [0007: Squash Stack Images](0007-squash-stack.md)
 
 ## Implemented RFCs
 
