@@ -29,7 +29,7 @@ Alternatives:
 
 ## Implementation
 
-In addition to the current criteria for each buildpack, the detect method will also validate itself against the value of `BP_JVM_VENDOR` and contribute only if it matches. BellSoft Liberica will remain the default JVM.
+In addition to the current criteria for each buildpack, the detect method will also take the value of `BP_JVM_VENDOR` into account. If it is set, a buildpack should only detect if the value matches. BellSoft Liberica will remain the default JVM.
 
 | JVM                | tag          	| Buildpack                           |
 | ------------       | ------------ 	| ------------------------------------|
