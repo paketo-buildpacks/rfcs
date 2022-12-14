@@ -29,7 +29,11 @@ Alternatives:
 
 ## Implementation
 
-In addition to the current criteria for each buildpack, the detect method will also take the value of `BP_JVM_VENDOR` into account. If it is set, a buildpack should only detect if the value matches. BellSoft Liberica will remain the default JVM.
+In a composite buildpack all the JVM buildpacks will detect true to indicate they can provide a JRE/JDK.  At build time, 
+buildpacks execute in order, according to the order group.  The first JVM buildpack in the order group, bellsoft-liberica, will
+have the first opportunity to contribute the JVM regardless if `BP_JVM_VENDOR` is set.  If not set, the buildpack will be free
+to contribute.   If set, it should only contribute if `BP_JVM_VENDOR` is set to `liberica`.  Other buildpacks are given the 
+opportunity to provide the JVM and should only if the buildplan entry is not already met and the JVM name matches `BP_JVM_VENDOR`.  Otherwise, the buildpack will exit successfully without doing anything.  
 
 | JVM                | tag          	| Buildpack                           |
 | ------------       | ------------ 	| ------------------------------------|
