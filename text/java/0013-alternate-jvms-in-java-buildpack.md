@@ -29,11 +29,7 @@ Alternatives:
 
 ## Implementation
 
-In a composite buildpack all the JVM buildpacks will detect true to indicate they can provide a JRE/JDK.  At build time, 
-buildpacks execute in order, according to the order group.  The first JVM buildpack in the order group, bellsoft-liberica, will
-have the first opportunity to contribute the JVM regardless if `BP_JVM_VENDOR` is set.  If not set, the buildpack will be free
-to contribute.   If set, it should only contribute if `BP_JVM_VENDOR` is set to `liberica`.  Other buildpacks are given the 
-opportunity to provide the JVM and should only if the buildplan entry is not already met and the JVM name matches `BP_JVM_VENDOR`.  Otherwise, the buildpack will exit successfully without doing anything.  
+In a composite buildpack all the JVM buildpacks will detect true to indicate they can provide a JRE/JDK.  At build time, all JVM buildpacks are free to contribute if the buildplan entry is not met and `BP_JVM_VENDOR` is set to their tag or not set at all. Buildpacks execute in the order they are defined. The bellsoft-liberica buildpack comes first, which preserves the current default behaviour.
 
 | JVM                | tag          	| Buildpack                           |
 | ------------       | ------------ 	| ------------------------------------|
