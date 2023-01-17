@@ -3,7 +3,7 @@
 ## Summary
 
 Currently component buildpack bumps are created as PRs against the main branch, e.g. see [here](https://github.com/paketo-buildpacks/java/pull/873).
-This RFC proposes changing the CI to create these dependency PRs against a new branch, e.g. `draft`.    
+This RFC proposes changing the CI to create these dependency bumps as commits to a PR against a new branch, e.g. `draft`.    
 
 ## Motivation
 
@@ -32,7 +32,7 @@ For the composite/meta buildpack repositories:
 
 ## Prior Art
 
-N/A
+This is how `buildpack.toml` is updated in non-Java composite buildpacks, see [this PR](https://github.com/paketo-buildpacks/python/pull/555/files)
 
 ## Unresolved Questions and Bikeshedding
 
