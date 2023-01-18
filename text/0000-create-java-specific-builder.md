@@ -2,13 +2,13 @@
 
 ## Summary
 
-Currently, Paketo provides the Full, Base and Tiny builders, which include different sets of buildpacks. While they are a simple way of packaging all the necessary components for a Paketo build, they often include more than a user actually needs. This proposal is to create a builder that contains only the buildpacks needed by the composite Java buildpack.  Buildpacks for other language families would not be included.  While this RFC only proposes a Java-specific builder, other language families should consider if a specific builder would be appropriate.  For all language families, the primary advantage to a language specific builder is the significant reduction in pulling 
+Currently, Paketo provides the Full, Base and Tiny builders, which include different sets of buildpacks. While they are a simple way of packaging all the necessary components for a Paketo build, they often include more than a user actually needs. This proposal is to create a builder that contains only the buildpacks needed by the composite Java buildpack.  Buildpacks for other language families would not be included.  While this RFC only proposes a Java-specific builder, other language families should consider if a specific builder would be appropriate.  For all language families, the primary advantage to a language specific builder is the significant reduction in the size of the builder and increasing the speed to build.  
 
 ## Motivation
 
 The current builders have nearly reached the maximum layer limit for container images making it challenging to add new buildpacks. The ultimate goal is to include additional JVM providers in the Java composite buildpack as proposed in [#267 Add additional JVMs to the Java buildpack](https://github.com/paketo-buildpacks/rfcs/pull/267).  
 
-Additionally, the most recently released version of the Full Builder (v0.2.278) contains 103 layers. When a user builds using the Full Builder builds their app, all 103 layers must be pulled down locally.  The size of the builder and time to pull it down is considerable.  Using a Java-specific builder we can greatly reduce the resources (size and speed) needed to run `pack build` and improve the user experience.  As a result, we encourage adoption of the Paketo buildpacks.
+Additionally, the most recently released version of the Full Builder (v0.2.278) contains 103 layers. When a user builds with the Full Builder building their app, all 103 layers must be pulled down locally.  The size of the builder and time to pull it down is considerable.  Using a Java-specific builder we can greatly reduce the resources (size and speed) needed to run `pack build` and improve the user experience.  As a result, we encourage adoption of the Paketo buildpacks.
 
 Finally, there are a set of APM buildpacks that are not natively available to the Java buildpack.  A Java-specific builder can include the APM buildpacks to make it easier for users to utilize these tools and facilitate adoption.
 
@@ -22,9 +22,9 @@ One alternative is compressing the layers in the current builders as proposed in
 
 Another alternative is adding fewer additional JVM provideds to the existing builders.  Each buildpack adds one layer to the image.  If the 8 other JVM providers were included in the Java buildpack the number of layers would increase to 111.  Still within the 127 max but inching closer. Perhaps a smaller set of JVM providers could be added instead of all 8.
 
-A third alternative is to create a JVM meta-buildpack that contains all the JVM provider buildpacks and allows configures the JRE/JDK dependencies.   This would replace the current BellSoft Liberica buildpack.  
+A third alternative is to create a JVM meta-buildpack that contains all the JVM provider buildpacks and configures the JRE/JDK dependencies.   This would replace the current BellSoft Liberica buildpack.  
 
-However, for all 3 alternatives, a Java-specific builder still reduces the size and speed of building a Java application.
+However, for all 3 alternatives, a Java-specific builder still reduces the size (number of layers in the builder) and speed (downloading fewer buildpacks) of building a Java application and provides growing room to add additional buildpacks like the APMs.    
 
 ## Implementation
 
