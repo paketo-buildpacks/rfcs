@@ -10,7 +10,7 @@ Currently, there is no process how the default version of Java is picked in the 
 
 ## Detailed Explanation
 
-The default should be changed according to a defined process rather than at some undefined point in time to some undefined version. To do so, the default should be changed once the latest releases LTS version of Java is at least one year old. 
+The default should be changed according to a defined process rather than at some undefined point in time to some undefined version. To do so, the default should be changed once the latest releases LTS version of Java is at least one year old. Setting this as the baseline, exceptions of faster (or slower) updates are acceptable in urgent cases.
 
 ## Rationale and Alternatives
 
@@ -22,13 +22,9 @@ The default should be changed according to a defined process rather than at some
 
 ## Implementation
 
-To fulfill this RFC, the default version should be changed to Java 17 immediately. 
+To fulfill this RFC, the default version should be changed to Java 17 immediately. Additionally, the process on how the community is notified about the update should be documented on paketo.io/docs.
 
 Going forward, the default Java version should be bumped according to this RFC.
-
-## Prior Art
-
-n/a
 
 ## Unresolved Questions and Bikeshedding
 
