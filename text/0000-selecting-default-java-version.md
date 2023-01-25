@@ -22,7 +22,9 @@ The default should be changed according to a defined process rather than at some
 
 ## Implementation
 
-To fulfill this RFC, the default version should be changed to Java 17. All future versions should be bumped according to this RFC.
+To fulfill this RFC, the default version should be changed to Java 17 immediately. 
+
+Going forward, the default Java version should be bumped according to this RFC.
 
 ## Prior Art
 
