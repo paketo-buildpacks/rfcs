@@ -32,6 +32,13 @@ Currently, `libjvm` alone is deciding what version of java dependency is provide
 
 ## Implementation
 
+If the user requests a specific version via `BP_JRE_VERSION`, that version should always be taken.
+
 ## Prior Art
 
+The same is possible for choosing the `node` version in the [node-engine buildpack](https://github.com/paketo-buildpacks/node-engine)
+
 ## Unresolved Questions and Bikeshedding
+
+* How to handle possible conflicts?
+* Is this adding too much complexity?
