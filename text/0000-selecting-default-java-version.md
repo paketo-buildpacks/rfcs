@@ -10,7 +10,7 @@ Currently, there is no process how the default version of Java is picked in the 
 
 ## Detailed Explanation
 
-The default should be changed according to a defined process rather than at some undefined point in time to some undefined version. To do so, the default should be changed once the latest releases LTS version of Java is at least one year old. Setting this as the baseline, exceptions of faster (or slower) updates are acceptable in urgent cases.
+The default should be changed according to a defined process rather than at some undefined point in time to some undefined version. To do so, the default should be changed once the latest released LTS version of Java is at least one year old. Exceptions are permitted for a shorter change cycle when deemed sufficiently urgent by a majority vote of Java subteam contributors and maintainers.
 
 ## Rationale and Alternatives
 
