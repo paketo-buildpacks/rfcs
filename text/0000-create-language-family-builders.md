@@ -32,6 +32,20 @@ However, for all 3 alternatives, a language-specific builder still reduces the s
 
 This RFC proposes that the builder team own the language-specific builders.  The current process of updating the Paketo builders is automated using a builder.toml. Adding additional language-specific builder config files in each builder repo therefore has little impact on maintenance cost for the project.
 
+### Variants
+
+The language family builders should align with the existing bionic and jammy-based builders and allow for future distributions like `ubi` and future ubuntu-based stacks.  
+The builders will name and tag their release images with the following pattern:
+```
+builder-{distro}-{language-family}:{version}
+```
+For example,
+* `paketobuildpacks/builder-bionic-java:latest`
+* `paketobuildpacks/builder-jammy-java:latest`
+* `paketobuildpacks/builder-jammy-go:latest`
+* `paketobuildpacks/builder-ubi-java:latest`
+
+Each language-family will need to choose which stack to build on top of, base or tiny.  
 
 A sample builder.toml for a Java language builder (without specific versions or the APM buildpacks):
 ```
@@ -271,7 +285,7 @@ description = "Ubuntu bionic base image with buildpacks for Java, including all 
 ```  
 
 ## Publishing
-The language family builders should be pushed to Dockerhub and GCR like the current builders and be presented in the output of `pack builders suggest` with tags like: `paketobuildpacks/builder:<language>` or `paketobuildpacks/builder:java`.
+The language family builders should be pushed to Dockerhub and gcr like the current builders and be presented in the output of `pack builders suggest`.
 
 ## Documentation
 The current README.md's for each builder and the Paketo website need to be updated to clarify what each builder provides.  Blog posts should also be written to announce the availability of the language-specific builders, there advantages and how to use them.  
@@ -282,3 +296,4 @@ unknown
 
 ## Unresolved Questions and Bikeshedding
 How or does this affect the java-native buildpack?
+Each language family will need to decide which stack they will be built on top of, base or tiny.  
