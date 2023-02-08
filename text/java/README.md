@@ -6,6 +6,7 @@ This directory contains RFCs that pertain to the [Java Subteam](https://github.c
 
 * [0007: Memory Calculator Low Profile Mode](0007-low-profile-memory-calc.md)
 * [0014: Selecting the next default Java Version for Paketo Buildpacks](0014-selecting-default-java-version.md)
+* [0015: Create a draft branch for composite/meta buildpacks](0015-composite-draft-branch.md)
 
 ## Implemented RFCs
 
