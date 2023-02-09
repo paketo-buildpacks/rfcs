@@ -1,8 +1,8 @@
-# Allow users to consume pre-release depedencies
+# Allow users to consume pre-release depedencies for an existing major version
 
 ## Summary
 
-Each buildpack has a list of dependencies that can be provided. This list could also contain pre-releases so that the buildpack can provide early access to some dependencies.
+Each buildpack has a list of dependencies that can be provided. This list could also contain pre-releases for existing major versions so that the buildpack can provide early access to some dependencies.
 
 ## Motivation
 
@@ -31,11 +31,20 @@ Some dependencies (e.g. `sap-machine`) provide pre-releases for their releases. 
    - `true`: Use preview version whereever availalbe
    - comma separated list: Use preview version for named dependencies, e.g. `node,npm` or `jvm`
 
+Example:
+
+There are 2 versions of the dependency for java 19:
+
+- `19.0.2` - the latest released one
+- `19.0.3-rc.1` - a pre-release
+
+The user could decide to use the pre-release one for early validation. By default the released one would be chosen.
+
 ## Rationale and Alternatives
 
 - **Do nothing**
 
-  We could stick to the status quo (pre-releases can't be consumed via buildpacks).
+  We could stick to the status quo (pre-releases for an existing major version can't be consumed via buildpacks).
 
 - **Fetch latest preview in buildpack**
 
@@ -60,11 +69,13 @@ Although this is not valid for all buildpacks (e.g. the dependencies do not have
 
   Each buildpack can decide if pre-releases should be added. For example `github-release-dependency` could be changed to add an additional input and add releases that are marked with `pre-release` on github if requested. This should probably be handled generically by `libpak` and `packit`.
 
-- **Use of pre-releases for a dependecy**
+- **Use of pre-releases for a dependency**
 
   By default pre-release versions of dependencies should be ignored, but if enabled (e.g. an environment variable, see [Detailed Explanation](#detailed-explanation)) the versions should be considered.
 
 ## Prior Art
+
+- Currently some buildpacks already include pre-relases (e.g. `maven`), but only for major versions.
 
 ## Unresolved Questions and Bikeshedding
 
