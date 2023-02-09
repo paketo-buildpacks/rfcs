@@ -67,7 +67,11 @@ in the caller of those functions
 ```
 
 ## Implementation
-Create a new package to hold the shared functions or designate one of the existing build packs to centralize the common functions.  Creating a new package to hold the shared functions is probably the better option in terms of limiting cross dependencies.
+
+Following the naming from prior art shared by the Java team, create a new repository called `libnodejs` and start to
+move shared functions into that library. It should follow the same pattern as other Node.js sub-buildpacks and include
+a build and unit test script. An integration test script will not be required as that will be covered in the
+buildpacks which use the shared functions.
 
 ## Prior Art
 
@@ -77,6 +81,6 @@ From Daniel Mikusa(@dmikusa)
 
 ## Unresolved Questions and Bikeshedding
 
-How and where to put the shared code.
+N/A
 
 
