@@ -71,6 +71,10 @@ Create a new package to hold the shared functions or designate one of the existi
 
 ## Prior Art
 
+From Daniel Mikusa(@dmikusa)
+  * The Java buildpack team already does something along the same lines with libjvm & libbs to share code. It does work and it does help to synchronize the buildpacks code bases. What is painful is when you need to change code in the shared library. You then have to cut a release, wait for go modules pick it up, then update the module in the buildpack. It's not hard, but a little tedious.
+  * You also have to realize you're shipping a public library with a public API for your shared code. That means you have to be extra careful in what you change and how you evolve the API. Others could be using it, so you have to follow semver with releases and try not to have breaking changes, etc... That can be a little constraining as well.
+
 ## Unresolved Questions and Bikeshedding
 
 How and where to put the shared code.
