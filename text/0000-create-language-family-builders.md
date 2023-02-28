@@ -59,15 +59,6 @@ description = "Ubuntu bionic base image with buildpacks for Java, including all 
   uri = "docker://gcr.io/paketo-buildpacks/eclipse-openj9"
 
 [[buildpacks]]
-  uri = "docker://gcr.io/paketo-buildpacks/syft"
-
-[[buildpacks]]
-  uri = "docker://gcr.io/paketo-buildpacks/gradle"
-
-[[buildpacks]]
-  uri = "docker://gcr.io/paketo-buildpacks/maven"
-
-[[buildpacks]]
   uri = "docker://gcr.io/paketo-buildpacks/ca-certificates"     
 
 [[buildpacks]]
@@ -92,67 +83,9 @@ description = "Ubuntu bionic base image with buildpacks for Java, including all 
   uri = "docker://gcr.io/paketo-buildpacks/azul-zulu"
 
 [[buildpacks]]
-  uri = "docker://gcr.io/paketo-buildpacks/leiningen"
-
-[[buildpacks]]
-  uri = "docker://gcr.io/paketo-buildpacks/clojure-tools"
-
-[[buildpacks]]
-  uri = "docker://gcr.io/paketo-buildpacks/sbt"             
-
-[[buildpacks]]
-  uri = "docker://gcr.io/paketo-buildpacks/watchexec"
-
-[[buildpacks]]
-  uri = "docker://gcr.io/paketo-buildpacks/executable-jar"
-
-[[buildpacks]]
-  uri = "docker://gcr.io/paketo-buildpacks/apache-tomcat"
-
-[[buildpacks]]
-  uri = "docker://gcr.io/paketo-buildpacks/apache-tomee"
-
-[[buildpacks]]
-  uri = "docker://gcr.io/paketo-buildpacks/dist-zip"    
-
-[[buildpacks]]
-  uri = "docker://gcr.io/paketo-buildpacks/spring-boot"             
-
-[[buildpacks]]
-  uri = "docker://gcr.io/paketo-buildpacks/procfile"  
-
-[[buildpacks]]
-  uri = "docker://gcr.io/paketo-buildpacks/jattach"  
-
-[[buildpacks]]
-  uri = "docker://gcr.io/paketo-buildpacks/azure-application-insights"  
-
-[[buildpacks]]
-  uri = "docker://gcr.io/paketo-buildpacks/google-stackdriver"  
-
-[[buildpacks]]
-  uri = "docker://gcr.io/paketo-buildpacks/datadog"  
-
-[[buildpacks]]
-  uri = "docker://gcr.io/paketo-buildpacks/java-memory-assistant"  
-
-[[buildpacks]]
-  uri = "docker://gcr.io/paketo-buildpacks/encrypt-at-rest"  
-
-[[buildpacks]]
-  uri = "docker://gcr.io/paketo-buildpacks/environment-variables"  
-
-[[buildpacks]]
-  uri = "docker://gcr.io/paketo-buildpacks/image-labels"
-
-[[buildpacks]]
-  uri = "docker://gcr.io/paketo-buildpacks/liberty"  
+  uri = "docker://gcr.io/paketo-buildpacks/java"  
 
 [[order]]
-
-  [[order.group]]
-    id = "paketo-buildpacks/ca-certificates"
-    optional = true
 
   [[order.group]]
     id = "paketo-buildpacks/bellsoft-liberica"
@@ -191,91 +124,7 @@ description = "Ubuntu bionic base image with buildpacks for Java, including all 
     optional = true                       
 
   [[order.group]]
-    id = "paketo-buildpacks/syft"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/leiningen"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/clojure-tools"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/gradle"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/maven"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/sbt"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/watchexec"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/executable-jar"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/apache-tomcat"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/apache-tomee"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/liberty"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/dist-zip"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/spring-boot"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/procfile"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/jattach"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/azure-application-insights"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/google-stackdriver"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/datadog"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/java-memory-assistant"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/encrypt-at-rest"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/environment-variables"
-    optional = true
-
-  [[order.group]]
-    id = "paketo-buildpacks/image-labels"
+    id = "paketo-buildpacks/java"
     optional = true
 
 [stack]
