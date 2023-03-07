@@ -30,7 +30,7 @@ However, for all 3 alternatives, a language-specific builder still reduces the s
 
 ## Implementation
 
-This RFC proposes that the builder team own the language-specific builders.  The current process of updating the Paketo builders is automated using a builder.toml. Adding additional language-specific builder config files in each builder repo therefore has little impact on maintenance cost for the project.
+This RFC proposes a joint ownership of family-language builders.  Specifically, the builder team own the machinery/workflows to produce the images and the language teams own the actual builder.toml & any tests for validation.
 
 ### Variants
 
@@ -45,7 +45,10 @@ For example,
 * `paketobuildpacks/builder-jammy-go:latest`
 * `paketobuildpacks/builder-ubi-java:latest`
 
-Each language-family will need to choose which stack to build on top of, base or tiny.  
+
+The decision to create language family-specific builders is owned by each language family team. Teams may 
+decide to create zero or more based on their needs and user demand. In addition, each language-family team 
+owns the decisions about what goes into the builder. Again, this can be based on team and user needs. 
 
 A sample builder.toml for a Java language builder (without specific versions or the APM buildpacks):
 ```
