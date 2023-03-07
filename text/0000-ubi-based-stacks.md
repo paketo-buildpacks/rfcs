@@ -40,7 +40,7 @@ same mechanism).
 
 Via extensions, it becomes possible to have a Builder image that can install dependencies such as Java, Maven,
 NodeJS, etc via yum. These extensions are very similar to buildpacks, participating in the 'detect' phase, and 
-being allowed to issue 'provides' to the buildplan (but critically not 'requires').. then extensions that are
+being allowed to issue 'provides' to the buildplan (but critically not 'requires'). Then extensions that are
 selected to become part of a build run a 'generate' task (rather than a buildpacks 'build' task), that may output 
 Dockerfiles to modify the Builder image, and/or substitute the Run image. Just like buildpacks, the detect & 
 generate invocations get access to the source project to determine what actions they wish to take. For more 
