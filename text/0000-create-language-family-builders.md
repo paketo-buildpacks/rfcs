@@ -34,25 +34,26 @@ This RFC proposes a joint ownership of family-language builders.  Specifically, 
 
 ### Variants
 
-The language family builders should align with the existing bionic and jammy-based builders and allow for future distributions like `ubi` and future ubuntu-based stacks.  
+The language family builders should align with the existing jammy-based builders and allow for future distributions like `ubi` and future ubuntu-based stacks.  
 The builders will name and tag their release images with the following pattern:
 ```
 builder-{distro}-{language-family}:{version}
 ```
 For example,
-* `paketobuildpacks/builder-bionic-java:latest`
 * `paketobuildpacks/builder-jammy-java:latest`
 * `paketobuildpacks/builder-jammy-go:latest`
 * `paketobuildpacks/builder-ubi-java:latest`
 
+Note: Standard support of bionic ends April 2023 so it likely does not make sense to create builders based on bionic.   
 
-The decision to create language family-specific builders is owned by each language family team. Teams may 
-decide to create zero or more based on their needs and user demand. In addition, each language-family team 
-owns the decisions about what goes into the builder. Again, this can be based on team and user needs. 
+
+The decision to create language family-specific builders is owned by each language family team. Teams may
+decide to create zero or more based on their needs and user demand. In addition, each language-family team
+owns the decisions about what goes into the builder. Again, this can be based on team and user needs.
 
 A sample builder.toml for a Java language builder (without specific versions or the APM buildpacks):
 ```
-description = "Ubuntu bionic base image with buildpacks for Java, including all JVM providers"
+description = "Ubuntu jammy base image with buildpacks for Java, including all JVM providers"
 
 
 [[buildpacks]]
@@ -131,9 +132,9 @@ description = "Ubuntu bionic base image with buildpacks for Java, including all 
     optional = true
 
 [stack]
-  id = "io.buildpacks.stacks.bionic"
-  build-image = "gcr.io/paketo-buildpacks/build:base-cnb"
-  run-image = "gcr.io/paketo-buildpacks/run:base-cnb"    
+  id = "io.buildpacks.stacks.jammy"
+  build-image = "docker.io/paketobuildpacks/build-jammy-full:latest"
+  run-image = "index.docker.io/paketobuildpacks/run-jammy-full:latest"   
 ```  
 
 ## Publishing
