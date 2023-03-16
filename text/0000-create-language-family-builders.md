@@ -45,7 +45,7 @@ builder-{distro}-{variant}-{language-family}:{version}
 ```
 For example,
 * `paketobuildpacks/builder-jammy-full-java:latest`
-* `paketobuildpacks/builder-jammy-full-base:latest`
+* `paketobuildpacks/builder-jammy-base-java:latest`
 * `paketobuildpacks/builder-jammy-base-go:latest`
 * `paketobuildpacks/builder-ubi-full-java:latest`
 
