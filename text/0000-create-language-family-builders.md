@@ -30,19 +30,24 @@ However, for all 3 alternatives, a language-specific builder still reduces the s
 
 ## Implementation
 
-This RFC proposes a joint ownership of family-language builders.  Specifically, the builder team own the machinery/workflows to produce the images and the language teams own the actual builder.toml & any tests for validation.
+This RFC proposes a joint ownership of family-language builders.  Specifically, the builder team own the machinery/workflows to produce the images and the language teams own the actual builder.toml & any tests for validation.  Each language-family will maintain `builder.toml` files in separate repos to align with current tooling and existing repos.  Repo names will follow the convention:
+```
+builder-{distro}-{variant}-{language-family}
+```
+For example, the jammy full java family builder repo will be named: `builder-jammy-full-java`.
 
 ### Variants
 
 The language family builders should align with the existing jammy-based builders and allow for future distributions like `ubi` and future ubuntu-based stacks.  
 The builders will name and tag their release images with the following pattern:
 ```
-builder-{distro}-{language-family}:{version}
+builder-{distro}-{variant}-{language-family}:{version}
 ```
 For example,
-* `paketobuildpacks/builder-jammy-java:latest`
-* `paketobuildpacks/builder-jammy-go:latest`
-* `paketobuildpacks/builder-ubi-java:latest`
+* `paketobuildpacks/builder-jammy-full-java:latest`
+* `paketobuildpacks/builder-jammy-full-base:latest`
+* `paketobuildpacks/builder-jammy-base-go:latest`
+* `paketobuildpacks/builder-ubi-full-java:latest`
 
 Note: Standard support of bionic ends April 2023 so it likely does not make sense to create builders based on bionic.   
 
