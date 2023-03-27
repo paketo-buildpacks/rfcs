@@ -46,6 +46,8 @@ In a composite buildpack all the JVM buildpacks will detect true to indicate the
 
 Additional JVMs can easily be added to the Java buildpack by implementing this RFC.  
 
+Initially, this RFC should be implemented in the new language family builder.  If and when the layer limit issue is resolved more JVM providers can be added to the main Paketo builders.    
+
 ## Prior Art
 
 - Offering alternate Java application servers in the composite java buildpack was implemented using an environment variable.  
