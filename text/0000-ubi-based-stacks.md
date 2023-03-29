@@ -87,6 +87,16 @@ Each stack repository should include a README that outlines the stacks that are
 available including links to each other repository allowing users to discover
 the stack variants available from any of the stack repository pages.
 
+#### Multi-arch
+
+No specific plans for multi-arch are made as part of this RFC, with the initial stack starting within 
+Paketo Community organisation, multi-arch can be revisited for this stack as the work progresses on the
+Ubuntu stacks. There is nothing specific within this RFC that would tie this stack to particular architectures
+beyond those supported by the upstream UBI images used as bases for the Builder/Run images. 
+
+If there any multi arch concerns for Paketo UBI stacks, they are existing ones shared by Paketo 
+already (eg, the Go detect/build binaries needing to be executable etc).
+
 ### Subsequent images..
 
 It is likely that Native compilation for Java may require a different Builder image, as the requirements for 
@@ -141,18 +151,20 @@ images.
 
 ## Implementation
 
+The UBI stack will start within the Paketo Community organisation, to allow time for development and stabilization. 
+
 ### Repositories
 
-The stacks team will create a new repo for UBI.. 
+The stacks team will create a new repo for UBI within the Paketo Community Organisation...
 
 * `ubi-base-stack`
 
-The buildpacks team will create two new repos for the initial two Extensions.
+The buildpacks team will create two new repos within the Paketo Community Organisation for the initial two Extensions.
 
 * `ubi-java-extension`
 * `ubi-nodejs-extension`
 
-The builders-maintainers team will create the repo for the Builder image
+The builders-maintainers team will create the repo within the Paketo Community Organisation for the Builder image
 
 * `builder-ubi-base`
 
