@@ -152,7 +152,7 @@ The buildpacks team will create two new repos for the initial two Extensions.
 * `ubi-java-extension`
 * `ubi-nodejs-extension`
 
-The *(unknown)* team will create the repo for the Builder image
+The builders-maintainers team will create the repo for the Builder image
 
 * `builder-ubi-base`
 
