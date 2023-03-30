@@ -77,11 +77,13 @@ paketobuildpacks/{phase}-ubi8-{variant}:{version}
 For example we could see the following images for UBI8 stacks:
 
 * `paketobuildpacks/build-ubi8-base:latest`
+* `paketobuildpacks/run-default-ubi8-base:1.2.3`
 * `paketobuildpacks/run-java-ubi8-base:1.2.3`
 * `paketobuildpacks/run-nodejs-ubi8-base:1.2.3`
 
 *Note the run image `phase` is narrowed by inclusion of the pre-packaged runtime. The correct image is 
-selected at Build time by the appropriate Extension*
+selected at Build time by the appropriate Extension, if no Extensions select an image, then the
+'default' image will be used instead*
 
 Each stack repository should include a README that outlines the stacks that are
 available including links to each other repository allowing users to discover
@@ -186,8 +188,3 @@ run images for a given builder image. This will likely require minor updates to 
 
 * It may be possible in future builders to support run image customization via rpm/yum, at the cost of 
 losing rebasing support with the final application image. 
-
-* How does the actual building & releasing of the stack image work? is this something configured onto the 
-repo by the 'stacks team' on our behalf? 
-
-* I'm guessing here at the teams that do things.. feel free to jump in and tell me where things actually get done =)
