@@ -71,15 +71,15 @@ subsequent images are published.
 The stack will name and tag the release images with the following pattern:
 
 ```
-paketobuildpacks/{phase}-ubi8-{variant}:{version}
+paketocommunity/{phase}-ubi8-{variant}:{version}
 ```
 
 For example we could see the following images for UBI8 stacks:
 
-* `paketobuildpacks/build-ubi8-base:latest`
-* `paketobuildpacks/run-default-ubi8-base:1.2.3`
-* `paketobuildpacks/run-java-ubi8-base:1.2.3`
-* `paketobuildpacks/run-nodejs-ubi8-base:1.2.3`
+* `paketocommunity/build-ubi8-base:latest`
+* `paketocommunity/run-default-ubi8-base:1.2.3`
+* `paketocommunity/run-java-ubi8-base:1.2.3`
+* `paketocommunity/run-nodejs-ubi8-base:1.2.3`
 
 *Note the run image `phase` is narrowed by inclusion of the pre-packaged runtime. The correct image is 
 selected at Build time by the appropriate Extension, if no Extensions select an image, then the
