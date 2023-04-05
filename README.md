@@ -15,6 +15,7 @@
 * [0046: Define an Image & Dependency Retention Policy for Paketo Images](./text/0046-image-retention-policy.md)
 * [0052: Graceful Stack Upgrades](./text/0052-graceful-stack-upgrades.md)
 * [0055: Create Language Family Builders](./text/0055-create-language-family-builders.md)
+* [0056: Stacks & Extensions for UBI base images. (UBI8)](./text/0056-ubi-based-stacks.md)
 
 ## Implemented RFCs
 
