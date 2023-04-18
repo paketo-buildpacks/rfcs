@@ -5,8 +5,8 @@ This directory contains RFCs that pertain to the [Java Subteam](https://github.c
 ## Accepted RFCs
 
 * [0007: Memory Calculator Low Profile Mode](0007-low-profile-memory-calc.md)
-* [0014: Selecting the next default Java Version for Paketo Buildpacks](0014-selecting-default-java-version.md)
 * [0015: Create a draft branch for composite/meta buildpacks](0015-composite-draft-branch.md)
+* [0016: Add additional JVMs to the Java buildpack](0016-alternate-jvms-in-java-buildpack.md)
 
 ## Implemented RFCs
 
@@ -22,6 +22,7 @@ This directory contains RFCs that pertain to the [Java Subteam](https://github.c
 * [0011: Apache Tomee Buildpack](0011-apache-tomee.md)
 * [0012: Quarkus Buildpack](0012-quarkus.md)
 * [0013: OpenTelemetry Support](0013-opentelemetry.md)
+* [0014: Selecting the next default Java Version for Paketo Buildpacks](0014-selecting-default-java-version.md)
 
 ## Links
 
