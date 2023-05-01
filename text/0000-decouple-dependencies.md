@@ -60,8 +60,8 @@ The motivation of this proposal is to…
 - Separate metadata and the actual dependencies so they can be provided to
   buildpacks in a number of different and flexible ways
 - Establish a reasonable release schedule for buildpacks that’s based around
-  development, not dependencies and thus enabling buildpacks to support version
-  lines
+  development, not dependencies and thus enabling buildpack vendors to support
+  version lines, although version line support is not planned for Paketo.
 - Make it easier to package buildpacks for offline environments.
 
 ## Detailed Explanation
@@ -69,6 +69,10 @@ At a high level:
 
 - We will define a metadata format that includes the metadata fields currently
   present in `buildpack.toml`.
+- This metadata is provided at build-time in a known location on the build-time
+  filesystem, configurable via environment variables.
+- If present, this newly-defined metadata format supersedes the existing
+  dependency metadata in `buildpack.toml`.
 - We will add a dependency version validation section to `buildpack.toml`
   metadata, this can be used to state that a buildpack version only supports
   certain ranges of a given tool, such as Java `11.*` or Node.js `16.*`.
@@ -78,11 +82,13 @@ At a high level:
   images in an image registry (Docker Hub).
 - Buildpacks do not care how dependency metadata is distributed, that is a
   separate concern, instead, they just read metadata from a specified location.
-  It is on the platform to mount the metadata that it fetched at that location.
+  Meta-data could be provided by another buildpack, the builder, the platform
+  or even the user.
 - The actual dependencies are accessed via the metadata and that can happen
   over any protocol (HTTPS/SFTP/FILE) and be distributed in any format
   (archive/image).
-- Dependency metadata will be removed from `buildpack.toml`
+- Dependency metadata will **not** be removed from `buildpack.toml`, this will
+  be a matter of a separate RFC once all buildpacks have adopted this RFC.
 
 
 ## Metadata Format
@@ -194,7 +200,7 @@ supported = [ "^16.0", "^17.0", "^18.0" ]
 [[metadata.validations]]
 dependency-id = "com.example.tomcat"
 supported = [ "8\.5\.\d+", "9\.0\.\d+", "10\.0\.\d+" ]
-type = “regex”
+type = "regex"
 ```
 
 A buildpack is encouraged to be as permissive as possible. This ensures that a
@@ -286,7 +292,7 @@ being done with the buildpack.toml dependency metadata.
 
 For builders, buildpacks, or platforms that would like to inject dependency
 assets directly into the build container, perhaps to support offline builds, we
-propose defining `BP_DEPENDENCY_BINARIES` which defaults to
+propose defining `BP_DEPENDENCY_ASSET_ROOT` which defaults to
 `/platform/deps/assets` as the location where the actual dependency assets
 should be located (again, the intent is to pilot and try out this or possibly
 other locations, eventually proposing an RFC with Cloud-Native buildpacks to
@@ -354,11 +360,11 @@ options. When an entire language family is complete, the information will be
 merged into the official Paketo documentation.
 
 ### Buildpack Migration Process
-Once a language family has added support for the new metadata format and
-documentation has been updated, the language family may begin the deprecation
-process. This proposal does not dictate how that process should be done, but
-provides some recommendations. The language family team ultimately has
-discretion on how to proceed.
+Once a language family maintainers is comfortable that all buildpacks have
+migrated to the new metadata format and documentation has been updated, the
+language family may begin the deprecation process. This proposal does not
+dictate how that process should be done, but provides some recommendations. The
+language family team ultimately has discretion on how to proceed.
 
 The recommendation of this proposal is to announce the change in the release
 notes and on Slack, providing links to documentation of the new feature. The
