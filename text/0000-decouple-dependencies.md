@@ -403,7 +403,7 @@ metadata, please comment on the proposal instead.
   `pom.xml` metadata. This proposal follows the metadata style of Maven more,
   as metadata is split across multiple files instead of having central files
   with metadata across the whole repository.
-- [Investigation proof-of-concept](https://github.com/paketo-community/explorations/tree/decoupled-dependencies/decouple-dependencies)
+- [Investigation proof-of-concept](https://github.com/paketo-community/explorations/tree/main/decouple-dependencies)
 
 ## Unresolved Questions and Bikeshedding
 - Which method of delivery should be used for the dependencies metadata?
