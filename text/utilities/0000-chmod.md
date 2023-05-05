@@ -42,16 +42,34 @@ Allowing the user to keep on using the same secure Stacks, and unmodified buildp
 
 The chmod buildpack would be added last to builders and would be activated if a specific flag is set.
 
-This flag, an environment variable named `BP_CHMOD_MAPPING` would be configured with a map of folders and their desired owner and permissions.
+Two flags, or environment variables, are suggested for configuring the `chmod` buildpack.
+
+1. An environment variable named `BP_CHMOD_MAPPING` would be configured with a comma-separated map of folders and their desired owner and permissions.
 
 For example:
 
-`pack build -e BP_CHMOD_MAPPING='{"/workspace":"0750", "/workspace/bin":"0755"}' myimage`
+`pack build -e BP_CHMOD_MAPPING="/workspace:0750:r,/workspace/bin:0755" myimage`
 
 would activate the chmod buildpack and 
 
 * make it change recursively the `/workspace` folder of the runtime image to have permissions `0750`
-* make it change recursively the `/workspace/bin` folder of the runtime image to have permissions `0775` (making all these folder files executable)
+* make it change non-recursively the `/workspace/bin` folder of the runtime image to have permissions `0775` (making all these folder files executable)
+
+2. An environment variable named `BP_CHMOD_MAPPING_FILE` would be configured with the location of a file defining the mapping (convenient for users configuring numerous mappings)
+
+For example, the combination of:
+
+`pack build -e BP_CHMOD_MAPPING_FILE=chmod-mappings.txt myimage`
+
+and:
+
+`chmod-mappings.txt`
+```text
+/workspace:0750:r
+/workspace/bin:0755
+```
+
+would have the same effect as the previous example using `BP_CHMOD_MAPPING`
 
 ## Prior Art
 
