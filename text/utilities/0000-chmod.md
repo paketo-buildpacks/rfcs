@@ -71,6 +71,7 @@ and:
 
 would have the same effect as the previous example using `BP_CHMOD_MAPPING`
 
+If both `BP_CHMOD_MAPPING` and `BP_CHMOD_MAPPING_FILE` are applied, then `BP_CHMOD_MAPPING` is applied first, then the mappings in the file are applied in order from the top to the bottom of the file.
 ## Prior Art
 
 N/A
