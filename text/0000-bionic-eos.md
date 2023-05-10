@@ -31,6 +31,7 @@ This end of support will entail the following:
 ### Documentation
 1. Ensure all documentation (and samples) replaces all references to Bionic with Jammy (22.04).
 1. Write a blog post to announce this end of support.
+1. Add documentation around migrating. This would be both general (i.e. check default builders) and language-specific (e.g. builders might be present in existing Spring Boot configuration).
 
 We will leave it up to the relevant maintainers (stacks, builders, language-families, content) to decide on a suitable timeline for completion of the above items. For example, language family maintainers may wish to continue building and including Bionic dependencies even after the Bionic stacks/builders are removed if they believe it provides value to their consumers. This RFC will not be fully implemented until all the above points are addressed, though.
 
