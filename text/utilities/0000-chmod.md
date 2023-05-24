@@ -1,5 +1,9 @@
 # Chmod Buildpack
 
+## Important warning about this buildpack RFC
+
+This buildpack could be harmful to your application if you don't use it carefully. By (un)doing file permissions, the application could behave unexpectedly in production for example.
+
 ## Summary
 
 A chmod buildpack that allows users to change directories and files (produced at buildtime) UNIX permissions.
@@ -69,12 +73,14 @@ and:
 /workspace/bin:0755
 ```
 
-would have the same effect as the previous example using `BP_CHMOD_MAPPING`
+would have the same effect as the previous example using `BP_CHMOD_MAPPING`. 
+
+You will notice that there is no default file that this buildpack will auto-detect; it is to remain as safe as possible.
 
 If both `BP_CHMOD_MAPPING` and `BP_CHMOD_MAPPING_FILE` are applied, then `BP_CHMOD_MAPPING` is applied first, then the mappings in the file are applied in order from the top to the bottom of the file.
 ## Prior Art
 
-N/A
+There exists a proof of concept [`chmod-buildpack`](https://github.com/anthonydahanne/chmod-buildpack/) available online.
 
 ## Unresolved Questions and Bikeshedding
 
