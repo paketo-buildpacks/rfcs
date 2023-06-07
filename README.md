@@ -17,6 +17,7 @@
 * [0054: Paketo Steering Committee Elections](./text/0054-steering-committee-elections.md)
 * [0055: Create Language Family Builders](./text/0055-create-language-family-builders.md)
 * [0056: Stacks & Extensions for UBI base images. (UBI8)](./text/0056-ubi-based-stacks.md)
+* [0057: End of Life for Ubuntu 18.04 (Bionic)](./text/0057-bionic-eos.md)
 
 ## Implemented RFCs
 
