@@ -166,6 +166,14 @@ The buildpacks team will create two new repos within the Paketo Community Organi
 * `ubi-java-extension`
 * `ubi-nodejs-extension`
 
+The buildpacks team will create two new repos within the Paketo Community Organisation for the initial two companion buildpacks.
+
+(_Extensions are unable to perform all the tasks of Buildpacks, necessitating the creation of Buildpacks to carry out
+some actions such as configuration of the runtime environment via layers. These Buildpacks can be considered as companions to their Extension namesakes._)
+
+* `ubi-java-buildpack`
+* `ubi-nodejs-buildpack`
+
 The builders-maintainers team will create the repo within the Paketo Community Organisation for the Builder image
 
 * `builder-ubi-base`
