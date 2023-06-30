@@ -8,6 +8,7 @@ This directory contains RFCs that pertain to the [Stacks Subteam](https://github
 * [0006: Add to Tiny Run Image to Enable Node Apps](0006-node-on-tiny.md)
 * [0007: Squash Stack Images](0007-squash-stack.md)
 * [0008: Remove Ruby from the Jammy Full Stack](0008-jammy-full-remove-ruby.md)
+* [0009: Remove `yj` from all stacks](0009-remove-yj.md)
 
 ## Implemented RFCs
 
