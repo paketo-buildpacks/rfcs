@@ -2,7 +2,7 @@
 
 ## Summary
 
-This RFC intended to define processes for the creation of new maintainer groups.
+This RFC is intended to define processes for the creation of new maintainer groups.
 
 ## Motivation
 
