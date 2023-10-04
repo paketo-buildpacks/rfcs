@@ -12,7 +12,7 @@ This could also be a good first step in converging on shared tooling. By having 
 
 ## Implementation
 
-The following in the proposed metadata format:
+The following is the proposed metadata format:
 
 ```toml
 [[metadata.dependencies]]
@@ -45,4 +45,4 @@ strip-components = <number of directories to strip off dependency artifact> #opt
 ## Unresolved Questions / Bikeshedding
 - Should we make a new tooling repository as part of this initial RFC or should that wait for implementation?
 - Should this include a buffer for stacks or should the stack removal be the forcing function that forces this conversion?
-- Does this require the creatation of our own Paketo Spec or some other API style document or is this RFC sufficent?
+- Does this require the creation of our own Paketo Spec or some other API style document or is this RFC sufficient?
