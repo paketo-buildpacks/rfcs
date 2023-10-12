@@ -13,22 +13,31 @@ Consumers of Paketo buildpacks may be building in an environment where certain d
 ### Discovery
 If one or more bindings of kind or type `dependency-mapping` are present, then
 a buildpack should use the bindings in its dependency resolution process. The
-dependency's digest, included as `checksum` in the form of `<algorithm>:<hash>`
-(or `sha256` in the form of `<hash>`), should be used to lookup the alternatively
-mapped URI.
+dependency's digest, included as `checksum` in the form of
+`<algorithm>:<hash>` or `<algorithm>-<hash>`, (or `sha256` in the form of
+`<hash>`), should be used to lookup the alternatively mapped URI.
 
 If the digest is provided in the form of `<hash>`, it will be assumed to be of algorithm type `sha256`.
 
 The dependency mapping implementation in the project will continue to support the use of a `sha256` as long as the `sha256` `buildpack.toml` field is supported; however, users of this feature should ideally use a `checksum`.
 
 ### Service Binding Specification for Kubernetes Example
-Using https://github.com/k8s-service-bindings/spec with a `checksum` digest:
+Using https://github.com/k8s-service-bindings/spec with a `checksum` digest with a colon:
 ```
 $SERVICE_BINDING_ROOT
 └── my-dependency-binding
     ├── type -> "dependency-mapping"
     ├── sha256:b4cb31162ff6d7926dd09e21551fa745fa3ae1758c25148b48dadcf78ab0c24c -> https://example.com/dep-1.tgz
     └── sha256:efa6d87993ff21615e2d8fc0c98e07ff357fc9f3b9bd93c2cf58ba7f2b6fd2e0 -> https://example.com/dep-2.tgz
+```
+
+Using https://github.com/k8s-service-bindings/spec with a `checksum` digest with a dash:
+```
+$SERVICE_BINDING_ROOT
+└── my-dependency-binding
+    ├── type -> "dependency-mapping"
+    ├── sha256-b4cb31162ff6d7926dd09e21551fa745fa3ae1758c25148b48dadcf78ab0c24c -> https://example.com/dep-1.tgz
+    └── sha256-efa6d87993ff21615e2d8fc0c98e07ff357fc9f3b9bd93c2cf58ba7f2b6fd2e0 -> https://example.com/dep-2.tgz
 ```
 
 With a `sha256` digest:
@@ -67,3 +76,4 @@ Before downloading a dependency the buildpack searches all bindings of type `dep
 ## Addendums
 - November 3, 2022: Modify RFC to leverage `checksum` for digest as well as a `sha256`
 - November 3, 2022: The CNB binding specification is deprecated and while still supported, you should use the Service Binding specification for Kubernetes instead.
+- October 12, 2023: Modify RFC to allow `checksum` dependency mappings to be passed in with a `-` instead of `:` to enable functionality on Kubernetes (alphanumeric,`-`, and `.` are the only allowed characters).
