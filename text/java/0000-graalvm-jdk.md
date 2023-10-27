@@ -20,10 +20,10 @@ There are multiple motivations for this RFC:
 
 This RFC proposes to address the items listed under Motivation as follows:
 
-1. Introduce a new `graalvm-community` and clarify that it includes GraalVM Community Edition in the README. The `graalvm` buildpack is kept for backward compatibility but is no longer maintained.
-2. The new `graalvm-community` build will only support GraalVM for JDK 17 and later, following the new versioning scheme. Older GraalVM releases are still available via the deprecated `graalvm` buildpack.
-3. Investigate whether the `graalvm-community` buildpack can further be simplified and aligned with the [Java buildpacks](0016-alternate-jvms-in-java-buildpack.md).
-4. Add a new `graalvm-oracle` buildpack that supports Oracle GraalVM and works just like the `graalvm-community` buildpack.
+1. Update the README & buildpack metadata for the existing GraalVM buildpack to indicate it is specifically for the GraalVM Community release.
+2. Update the [Oracle Buildpack](https://github.com/paketo-buildpacks/oracle) to support Oracle GraalVM. This will work just like what we have with the present Bellsoft Liberica buildpack, where the buildpack can provide a JVM and Native image tools.
+
+For more details, please see the [proof of concept](https://github.com/paketo-buildpacks/rfcs/pull/294).
 
 ## Rationale and Alternatives
 
