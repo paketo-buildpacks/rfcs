@@ -2,7 +2,9 @@
 
 ## Summary
 
-Retire the [`graalvm` buildpack](https://github.com/paketo-buildpacks/graalvm) in favor of a new `graalvm-community` buildpack and add a new `graalvm-oracle` buildpack to support the new [Oracle GraalVM](https://www.oracle.com/java/graalvm/) distribution.
+The existing [`graalvm` buildpack](https://github.com/paketo-buildpacks/graalvm) will be clarified to indicate that it is the GraalVM Community buildpack. We cannot change the id, but we will update the README and metadata to clarify this point.
+
+In addition, to support the new [Oracle GraalVM](https://www.oracle.com/java/graalvm/) distribution we will modify the [Oracle Buildpack](https://github.com/paketo-buildpacks/oracle) to include support for Oracle's GraalVM.
 
 ## Motivation
 
