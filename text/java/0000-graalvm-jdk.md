@@ -31,8 +31,4 @@ Alternatively, the existing `graalvm` buildpack could be reworked and extended w
 
 ## Implementation
 
-First, we plan to fork the [`graalvm` buildpack](https://github.com/paketo-buildpacks/graalvm) to create a new `graalvm-community` buildpack and update its README. This way, we don't break existing users of the `graalvm` buildpack and allow them to upgrade to either the `graalvm-community` buildpack or the new `graalvm-oracle` buildpack.
-
-Second, we create a new `graalvm-oracle` buildpack that pulls Oracle GraalVM instead of GraalVM Community Edition using the [Script Friendly URLs](https://www.oracle.com/java/technologies/jdk-script-friendly-urls/). The goal is to share as much code as possible between the two buildpacks to keep maintenance costs to a minimum. For this, we may need to create an "abstract" buildpack on which both `graalvm-community` and `graalvm-oracle` can be based.
-
-Finally, we add a deprecation notice to the README of the `graalvm` buildpack and archive the repository.
+See the Details section. The implementation plan as well as a proof of concept PR are documented there.
