@@ -7,6 +7,7 @@ This directory contains RFCs that pertain to the [Java Subteam](https://github.c
 * [0007: Memory Calculator Low Profile Mode](0007-low-profile-memory-calc.md)
 * [0015: Create a draft branch for composite/meta buildpacks](0015-composite-draft-branch.md)
 * [0016: Add additional JVMs to the Java buildpack](0016-alternate-jvms-in-java-buildpack.md)
+* [0017: Add support for Oracle GraalVM and update GraalVM CE buildpack](0017-graalvm-jdk.md)
 
 ## Implemented RFCs
 
