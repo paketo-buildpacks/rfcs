@@ -57,11 +57,3 @@ OS or Architecture.
 
 ## Prior Art
 - The layout of distributions is pulled from the [Buildpacks Spec](https://github.com/buildpacks/spec/blob/main/buildpack.md#buildpacktoml-toml).
-
-## Unresolved Questions / Bikeshedding
-- Should we make a new tooling repository as part of this initial RFC or should
-  that wait for implementation?
-- Should this include a buffer for stacks or should the stack removal be the
-  forcing function that forces this conversion?
-- Does this require the creation of our own Paketo Spec or some other API style
-  document or is this RFC sufficient?
