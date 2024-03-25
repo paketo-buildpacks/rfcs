@@ -19,7 +19,7 @@ This RFC proposes a standard interface that would allow a user to specify a mirr
 When a user wants to use a dependency mirror, the user can signal that to Paketo buildpacks in two ways:
 
 1. Set the `BP_DEPENDENCY_MIRROR` environment variable where the value is the mirror URI.
-2. Include a binding with a type of `dependency-mirror`. The binding has key of `uri` and a value that is the mirror URI.
+2. Include a binding with a type of `dependency-mirror`. The binding has key of `default` and a value that is the mirror URI.
 
 The environment variable is more convenient but we need to support bindings as well because some repositories may require basic authentication credentials in the URLs (i.e. URL includes secrets). If both happen to be defined, then the environment variable takes precedent.
 
@@ -40,6 +40,42 @@ For example, a mirror URL of `https://user:pass@local-mirror.example.com/buildpa
 
 - The dependency URL of `https://download.bell-sw.com/vm/22.3.5/bellsoft-liberica-vm-core-openjdk11.0.22+12-22.3.5+1-linux-amd64.tar.gz` would be translated to `https://user:pass@local-mirror.example.com/buildpacks-dependencies/download.bell-sw.com/vm/22.3.5/bellsoft-liberica-vm-core-openjdk11.0.22+12-22.3.5+1-linux-amd64.tar.gz`.
 - The dependency URL of `https://github.com/watchexec/watchexec/releases/download/v1.25.1/watchexec-1.25.1-x86_64-unknown-linux-musl.tar.xz` would be translated to `https://user:pass@local-mirror.example.com/buildpacks-dependencies/github.com/watchexec/watchexec/releases/download/v1.25.1/watchexec-1.25.1-x86_64-unknown-linux-musl.tar.xz`.
+
+### Hostname Mapping
+
+We expect most mirrors to be compatible with the above configuration options, however, if more control is required then you may set specific mappings on a per-hostname basis. 
+
+To do this, you need to first set `BP_DEPENDENCY_MIRROR` to the default mirror location. This location is used whenever a dependency needs to be fetched and there is not a specific mapping for that hostname. 
+
+Next, you may set any number of additional environment variables in the format `BP_DEPENDENCY_MIRROR_<hostname>=https://mirror.example.com/...` to define a mirror location specific to that hostname. The `<hostname>` part should be the hostname to match written in all upper case characters, with dots (i.e. `.`) replaced with a single underscore character (i.e. `_`) and dashes replaced with two underscore characters (i.e. `__`). For example, `github.com` is `BP_DEPENDENCY_MIRROR_GITHUB_COM` and `examp-le.com` is `BP_DEPENDENCY_MIRROR_EXAMP__LE_COM`.
+
+When the buildpacks check for a host-specific dependency mirror, they will translate the target hostname by converting `-` to `__` and `.` to `_` and uppercasing the hostname. This is sufficient to cover all hostnames because hostnames are only allowed to have letters, numbers, and dashes with dots to separate each segment of the hostname.
+
+Where this might be useful is if you have multiple mirror hosts or if you have a mirror host with a directory structure that does not follow the target hostname. You may then supply individual mappings to point each hostname to a specific mirror location.
+
+For example:
+
+```
+BP_DEPENDENCY_MIRROR              https://mirror.example.org/{originalHost}
+BP_DEPENDENCY_MIRROR_GITHUB_COM   https://mirror.example.org/public-github
+BP_DEPENDENCY_MIRROR_NODEJS_ORG   https://mirror.example.org/node-dist
+```
+
+The same hostname mappings can be specified using a binding. In the case of a binding, you must still set a default dependency mirror however you do not need to do any hostname translation. 
+
+For the default mirror, the key is `default` and the value is the mirror URL. For hostname-specific mappings, you set the hostname to the binding key and the dependency mirror URL to the binding value.
+
+For example:
+
+```
+/platform
+    └── bindings
+        └── dependency-mirror
+            ├── default                https://mirror.example.org/{originalHost}
+            ├── github.com             https://mirror.example.org/public-github
+            ├── nodejs.org             https://mirror.example.org/node-dist
+            └── type                   dependency-mirror
+```
 
 ## Rationale and Alternatives
 
@@ -64,10 +100,4 @@ The proposal here would require a user to make a full mirror of the official dep
 
 ## Unresolved Questions and Bikeshedding
 
-It is not clear if it would be helpful to support having a mirror that refers to `http://localhost`. As this RFC is presently defined, that would not work because `https` is strictly required. One could in theory generate a TLS public/private key pair and use that to provide `https://localhost`, but it is unclear if even that would be useful.
-
-The buildpacks run within a container and so `localhost` refers to the network in the actual container where it's very unlikely that a mirror would be running.
-
-The reference implementation has [added specific provisions to ignore TLS certificate verification](https://github.com/paketo-buildpacks/libpak/pull/315/files#diff-625820113ce65f5b34f51f253e0de063c353a0e5ef82c7e49b898e1100a81ddcR339-R344) for `https://localhost` so that one could potentially do this, even though it doesn't seem practical.
-
-Other options would be to not do anything, in which case `http://localhost` is forbidden because it's http-only and `https://localhost` is forbidden because certificates would not verify, or to specifically allow an exception for `http://localhost` but not http-only for any other domains.
+None
