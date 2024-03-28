@@ -45,11 +45,11 @@ For example, a mirror URL of `https://user:pass@local-mirror.example.com/buildpa
 
 We expect most mirrors to be compatible with the above configuration options, however, if more control is required then you may set specific mappings on a per-hostname basis. 
 
-To do this, you need to first set `BP_DEPENDENCY_MIRROR` to the default mirror location. This location is used whenever a dependency needs to be fetched and there is not a specific mapping for that hostname. 
-
-Next, you may set any number of additional environment variables in the format `BP_DEPENDENCY_MIRROR_<hostname>=https://mirror.example.com/...` to define a mirror location specific to that hostname. The `<hostname>` part should be the hostname to match written in all upper case characters, with dots (i.e. `.`) replaced with a single underscore character (i.e. `_`) and dashes replaced with two underscore characters (i.e. `__`). For example, `github.com` is `BP_DEPENDENCY_MIRROR_GITHUB_COM` and `examp-le.com` is `BP_DEPENDENCY_MIRROR_EXAMP__LE_COM`.
+To do this, you may set any number of additional environment variables in the format `BP_DEPENDENCY_MIRROR_<hostname>=https://mirror.example.com/...` to define a mirror location specific to that hostname. The `<hostname>` part should be the hostname to match written in all upper case characters, with dots (i.e. `.`) replaced with a single underscore character (i.e. `_`) and dashes replaced with two underscore characters (i.e. `__`). For example, `github.com` is `BP_DEPENDENCY_MIRROR_GITHUB_COM` and `examp-le.com` is `BP_DEPENDENCY_MIRROR_EXAMP__LE_COM`.
 
 When the buildpacks check for a host-specific dependency mirror, they will translate the target hostname by converting `-` to `__` and `.` to `_` and uppercasing the hostname. This is sufficient to cover all hostnames because hostnames are only allowed to have letters, numbers, and dashes with dots to separate each segment of the hostname.
+
+You may optionally set a default mirror as well. Set `BP_DEPENDENCY_MIRROR` to the default mirror location. This location is used whenever a dependency needs to be fetched and there is not a specific mapping for that hostname. If no default mirror is set then the buildpack will download from the original location in its metadata.
 
 Where this might be useful is if you have multiple mirror hosts or if you have a mirror host with a directory structure that does not follow the target hostname. You may then supply individual mappings to point each hostname to a specific mirror location.
 
@@ -61,9 +61,18 @@ BP_DEPENDENCY_MIRROR_GITHUB_COM   https://mirror.example.org/public-github
 BP_DEPENDENCY_MIRROR_NODEJS_ORG   https://mirror.example.org/node-dist
 ```
 
-The same hostname mappings can be specified using a binding. In the case of a binding, you must still set a default dependency mirror however you do not need to do any hostname translation. 
+In this example, the buildpack will download dependencies from `github.com` through `https://mirror.example.org/public-github`. It will download dependencies from `nodejs.org` through `https://mirror.example.org/node-dist`. Everything else will be downloaded through `https://mirror.example.org/{originalHost}` and if not present on that mirror then downloads will fail.
 
-For the default mirror, the key is `default` and the value is the mirror URL. For hostname-specific mappings, you set the hostname to the binding key and the dependency mirror URL to the binding value.
+```
+BP_DEPENDENCY_MIRROR_GITHUB_COM   https://mirror.example.org/public-github
+BP_DEPENDENCY_MIRROR_NODEJS_ORG   https://mirror.example.org/node-dist
+```
+
+If we use the above configuration, which is the same but does not have a default mirror then the buildpack will download dependencies from `github.com` through `https://mirror.example.org/public-github`. It will download dependencies from `nodejs.org` through `https://mirror.example.org/node-dist`. Everything else will be downloaded through the original URLs in the buildpack's metadata.
+
+The same hostname mappings can be specified using a binding, and when using this method you do not need to do any hostname translation. 
+
+For the default mirror, the key is `default` and the value is the mirror URL. The default is not required when using bindings either. For hostname-specific mappings, you set the hostname to the binding key and the dependency mirror URL to the binding value.
 
 For example:
 
