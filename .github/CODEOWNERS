@@ -4,7 +4,7 @@ text/content/       @paketo-buildpacks/content-maintainers
 text/dependencies/  @paketo-buildpacks/dependencies-maintainers
 text/dotnet-core/   @paketo-buildpacks/dotnet-core-maintainers
 text/go/            @paketo-buildpacks/go-maintainers
-text/java/          @paketo-buildpacks/java-buildpacks
+text/java/          @paketo-buildpacks/java-maintainers
 text/nodejs/        @paketo-buildpacks/nodejs-maintainers
 text/php/           @paketo-buildpacks/php-maintainers
 text/python/        @paketo-buildpacks/python-maintainers
