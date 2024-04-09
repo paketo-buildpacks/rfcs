@@ -9,10 +9,10 @@
 * [0037: Remote Debug](./text/0037-remote-debug.md) ([tracking issue](https://github.com/paketo-buildpacks/rfcs/issues/175))
 * [0040: Auto-generate Reference Documentation](./text/0040-auto-reference-docs.md) ([tracking issue](https://github.com/paketo-buildpacks/rfcs/issues/178))
 * [0046: Define an Image & Dependency Retention Policy for Paketo Images](./text/0046-image-retention-policy.md) ([tracking issue](https://github.com/paketo-buildpacks/rfcs/issues/189))
-* [0054: Paketo Steering Committee Elections](./text/0054-steering-committee-elections.md) ([tracking issue](https://github.com/paketo-buildpacks/rfcs/issues/283))
 * [0055: Create Language Family Builders](./text/0055-create-language-family-builders.md) ([tracking issue](https://github.com/paketo-buildpacks/rfcs/issues/281))
 * [0056: Stacks & Extensions for UBI base images. (UBI8)](./text/0056-ubi-based-stacks.md)
 * [0057: End of Life for Ubuntu 18.04 (Bionic)](./text/0057-bionic-eos.md)
+* [0060: Easy Dependency Mirrors](./text/0060-dependency-mirrors.md)
 
 ## Implemented RFCs
 
@@ -58,6 +58,7 @@
 * [0051: Contribute APM Tools Buildpacks](./text/0051-apm-tools.md)
 * [0052: Graceful Stack Upgrades](./text/0052-graceful-stack-upgrades.md)
 * [0053: Create static stack](./text/0053-add-static-stack.md)
+* [0054: Paketo Steering Committee Elections](./text/0054-steering-committee-elections.md) ([tracking issue](https://github.com/paketo-buildpacks/rfcs/issues/283))
 
 ## Superseded RFCs
 
