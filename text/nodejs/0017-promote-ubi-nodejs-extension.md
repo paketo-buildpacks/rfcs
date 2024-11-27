@@ -3,7 +3,7 @@
 ## Summary
 
 Promote the the [ubi-nodejs-extension](https://github.com/paketo-community/ubi-nodejs-extension)
-from paketo-community to packet-buildpacks.
+from paketo-community to paketo-buildpacks.
 
 ## Motivation 
 
@@ -27,7 +27,7 @@ The alternative is to leave the ubi-nodejs-extension in paketo-community to bake
 
 ## Implementation
 
-* Move the packeto-community/ubi-nodejs-extension repo to `paketo-buildpacks/ubi-nodejs-extension`
+* Move the paketo-community/ubi-nodejs-extension repo to `paketo-buildpacks/ubi-nodejs-extension`
 * Fixup and changes needed in the automation scripts, etc.
 * Update references in the paketo-buildpackes/nodejs meta buildpack to point to
   `paketo-buildpacks/ubi-nodejs-extension`. 
