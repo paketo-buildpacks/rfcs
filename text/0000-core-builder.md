@@ -39,7 +39,7 @@ I would propose to delete the `paketo-buildpacks/builder-noble-buildpackless-sta
 
 ## Prior Art
 
-None.
+This has been done in https://github.com/paketo-community/ubi-base-stack already. The `stacks` folder and `images.json` should give guidance on how to create multiple run images. Also, this is currently WiP in https://github.com/paketo-buildpacks/noble-base-stack/pull/11.
 
 ## Unresolved Questions and Bikeshedding
 
