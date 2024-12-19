@@ -17,6 +17,8 @@ The stacks and builders maintainer team will have less work to do - they will on
 
 We would replace the current `base`, `tiny` and `static` stacks with a single stack that includes all packages required by the buildpacks. Similarly, we would replace the current `base`, `tiny` and `static` builders with a single builder.
 
+Container images have a layer limit and in the past, we have had issues with builders that include a lot of buildpacks because this can quickly cause the builder to hit the layer limit. To prevent this from happening, we will by default squash layers for all composite buildpacks included in the builder. This will be done by using the `--flatten` of `pack builder create`, and it should allow the builder to scale to include all of the Paketo buildpacks.
+
 ## Rationale and Alternatives
 
 We could leave everything as it is. We would stick to maintaining four stacks repositories and eight builder repositories and creating new ones for every LTS we adopt. But that would increase the burden on the maintainers.
