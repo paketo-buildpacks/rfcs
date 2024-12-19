@@ -28,7 +28,7 @@ We could leave everything as it is. We would stick to maintaining four stacks re
 ## Implementation
 
 I would propose to create the new stack and builder as part of moving to Ubuntu Noble Numbat. I.e. 
-- we should create a repository `paketo-buildpacks/stack-ubuntu-noble`
+- we should create a repository `paketo-buildpacks/ubuntu-noble-base-images`
 - we should take the `build` image content from the `paketo-buildpacks/noble-base-stack` repository and apply it to `paketo-buildpacks/stack-ubuntu-noble`
 - we should take the `run` image content from the `paketo-buildpacks/noble-base-stack` repository and apply it to `paketo-buildpacks/stack-ubuntu-noble`
 - we should take the `run` image content from the `paketo-buildpacks/noble-tiny-stack` repository and apply it to `paketo-buildpacks/stack-ubuntu-noble` as additional run image
