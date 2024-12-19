@@ -17,6 +17,8 @@ The stacks and builders maintainer team will have less work to do - they will on
 
 We would replace the current `base`, `tiny` and `static` stacks with a single stack that includes all packages required by the buildpacks. Similarly, we would replace the current `base`, `tiny` and `static` builders with a single builder.
 
+The `full` stack will be deprecated, making the present Jammy stack the last iteration of the `full` stack released by the Paketo team. This provides support for the full stack through [April of 2027](https://ubuntu.com/about/release-cycle), which is a sufficiently long deprecation period. Upon approval of this RFC, the Paketo Steering Committee will write a blog post announcing the stack changes and the deprecation of the full stack. The PHP buildpack will then need to be altered so that it can run on the new base stack or it will need to be changed to utilize extensions to install any additional packages that it requires over and above what is in the base image.
+
 Container images have a layer limit and in the past, we have had issues with builders that include a lot of buildpacks because this can quickly cause the builder to hit the layer limit. To prevent this from happening, we will by default squash layers for all composite buildpacks included in the builder. This will be done by using the `--flatten` of `pack builder create`, and it should allow the builder to scale to include all of the Paketo buildpacks.
 
 ## Rationale and Alternatives
