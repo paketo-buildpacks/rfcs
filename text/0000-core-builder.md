@@ -56,4 +56,5 @@ Q: Does this proposal require Paketo buildpacks language families to implement a
 A: No. That is out of the scope of this RFC, and will be the topic of a future discussion and possibly future RFC.
 - Spring: https://docs.spring.io/spring-boot/maven-plugin/build-image.html#build-image.customization
 - Tekton: https://github.com/buildpacks/tekton-integration/tree/main/task/buildpacks/0.4#parameters
-What about the `full` stack and builders?
+Q: What about the `full` stack and builders?
+A: This proposal does not include the `full` builder and recommends that it be deprecated. If approved, this RFC will make the Jammy Full stack the last supported iteration of the full stack. There is presently only one buildpack, PHP, which requires the full stack and is thus impacted. This buildpack will be able to continue using the Jammy Full stack through [April 2027](https://ubuntu.com/about/release-cycle) with the goal of converting it to run on the new Noble all-in-one stack before that point.
