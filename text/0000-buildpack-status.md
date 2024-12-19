@@ -2,7 +2,7 @@
 
 ## Summary
 
-Given the limited capacity of the maintainer teams, we should start to introduce a disctinction between the different levels of maintenance individual buildpacks provide.
+Given the finite capacity of the maintainer teams, we should introduce a distinction between the different levels of maintenance individual buildpacks provide.
 The proposed levels are:
 - **Active Maintenance**: The buildpack is actively maintained and updated by the maintainers. Feature requests and bug reports are actively worked on. The maintainers have capacity for coordinated cross project work.
 - **Security Maintenance**: The buildpack is maintained and updated by the maintainers, but the focus is on critical bugs and project hygene like dependency updates. The maintainers might have limited capacity for cross project work.
