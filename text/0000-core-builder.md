@@ -29,14 +29,23 @@ We could leave everything as it is. We would stick to maintaining four stacks re
 
 I would propose to create the new stack and builder as part of moving to Ubuntu Noble Numbat. I.e. 
 - we should create a repository `paketo-buildpacks/ubuntu-noble-base-images`
-- we should take the `build` image content from the `paketo-buildpacks/noble-base-stack` repository and apply it to `paketo-buildpacks/stack-ubuntu-noble`
-- we should take the `run` image content from the `paketo-buildpacks/noble-base-stack` repository and apply it to `paketo-buildpacks/stack-ubuntu-noble`
-- we should take the `run` image content from the `paketo-buildpacks/noble-tiny-stack` repository and apply it to `paketo-buildpacks/stack-ubuntu-noble` as additional run image
-- we should take the `run` image content from the `paketo-buildpacks/noble-static-stack` repository and apply it to `paketo-buildpacks/stack-ubuntu-noble` as additional run image
-- we should create a repository `paketo-buildpacks/builder-ubuntu-noble` and another`paketo-buildpacks/builder-ubuntu-noble-buildpackless`
+- we should take the `build` image content from the `paketo-buildpacks/noble-base-stack` repository and apply it to `paketo-buildpacks/ubuntu-noble-base-images`
+- we should take the `run` image content from the `paketo-buildpacks/noble-base-stack` repository and apply it to `paketo-buildpacks/ubuntu-noble-base-images`
+- we should take the `run` image content from the `paketo-buildpacks/noble-tiny-stack` repository and apply it to `paketo-buildpacks/ubuntu-noble-base-images` as additional run image
+- we should take the `run` image content from the `paketo-buildpacks/noble-static-stack` repository and apply it to `paketo-buildpacks/ubuntu-noble-base-images` as additional run image
+- we should create a repository `paketo-buildpacks/ubuntu-noble-builder`
     - we should use the above `build` image as a base layer for the `builder` image
     - we should use the above `run` image as the default `run` image for the `builder.toml`
     - we should use the above `run-static` and `run-tiny` images as additional `run` images for the `builder.toml`
+    - we should use the above images in another `builder-buildpackless.toml` in the same repository to create and publish a buildpackless builder
+
+The image names will be changed like the following:
+paketobuildpacks/build-noble-base -> paketobuildpacks/ubuntu-noble-build
+paketobuildpacks/run-noble-base -> paketobuildpacks/ubuntu-noble-run
+paketobuildpacks/run-noble-static -> paketobuildpacks/ubuntu-noble-run-static
+paketobuildpacks/run-noble-tiny -> paketobuildpacks/ubuntu-noble-run-tiny
+paketobuildpacks/builder-noble-base -> paketobuildpacks/ubuntu-noble-builder
+paketobuildpacks/builder-noble-buildpackless-base -> paketobuildpacks/ubuntu-noble-builder-buildpackless
 
 I would propose to delete the `paketo-buildpacks/noble-base-stack`, `paketo-buildpacks/noble-tiny-stack` and `paketo-buildpacks/noble-static-stack` repositories.
 I would propose to delete the `paketo-buildpacks/builder-noble-buildpackless-static`, `paketo-buildpacks/builder-noble-buildpackless-tiny` and `paketo-buildpacks/builder-noble-buildpackless-base` repositories.
