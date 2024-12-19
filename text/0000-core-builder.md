@@ -50,7 +50,8 @@ A: We know this to work with some platforms. The notable exception is kpack.
 For example:
 Q: How does this impact the [language-specific builders RFC](https://github.com/paketo-buildpacks/rfcs/blob/main/text/0055-create-language-family-builders.md)?
 A: It does not impact language-specific builders and Paketo buildpacks language families can continue to ship language-specific builders as needed.
-
+Q: Does this proposal require Paketo buildpacks language families to implement an extension to switch or auto-select runtimes?
+A: No. That is out of the scope of this RFC, and will be the topic of a future discussion and possibly future RFC.
 - Spring: https://docs.spring.io/spring-boot/maven-plugin/build-image.html#build-image.customization
 - Tekton: https://github.com/buildpacks/tekton-integration/tree/main/task/buildpacks/0.4#parameters
 What about the `full` stack and builders?
