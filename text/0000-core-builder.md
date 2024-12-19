@@ -48,6 +48,8 @@ Q: With pack, it is very easy to specify a different run image. Is it similarly 
 A: We know this to work with some platforms. The notable exception is kpack.
 
 For example:
+Q: How does this impact the [language-specific builders RFC](https://github.com/paketo-buildpacks/rfcs/blob/main/text/0055-create-language-family-builders.md)?
+A: It does not impact language-specific builders and Paketo buildpacks language families can continue to ship language-specific builders as needed.
 
 - Spring: https://docs.spring.io/spring-boot/maven-plugin/build-image.html#build-image.customization
 - Tekton: https://github.com/buildpacks/tekton-integration/tree/main/task/buildpacks/0.4#parameters
