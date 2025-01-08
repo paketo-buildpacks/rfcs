@@ -50,6 +50,9 @@ paketobuildpacks/builder-noble-buildpackless-base -> paketobuildpacks/ubuntu-nob
 I would propose to delete the `paketo-buildpacks/noble-base-stack`, `paketo-buildpacks/noble-tiny-stack` and `paketo-buildpacks/noble-static-stack` repositories.
 I would propose to delete the `paketo-buildpacks/builder-noble-buildpackless-static`, `paketo-buildpacks/builder-noble-buildpackless-tiny` and `paketo-buildpacks/builder-noble-buildpackless-base` repositories.
 
+The remaining base images should be compliant with the changes introduced by [CNB RFC 0096 Remove Stacks & Mixins](https://github.com/buildpacks/rfcs/blob/main/text/0096-remove-stacks-mixins.md#base-image-metadata).
+For backwards compatibility, we may decide to still publish a stack ID in addition to the new metadata. It would be preferable though to make sure no Paketo buildpack relies on the stack ID anymore.
+
 ## Prior Art
 
 This has been done in https://github.com/paketo-community/ubi-base-stack already. The `stacks` folder and `images.json` should give guidance on how to create multiple run images. Also, this is currently WiP in https://github.com/paketo-buildpacks/noble-base-stack/pull/11.
