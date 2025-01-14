@@ -7,9 +7,9 @@ Addition of ubi stacks was discussed and approved in
 
 Initially repositories were added to to paketo-community to reflect that they were under early development. 
 
-The ubi stack has been being built and published since August 2023. Except where is implements
+The ubi stack has been being built and published since August 2023. Except where it implements
 advanced features like multi-arch it uses the common automation, and the team is working to integrate
-the advanced featurs back into the common versions of the automation flows.  
+the advanced features back into the common versions of the automation flows.  
 
 No major updates are planned to the stack, it already implements multi-arch and the only planned updates
 are to keep it up to date with newer releases of ubi 8.
