@@ -36,3 +36,4 @@ None.
 
 - What levels of maintenance should we have? I came up with two different levels of maintenance and one to express that the buildpack is not maintained anymore. I am happy to introduce finer grained levels of maintenance if that is desired.
 - What about the buildpacks that are not maintained anymore? Should we archive them or move them to the paketo-community organization?
+- What about paketo-community? Do we really need that if we have this tier system? 
