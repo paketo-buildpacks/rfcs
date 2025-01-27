@@ -42,8 +42,8 @@ Alternative - leave the stack where is in paketo-community and define some addit
 
 ## Implementation
 
-* Rename https://github.com/paketo-community/ubi-base-stack/ to https://github.com/paketo-community/ubi8-base-stack/
-* Rename all references to paketo-community/ubi-base-stack to paketo-community/ubi8-base-stack across the Paketo projects (go project references and buildpack references)
+* Rename https://github.com/paketo-community/ubi-base-stack/ to https://github.com/paketo-buildpacks/ubi8-base-stack/
+* Rename all references to paketo-community/ubi-base-stack to paketo-buildpacks/ubi8-base-stack across the Paketo projects (go project references and buildpack references)
 * Rename all references to paketocommunity/ubi-base-stack to paketobuildpacks/ubi8-base-stack across the Paketo projects (Docker containers references)
 
 This will take PRs to the two ubi builder repositories, but the main risk is missing updates during the transition. This is manageable and should not
