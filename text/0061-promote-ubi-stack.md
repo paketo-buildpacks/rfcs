@@ -28,7 +28,7 @@ Promotion to paketo-buildpacks from paketo-community is the next step towards co
 ## Detailed Explanation
 
 * Rename https://github.com/paketo-community/ubi-base-stack/ to https://github.com/paketo-buildpacks/ubi8-base-stack/
-* Rename all references to paketo-community/ubi-base-stack to paketo-community/ubi8-base-stack across the Paketo projects (go project references and buildpack references) 
+* Rename all references to paketo-community/ubi-base-stack to paketo-buildpacks/ubi8-base-stack across the Paketo projects (go project references and buildpack references) 
 * Rename all references to paketocommunity/ubi-base-stack to paketobuildpacks/ubi8-base-stack across the Paketo projects (Docker containers references)
 
 The rename from ubi to ubi8 is to better reflect that the stack is for ubi8. Just like ubuntu there are different streams of ubi (8, 9, ...) and this is
