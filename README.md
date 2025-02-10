@@ -14,6 +14,7 @@
 * [0057: End of Life for Ubuntu 18.04 (Bionic)](./text/0057-bionic-eos.md)
 * [0060: Easy Dependency Mirrors](./text/0060-dependency-mirrors.md)
 * [0061: Ubuntu Core Builder](./text/0061-core-builder.md)
+* [0062: Promote UBI Stack](./text/0062-promote-ubi-stack.md)
 
 ## Implemented RFCs
 
