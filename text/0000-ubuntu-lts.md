@@ -9,7 +9,7 @@ In particular, since April 2024, Ubuntu released 24.04 Ubuntu Noble Numbat as th
 
 ## Motivation
 
-Users of Paketo rely on us to provide an up-to-date root file system for their applications. This includes the latest security patches and software updates. While Ubuntu LTS releases are supported for 5 years, it is important to provide the latest LTS release to our users as soon as possible to ensure they can benefit from the latest features and security updates.
+Users of Paketo rely on us to provide an up-to-date root file system for their applications. This includes the latest security patches and software updates. While Ubuntu LTS releases are supported for 5 years, it is important to provide the latest LTS release to our users as soon as possible to ensure they can benefit from the latest features and security updates. This also provides a longer period of time for users to transition from one release to the next.
 
 ## Detailed Explanation
 
