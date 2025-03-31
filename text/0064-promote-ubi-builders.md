@@ -7,7 +7,7 @@ Addition of ubi stacks was discussed and approved in
 
 Initially repositories were added to to paketo-community to reflect that they were under early development. 
 
-The ubi builders have been being built and published since August 2023 and they use the common paketo workflows.
+The ubi builders have been being built and published since August 2023, and they use the common Paketo workflows.
 
 No major updates are planned to the builders at this time.
 
