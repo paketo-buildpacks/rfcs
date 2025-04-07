@@ -19,6 +19,7 @@ The process is simple.
 1. Write a blog post announcing the change. Provide instructions for how to continue using Microsoft JDK without this buildpack.
 2. Give users 30 days to update.
 3. Archive the buildpack on Github. This will stop all workflows.
+4. Delete the "latest" tag on the Docker Hub repository for `paketobuildpacks/java-azure`.
 
 ## Rationale and Alternatives
 
