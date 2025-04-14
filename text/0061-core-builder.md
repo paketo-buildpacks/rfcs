@@ -4,9 +4,9 @@
 
 Over the past, the Paketo project has created four different stacks and builders based on the Ubuntu Linux distribution. The difference is in the number of packages included which in turn is based on the requirements of the different buildpacks included.
 This RFC proposes to create a new stack repository that will create a single `build` image and a number of `run` images based on the Ubuntu distribution and replace the existing `static`, `tiny` and `base` stacks. The `full` stack will be deprecated immediately, making the Jammy stack the last iteration of it.
-This RFC further proposes to create a new builder repository that will create a single builder using the build image as a base layer and the `base` run image as the default `run` image.
+This RFC further proposes to create a new builder repository that will create a two builders, both using the build image as a base layer and the `base` run image as the default `run` image. One builder will not contain any buildpacks and the other will contain a full set of Paketo buildpacks.
 
-Users will be able to use the new builder to build and run their applications using any of the language family buildpacks included. Instead of requireing a decision for an optimised builder, they can "just" start and later decide on an optimised `run` image.
+Users will be able to use the new builders to build and run their applications using any of the language family buildpacks included. Instead of requireing a decision for an optimised builder, they can "just" start and later decide on an optimised `run` image.
 
 ## Motivation
 
