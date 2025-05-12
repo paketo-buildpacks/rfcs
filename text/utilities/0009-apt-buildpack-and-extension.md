@@ -32,6 +32,11 @@ Having a buildpack that allows people to install Ubuntu / Debian packages would 
 
 The implementation of the buildpack would be a fork of `Prior Art`
 
+This RFC also allows an APT extension git repository to be created and an extension developed.
+That extension will be written with Go, and will use the standard Paketo tools. 
+It will function by calling APT directly (as root, since extensions are able to run as root).
+The extension, due to the way that APT works (picking the latest package and its latest dependencies) won't support rebase.
+
 ### Example
 
 See: https://github.com/fagiani/apt-buildpack?tab=readme-ov-file#usage
@@ -46,4 +51,5 @@ We can mention:
 
 ## Unresolved Questions and Bikeshedding
 
-None
+The inspiration buildpack, https://github.com/fagiani/apt-buildpack, was written in bash, so the question of rewriting it in Go (either using [libpak](https://github.com/paketo-buildpacks/libpak) or [packit](https://github.com/paketo-buildpacks/packit)) arose. 
+Given that existing users seem happy with its functionality, it could be an exception.
