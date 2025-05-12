@@ -21,7 +21,7 @@ Having a buildpack that allows people to install Ubuntu / Debian packages would 
 
 1. See prior art to see how it was always created by the community
 
-2. The work needed to have an initial Paketo APT buildpack would be to have an official fork into `paketo-community` or `paketo-buildpacks` and integrate it with existing CI and release mechanisms
+2. The work needed to have an initial Paketo APT buildpack would be to have an official fork into `paketo-buildpacks` and integrate it with existing CI and release mechanisms
 
 ## Rationale and Alternatives
 
