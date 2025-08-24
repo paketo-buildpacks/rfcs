@@ -36,7 +36,7 @@ Remove the Node.js support from the following buildpacks:
 - `paketo-buildpacks/datadog`
 - `paketo-buildpacks/azure-application-insights`
 
-The exception is `paketo-buildpacks/dynatrace`, for which will will not remove any support. Dynatrace support works differently, through a single agent that is injected outside of the Node.js runtime. It's implementation does not require adding Node.js dependencies or modifying code.
+The exception is `paketo-buildpacks/dynatrace`, for which we will not remove any support. Dynatrace support works differently, through a single agent that is injected outside of the Node.js runtime. Its implementation does not require adding Node.js dependencies or modifying code.
 
 After removing, we will post an announcement on the Paketo Buildpacks Blog. Users may continue using previous versions of the buildpack if they need support or fork from the commit, which we'll list in the buildpack, and continue maintaining on their own.
 
