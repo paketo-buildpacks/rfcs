@@ -104,6 +104,7 @@ their versioning independently.
 | **REMOVE** |  |
 |    - Patch | Bump Patch |
 |    - Minor | Bump Minor |
+|    - Major that is end-of-life | Bump Minor |
 |    - Major | Bump Major |
 | **CHANGE DEFAULT** |  |
 |    - Patch<br>     (e.g. 1.0.0 -> 1.0.1) | Bump Patch |
@@ -111,6 +112,7 @@ their versioning independently.
 |    - Major<br>     (e.g. 1.1.1 -> 2.0.0) | Bump Major |
 <br/>
 
+An end-of-life dependency is one that has gone past the supported time frame of the upstream project providing those dependencies. It is no longer receiving updates and the publishing project no longer recommends it to be used. This only triggers a minor bump in the buildpack version because we believe most users should be no longer using an end-of-life dependency, so the risk of removing it is lower.
 
 #### Composite Buildpack
 | `Major` | `Minor` | `Patch` |
