@@ -2,7 +2,6 @@
 
 ## Accepted RFCs
 
-* [0015: Distribute Buildpacks via Docker Hub](./text/0015-dockerhub-distribution.md) ([tracking issue](https://github.com/paketo-buildpacks/rfcs/issues/62))
 * [0017: Paketo Community Go HTTP Function Buildpack](./text/0017-go-http-fn.md) ([tracking issue](https://github.com/paketo-buildpacks/rfcs/issues/63))
 * [0019: Default Behaviour for Buildpack-Set Language Ecosystem Environment Variables](./text/0019-buildpack-set-env-vars-defaults.md) ([tracking issue](https://github.com/paketo-buildpacks/rfcs/issues/64))
 * [0032: Reloadable Process Types](./text/0032-reloadable-process-types.md) ([tracking issue](https://github.com/paketo-buildpacks/rfcs/issues/116))
@@ -10,11 +9,7 @@
 * [0040: Auto-generate Reference Documentation](./text/0040-auto-reference-docs.md) ([tracking issue](https://github.com/paketo-buildpacks/rfcs/issues/178))
 * [0046: Define an Image & Dependency Retention Policy for Paketo Images](./text/0046-image-retention-policy.md) ([tracking issue](https://github.com/paketo-buildpacks/rfcs/issues/189))
 * [0055: Create Language Family Builders](./text/0055-create-language-family-builders.md) ([tracking issue](https://github.com/paketo-buildpacks/rfcs/issues/281))
-* [0056: Stacks & Extensions for UBI base images. (UBI8)](./text/0056-ubi-based-stacks.md)
-* [0057: End of Life for Ubuntu 18.04 (Bionic)](./text/0057-bionic-eos.md)
 * [0060: Easy Dependency Mirrors](./text/0060-dependency-mirrors.md)
-* [0061: Ubuntu Core Builder](./text/0061-core-builder.md)
-* [0062: Promote UBI Stack](./text/0062-promote-ubi-stack.md)
 
 ## Implemented RFCs
 
@@ -30,6 +25,7 @@
 * [0012: Builders Subteam](./text/0012-builder-subteam.md)
 * [0013: Contributor Guidelines](./text/0013-contributing-guidelines.md)
 * [0014: Paketo Community Rust Buildpack](./text/0014-rust.md)
+* [0015: Distribute Buildpacks via Docker Hub](./text/0015-dockerhub-distribution.md) ([tracking issue](https://github.com/paketo-buildpacks/rfcs/issues/62))
 * [0016: Paketo Project Programming Style Guide](./text/0016-programming-style-guide.md)
 * [0018: Radiate Buildpack and Community Metadata via a Dashboard](./text/0018-dashboard.md)
 * [0020: Self-host our blog via Hugo and GitHub Pages](./text/0020-blog.md)
@@ -61,6 +57,10 @@
 * [0052: Graceful Stack Upgrades](./text/0052-graceful-stack-upgrades.md)
 * [0053: Create static stack](./text/0053-add-static-stack.md)
 * [0054: Paketo Steering Committee Elections](./text/0054-steering-committee-elections.md) ([tracking issue](https://github.com/paketo-buildpacks/rfcs/issues/283))
+* [0056: Stacks & Extensions for UBI base images. (UBI8)](./text/0056-ubi-based-stacks.md)
+* [0057: End of Life for Ubuntu 18.04 (Bionic)](./text/0057-bionic-eos.md)
+* [0061: Ubuntu Core Builder](./text/0061-core-builder.md)
+* [0062: Promote UBI Stack](./text/0062-promote-ubi-stack.md)
 
 ## Superseded RFCs
 
