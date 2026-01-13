@@ -10,6 +10,7 @@
 * [0046: Define an Image & Dependency Retention Policy for Paketo Images](./text/0046-image-retention-policy.md) ([tracking issue](https://github.com/paketo-buildpacks/rfcs/issues/189))
 * [0055: Create Language Family Builders](./text/0055-create-language-family-builders.md) ([tracking issue](https://github.com/paketo-buildpacks/rfcs/issues/281))
 * [0060: Easy Dependency Mirrors](./text/0060-dependency-mirrors.md)
+* [0068: Create UBI10 builders](./text/0068-add-ubi10-builders.md)
 
 ## Implemented RFCs
 
