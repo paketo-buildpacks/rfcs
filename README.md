@@ -10,7 +10,10 @@
 * [0046: Define an Image & Dependency Retention Policy for Paketo Images](./text/0046-image-retention-policy.md) ([tracking issue](https://github.com/paketo-buildpacks/rfcs/issues/189))
 * [0055: Create Language Family Builders](./text/0055-create-language-family-builders.md) ([tracking issue](https://github.com/paketo-buildpacks/rfcs/issues/281))
 * [0060: Easy Dependency Mirrors](./text/0060-dependency-mirrors.md)
+* [0063: Introduce a maintenance status for buildpacks](./text/0063-buildpack-status.md)
 * [0068: Create UBI10 builders](./text/0068-add-ubi10-builders.md)
+* [0067: Create UBI10 base images](./text/0067-add-ubi10-base-images.md)
+
 
 ## Implemented RFCs
 
@@ -62,6 +65,9 @@
 * [0057: End of Life for Ubuntu 18.04 (Bionic)](./text/0057-bionic-eos.md)
 * [0061: Ubuntu Core Builder](./text/0061-core-builder.md)
 * [0062: Promote UBI Stack](./text/0062-promote-ubi-stack.md)
+* [0064: Promote ubi builders to paketo-buildpacks](./text/0064-promote-ubi-builders.md)
+* [0065: Create UBI9 base images](./text/0065-add-ubi9-base-images.md)
+* [0066: Create UBI9 builders](./text/0066-add-ubi9-builders.md)
 
 ## Superseded RFCs
 
