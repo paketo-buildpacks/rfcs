@@ -11,6 +11,7 @@
 * [0055: Create Language Family Builders](./text/0055-create-language-family-builders.md) ([tracking issue](https://github.com/paketo-buildpacks/rfcs/issues/281))
 * [0060: Easy Dependency Mirrors](./text/0060-dependency-mirrors.md)
 * [0063: Introduce a maintenance status for buildpacks](./text/0063-buildpack-status.md)
+* [0068: Create UBI10 builders](./text/0068-add-ubi10-builders.md)
 * [0067: Create UBI10 base images](./text/0067-add-ubi10-base-images.md)
 
 ## Implemented RFCs
