@@ -2,7 +2,7 @@
 
 ## Summary
 
-This RFC defines the criteria and formal process for upgrading the default Node.js version across the Paketo Node.js Buildpacks.
+This RFC defines the criteria and formal process for upgrading the default Node.js version across the Paketo Node.js Buildpacks to a new major version.
 
 ## Motivation
 
