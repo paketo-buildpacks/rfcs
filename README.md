@@ -14,7 +14,6 @@
 * [0068: Create UBI10 builders](./text/0068-add-ubi10-builders.md)
 * [0067: Create UBI10 base images](./text/0067-add-ubi10-base-images.md)
 
-
 ## Implemented RFCs
 
 * [0001: Paketo Repo Migration Proposal](./text/0001-repo-migration.md)
