@@ -13,6 +13,7 @@ We are clarifying what are the requirements before a new Node.js version becomes
 The default Node.js version should be changed on the Paketo Node.js Buildpacks if **all** the following criteria are met:
 
 - The Node.js major version must be in the `active LTS` status, according to the [Node.js Release Schedule](https://github.com/nodejs/Release)
+- The candidate version must have a minor or patch version greater than zero. This ensures a one-month gap between the active LTS transition and the default Node.js version bump.
 - The candidate version must be higher than the current default version.
 - The candidate version must pass all the integration tests across all the Paketo Node.js Buildpacks.
 
