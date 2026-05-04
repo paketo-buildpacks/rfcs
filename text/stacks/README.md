@@ -9,6 +9,7 @@ This directory contains RFCs that pertain to the [Stacks Subteam](https://github
 * [0007: Squash Stack Images](0007-squash-stack.md)
 * [0008: Remove Ruby from the Jammy Full Stack](0008-jammy-full-remove-ruby.md)
 * [0009: Remove `yj` from all stacks](0009-remove-yj.md)
+* [0010: Base images based on Ubuntu 2026.04: Resolute Raccoon](0010-resolute-raccoon.md)
 
 ## Implemented RFCs
 
