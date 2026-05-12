@@ -7,6 +7,8 @@ image should be developed, released, and maintained by the Stacks team. Like
 the existing noble base images, these new base images should come in "build", "run", "run-tiny", and
 "run-static" variants with similar, if not identical, sets of packages pre-installed.
 
+If the package set is not identical, it would be due to changes in Ubuntu packages. The goal from the Paketo perspective is to have a functionally equivalent image from release to release.
+
 ## Motivation
 
 Ubuntu provides a long-term-support (LTS) release every 2 years in April. These
