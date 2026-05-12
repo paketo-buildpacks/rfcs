@@ -29,10 +29,10 @@ roughly the same set of OS-level package support as their Noble equivalent.
 
 Base image IDs will be given to each variant of the base images as follows:
 
-* Build: `io.buildpacks.base.images.resolute.build`
-* Run: `io.buildpacks.base.images.resolute.run`
-* Run tiny: `io.buildpacks.base.images.resolute.run.tiny`
-* Run static: `io.buildpacks.base.images.resolute.run.static`
+* Build: `io.buildpacks.base.images.resolute`
+* Run: `io.buildpacks.base.images.resolute`
+* Run tiny: `io.buildpacks.base.images.resolute.tiny`
+* Run static: `io.buildpacks.base.images.resolute.static`
 
 ### User IDs
 
