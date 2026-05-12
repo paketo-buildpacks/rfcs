@@ -27,9 +27,9 @@ offered in the Noble base images. The variants will be called `build`, `run`, `r
 `run-static` just as they are in the Noble base images. Each should be developed to offer
 roughly the same set of OS-level package support as their Noble equivalent.
 
-### Base image IDs
+### Stack IDs
 
-Base image IDs will be given to each variant of the base images as follows:
+Stack IDs will be given to each variant of the base images as follows:
 
 * Build: `io.buildpacks.base.images.resolute`
 * Run: `io.buildpacks.base.images.resolute`
