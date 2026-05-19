@@ -6,6 +6,7 @@ A set of base images based on the Ubuntu 2026.04 LTS (Resolute Raccoon) release 
 image should be developed, released, and maintained by the Stacks team. Like
 the existing noble base images, these new base images should come in "build", "run", "run-tiny", and
 "run-static" variants with similar, if not identical, sets of packages pre-installed.
+Each variant will also be published without stack ID metadata, using a `-no-stacks` suffix on Docker Hub image names.
 
 If the package set is not identical, it would be due to changes in Ubuntu packages. The goal from the Paketo perspective is to have a functionally equivalent image from release to release.
 
@@ -36,6 +37,13 @@ Stack IDs will be given to each variant of the base images as follows:
 * Run tiny: `io.buildpacks.stacks.resolute.tiny`
 * Run static: `io.buildpacks.stacks.resolute.static`
 
+In addition to the images above, the same four variants (`build`, `run`,
+`run-tiny`, and `run-static`) will be published without any stack ID in their image metadata.
+These images are part of Paketo's effort to deprecate stacks across Paketo buildpacks. They
+are intended for use with platforms and tooling that have adopted the base image metadata
+defined in [CNB RFC 0096](https://github.com/buildpacks/rfcs/blob/main/text/0096-remove-stacks-mixins.md)
+and no longer rely on `io.buildpacks.stack.id` labels.
+
 ### User IDs
 
 These base images will differ from Jammy with regards to their UID definitions.
@@ -46,11 +54,15 @@ outlined in the Buildpacks Specification.
 
 ### Image Naming and Tagging
 
-The base images will name and tag their release images with the following pattern:
+The base images will name and tag their release images with the following patterns:
 
 ```
 paketobuildpacks/ubuntu-resolute-{variant}:{version}
+paketobuildpacks/ubuntu-resolute-{variant}-no-stacks:{version}
 ```
+
+The `-no-stacks` suffix denotes images that do not include a stack ID in their metadata, as
+described in the Stack IDs section above.
 
 For example we could see the following images for Resolute base images:
 
@@ -63,6 +75,18 @@ For example we could see the following images for Resolute base images:
 * `paketobuildpacks/ubuntu-resolute-run:1.2.3`
 * `paketobuildpacks/ubuntu-resolute-run-tiny:1.2.3`
 * `paketobuildpacks/ubuntu-resolute-run-static:1.2.3`
+
+The same variants without stack IDs will also be published with the `-no-stacks` suffix:
+
+* `paketobuildpacks/ubuntu-resolute-build-no-stacks:latest`
+* `paketobuildpacks/ubuntu-resolute-run-no-stacks:latest`
+* `paketobuildpacks/ubuntu-resolute-run-tiny-no-stacks:latest`
+* `paketobuildpacks/ubuntu-resolute-run-static-no-stacks:latest`
+
+* `paketobuildpacks/ubuntu-resolute-build-no-stacks:1.2.3`
+* `paketobuildpacks/ubuntu-resolute-run-no-stacks:1.2.3`
+* `paketobuildpacks/ubuntu-resolute-run-tiny-no-stacks:1.2.3`
+* `paketobuildpacks/ubuntu-resolute-run-static-no-stacks:1.2.3`
 
 Each base image repository should include a README that outlines the base images that are
 available.
