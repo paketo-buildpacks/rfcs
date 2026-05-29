@@ -39,6 +39,8 @@ While the Resolute builders should mirror existing Paketo builders as best as po
 if buildpack or language support presents a blocker, it is acceptable to
 release builders with best-effort subsets of the buildpacks supported by the Noble builders.
 
+Note: It will be a requirement for composite buildpacks that are added into the Resolute Raccoon builder that they are flattened. Flattening buildpacks reduces the layers down to one, which thereby reduces the layer count of the builder. This allows us to ship more buildpacks without hitting layer limits.
+
 ### Image Naming and Tagging
 
 The builders will name and tag their release images with the following pattern:
