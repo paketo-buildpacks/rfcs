@@ -16,25 +16,64 @@ Currently, the Paketo Node.js language family natively supports `npm` and `yarn`
 
 Following the modular Paketo Node.js architecture (as defined in RFC 0001 and RFC 0008), we propose adding two new implementation buildpacks:
 
-1. **`pnpm`**: Downloads and installs the `pnpm` CLI binary into a layer and adds it to `$PATH`.
-2. **`pnpm-install`**: Handles dependency installation by executing `pnpm install` and managing `node_modules` or the pnpm store.
+1. **`pnpm`**: Resolves the target `pnpm` version, downloads and installs the `pnpm` CLI package into a layer, and adds it to `$PATH`.
+2. **`pnpm-install`**: Handles dependency installation by executing `pnpm install` and managing `node_modules`.
 
 ### Buildpack Order Grouping & Detection Precedence
 
-In the composite `nodejs` meta-buildpack (`paketo-buildpacks/nodejs`), a new order group will be added **before** the standard `npm` order group.
+In the composite `nodejs` meta-buildpack (`paketo-buildpacks/nodejs`), a new order group is added as the **first** order group — ahead of both the existing `yarn` and `npm` order groups.
 
-Because `npm` detection succeeds on any project containing a `package.json` file (acting as the default fallback for Node.js applications), placing the `pnpm` order group higher in the precedence chain ensures that the presence of `pnpm-lock.yaml` will correctly select the `pnpm` buildpacks over `npm`.
+Detection precedence between package managers is enforced at the `pnpm-install` and `npm-install` level, not by the `pnpm` CLI buildpack itself (see "Detection Logic" below). Because `npm-install` detection succeeds on any project containing a `package.json` file (acting as the default fallback for Node.js applications), placing the `pnpm` order group first ensures that the presence of `pnpm-lock.yaml` will correctly select the `pnpm` buildpacks over `yarn`/`npm`, while apps without a `pnpm-lock.yaml` fall through to `yarn`, then `npm`, exactly as they do today. The existing `yarn` and `npm` order groups, and their internal detection logic, remain completely untouched.
 
-The updated order groups in `paketo-buildpacks/nodejs` will be structured as follows:
+The updated order groups in `paketo-buildpacks/nodejs` are structured as follows (matching the existing group composition, including the optional `ca-certificates`, `watchexec`, `tini`, and `cpython` utility buildpacks already present in every group today):
 
 ```toml
-# 1. Yarn Order Group (Existing)
+# 1. PNPM Order Group (New)
 [[order]]
   [[order.group]]
     id = "paketo-buildpacks/ca-certificates"
     optional = true
   [[order.group]]
     id = "paketo-buildpacks/watchexec"
+    optional = true
+  [[order.group]]
+    id = "paketo-buildpacks/tini"
+    optional = true
+  [[order.group]]
+    id = "paketo-buildpacks/cpython"
+    optional = true
+  [[order.group]]
+    id = "paketo-buildpacks/node-engine"
+  [[order.group]]
+    id = "paketo-buildpacks/pnpm"
+  [[order.group]]
+    id = "paketo-buildpacks/pnpm-install"
+  [[order.group]]
+    id = "paketo-buildpacks/node-run-script"
+    optional = true
+  [[order.group]]
+    id = "paketo-buildpacks/node-start"
+    optional = true
+  [[order.group]]
+    id = "paketo-buildpacks/procfile"
+    optional = true
+  [[order.group]]
+    id = "paketo-buildpacks/environment-variables"
+    optional = true
+  [[order.group]]
+    id = "paketo-buildpacks/image-labels"
+    optional = true
+
+# 2. Yarn Order Group (Existing, unchanged)
+[[order]]
+  [[order.group]]
+    id = "paketo-buildpacks/ca-certificates"
+    optional = true
+  [[order.group]]
+    id = "paketo-buildpacks/watchexec"
+    optional = true
+  [[order.group]]
+    id = "paketo-buildpacks/tini"
     optional = true
   [[order.group]]
     id = "paketo-buildpacks/cpython"
@@ -64,7 +103,7 @@ The updated order groups in `paketo-buildpacks/nodejs` will be structured as fol
     id = "paketo-buildpacks/image-labels"
     optional = true
 
-# 2. PNPM Order Group (New)
+# 3. NPM Order Group (Existing Fallback, unchanged)
 [[order]]
   [[order.group]]
     id = "paketo-buildpacks/ca-certificates"
@@ -73,37 +112,7 @@ The updated order groups in `paketo-buildpacks/nodejs` will be structured as fol
     id = "paketo-buildpacks/watchexec"
     optional = true
   [[order.group]]
-    id = "paketo-buildpacks/cpython"
-    optional = true
-  [[order.group]]
-    id = "paketo-buildpacks/node-engine"
-  [[order.group]]
-    id = "paketo-buildpacks/pnpm"
-  [[order.group]]
-    id = "paketo-buildpacks/pnpm-install"
-  [[order.group]]
-    id = "paketo-buildpacks/node-run-script"
-    optional = true
-  [[order.group]]
-    id = "paketo-buildpacks/node-start"
-    optional = true
-  [[order.group]]
-    id = "paketo-buildpacks/procfile"
-    optional = true
-  [[order.group]]
-    id = "paketo-buildpacks/environment-variables"
-    optional = true
-  [[order.group]]
-    id = "paketo-buildpacks/image-labels"
-    optional = true
-
-# 3. NPM Order Group (Existing Fallback)
-[[order]]
-  [[order.group]]
-    id = "paketo-buildpacks/ca-certificates"
-    optional = true
-  [[order.group]]
-    id = "paketo-buildpacks/watchexec"
+    id = "paketo-buildpacks/tini"
     optional = true
   [[order.group]]
     id = "paketo-buildpacks/cpython"
@@ -130,29 +139,70 @@ The updated order groups in `paketo-buildpacks/nodejs` will be structured as fol
   [[order.group]]
     id = "paketo-buildpacks/image-labels"
     optional = true
+
+# 4. No-Package-Manager Fallback Order Group (Existing, unchanged)
+[[order]]
+  [[order.group]]
+    id = "paketo-buildpacks/ca-certificates"
+    optional = true
+  [[order.group]]
+    id = "paketo-buildpacks/watchexec"
+    optional = true
+  [[order.group]]
+    id = "paketo-buildpacks/tini"
+    optional = true
+  [[order.group]]
+    id = "paketo-buildpacks/node-engine"
+  [[order.group]]
+    id = "paketo-buildpacks/node-start"
+  [[order.group]]
+    id = "paketo-buildpacks/procfile"
+    optional = true
+  [[order.group]]
+    id = "paketo-buildpacks/environment-variables"
+    optional = true
+  [[order.group]]
+    id = "paketo-buildpacks/image-labels"
+    optional = true
 ```
 
 ### Detection Logic & Build Plan Contracts
 
 1. **`pnpm` CLI Buildpack (`paketo-buildpacks/pnpm`)**:
-   - **Detection**: Passes if `pnpm-lock.yaml` is present in the working directory OR if `BP_PNPM_VERSION` environment variable is set.
+   - **Detection**: Always passes. This buildpack does not gate on the presence of any file — its role is purely to resolve *which* pnpm version to provide and add it to the build plan. Version resolution is layered, in priority order:
+     1. `BP_PNPM_VERSION` environment variable, if set.
+     2. `packageManager` field in `package.json` (e.g. `pnpm@10.34.5`), if present.
+     3. `lockfileVersion` in `pnpm-lock.yaml`, mapped to a pnpm major version (lockfile `5` → major `7`, lockfile `6` → major `8`, lockfile `N` where `N >= 9` → major `N`).
+     4. Default fallback: the latest available release in the pnpm 9 major line.
+   - Supports exact versions, semver constraints, and wildcards (`9`, `9.x`, `9.1.*`, `^9.1.0`, `~9.1.0`).
    - **Build Plan**:
      - Provides: `pnpm`
-     - Requires: `node` (at build time)
+     - Requires: none
+
+   Actual selection of the `pnpm` buildpack path over `yarn`/`npm` is driven entirely by whether `pnpm-install`'s detection succeeds (see below) — not by any condition in the `pnpm` CLI buildpack's own detect phase.
 
 2. **`pnpm-install` Buildpack (`paketo-buildpacks/pnpm-install`)**:
-   - **Detection**: Passes if `pnpm-lock.yaml` and `package.json` are present in the working directory.
+   - **Detection**: Resolves the project path (supporting `BP_NODE_PROJECT_PATH` for monorepos, consistent with the existing npm/yarn buildpacks). Fails if `pnpm-lock.yaml` is not present in that path. Fails if `package.json` is not present in that path.
    - **Build Plan**:
      - Provides: `node_modules`
-     - Requires: `node` (at build time), `pnpm` (at build time)
+     - Requires: `node` (build time; version taken from `package.json#engines.node` when set), `pnpm` (build time; launch time controlled by `BP_PNPM_IN_LAUNCH`, see below)
 
 ### Installation & Caching Logic
 
-- **Reproducible Installs**: By default, `pnpm-install` will run `pnpm install --frozen-lockfile` to enforce strict lockfile adherence.
-- **Layer Caching**: The buildpack will configure `pnpm` to use a dedicated cache layer for the pnpm store (e.g., via `pnpm config set store-dir <layer-path>`). This layer will be marked `cache = true` to dramatically accelerate rebuilds.
+- **Reproducible Installs**: `pnpm-install` runs `pnpm install --frozen-lockfile` by default.
+- **Offline builds**: Before running install, the buildpack queries `pnpm config get store-dir`. If that path already exists locally, `--offline` is appended to the install command automatically, so a warm/pre-populated store enables a fully offline build without any additional configuration.
+- **Production installs**: `--prod` is appended to the install command for the launch layer whenever `NODE_ENV` is not `development`.
+- **Layer Caching**: `pnpm-install` uses two independent layers, `build-modules` and `launch-modules`, each reused across builds when a checksum computed from `pnpm-lock.yaml`, `package.json`, and the output of `pnpm config list` (combined with the current `NODE_ENV` value) is unchanged.
+- **Service bindings**: `.npmrc` and `.pnpmrc` service bindings are symlinked into `$HOME` at build time (and cleaned up afterward). Since pnpm v10+ reads its configuration from `.npmrc`, a binding that only provides `.pnpmrc` is linked to both paths so registry/auth configuration still applies.
+- **Symlink persistence across rebuilds**: `node_modules` is maintained through a symlink chain across the workspace, a temp directory, and the layer, plus a runtime `exec.d` helper that re-establishes the symlink at container start if the layer path changed between build and run.
 - **Environment Variables**:
-  - `BP_PNPM_VERSION`: Allows users to specify or override the target `pnpm` version.
-  - `BP_PNPM_INSTALL_ARGS`: Allows users to pass additional flags to `pnpm install`.
+  - `BP_PNPM_VERSION`: Overrides the target `pnpm` version (highest-priority signal in both the `pnpm` and `pnpm-install` buildpacks).
+  - `BP_PNPM_IN_LAUNCH`: Controls whether the `pnpm` CLI itself is included in the launch image layer, in addition to the build layer. Defaults to `true`.
+  - `BP_NODE_PROJECT_PATH`: Existing Node.js language family variable; also respected by `pnpm-install` to resolve the project root in a monorepo.
+
+### Software Bill of Materials (SBOM)
+
+The `pnpm` CLI buildpack generates an SBOM for the delivered pnpm dependency, in CycloneDX, SPDX, and Syft formats, consistent with other Paketo dependency buildpacks. SBOM generation can be skipped with `BP_DISABLE_SBOM`.
 
 ## Rationale and Alternatives
 
@@ -168,9 +218,9 @@ The updated order groups in `paketo-buildpacks/nodejs` will be structured as fol
 
 The following repositories and artifacts will be created/updated:
 
-1. **`paketo-buildpacks/pnpm`**: A new repository containing the Go codebase (using `packit`) to download and install the `pnpm` binary.
+1. **`paketo-buildpacks/pnpm`**: A new repository containing the Go codebase (using `packit`) to resolve, deliver, and shim the `pnpm` binary.
 2. **`paketo-buildpacks/pnpm-install`**: A new repository containing the Go codebase (using `packit`) to execute `pnpm install` and manage layer caching.
-3. **`paketo-buildpacks/nodejs`**: Update `buildpack.toml` to include the new `pnpm` order group.
+3. **`paketo-buildpacks/nodejs`**: Update `buildpack.toml` to add the new `pnpm` order group as the first group, ahead of the existing `yarn` and `npm` groups, matching the structure of those existing groups.
 4. **`paketo-buildpacks/samples`**: Add sample Node.js applications utilizing `pnpm` for integration testing and documentation.
 
 ## Prior Art
@@ -180,4 +230,5 @@ The following repositories and artifacts will be created/updated:
 
 ## Unresolved Questions and Bikeshedding
 
-- **Monorepo / Workspace Support**: How should `pnpm` workspaces (`pnpm-workspace.yaml`) be handled when building sub-packages? Should it be automatically detected, or should a `BP_PNPM_WORKSPACE_FRAMEWORK` / `BP_NODE_PROJECT_PATH` variable be configured?
+- **Monorepo / Workspace Support**: Project-path resolution for monorepos already follows the existing Node.js language family convention (`BP_NODE_PROJECT_PATH`), the same mechanism npm and yarn buildpacks use today. What remains open is whether `pnpm`-specific workspace semantics (e.g. `pnpm-workspace.yaml`, hoisting behavior across workspace packages) need any additional handling beyond pointing at a single project path, or whether the existing convention is sufficient for initial support.
+- **Order group placement**: Placing `pnpm` first (ahead of `yarn`) means a project with both a `pnpm-lock.yaml` and a `yarn.lock` present would build with `pnpm`, since `pnpm-install`'s detection only checks for its own lockfile and does not check for the absence of `yarn.lock`. This matches how the existing `yarn` group already takes precedence over `npm` for projects with both a `yarn.lock` and a plain `package.json` — per Paketo's published buildpack documentation, since the upstream `npm-install`/`yarn-install` source isn't part of this fork, `npm-install`'s detection criteria likewise only looks for a `package.json` file, with no check for `yarn.lock`. Worth confirming as the intended precedence for a three-way case regardless.
