@@ -1,14 +1,14 @@
-# Consolidate the libbs buildpacks into a single `build-tools` repository
+# Consolidate the libbs buildpacks into a single `java-build-tools` repository
 
 ## Summary
 
-Introduce a new `paketo-buildpacks/build-tools` repository that holds the
+Introduce a new `paketo-buildpacks/java-build-tools` repository that holds the
 implementation for the JVM build tool buildpacks (Gradle, Maven, sbt, Clojure
 Tools, and Leiningen) in one codebase, seeded from `libbs`. The repository emits
 one buildpack per tool using the existing `paketo-buildpacks/gradle`,
 `paketo-buildpacks/maven`, `paketo-buildpacks/sbt`,
 `paketo-buildpacks/clojure-tools`, and `paketo-buildpacks/leiningen` IDs, and a
-combined `paketo-buildpacks/build-tools` buildpack that supports all five. Once
+combined `paketo-buildpacks/java-build-tools` buildpack that supports all five. Once
 the new repository is publishing, retire and archive `libbs`, `gradle`,
 `maven`, `sbt`, `clojure-tools`, and `leiningen`.
 
@@ -50,7 +50,7 @@ dependency pipeline, and one release process.
 
 ### New repository
 
-Create `paketo-buildpacks/build-tools`, seeded with:
+Create `paketo-buildpacks/java-build-tools`, seeded with:
 
 - the `libbs` code, as a local package (no git history from `libbs`)
 - the Gradle, Maven, sbt, Clojure Tools, and Leiningen detection, distribution,
@@ -66,7 +66,7 @@ tools and that precedence. The per-tool artifacts default it to a single tool.
 
 ### Emitted buildpacks
 
-`scripts/package.sh` uses a new `libpak-tools build-build-tools` command
+`scripts/package.sh` uses a new `libpak-tools build-java-build-tools` command
 (the same mechanism as `libpak-tools build-jvm-vendors` for `jvm-vendors`) to
 emit six buildpacks from the one source tree:
 
@@ -77,7 +77,7 @@ emit six buildpacks from the one source tree:
 | `paketo-buildpacks/gradle` | Gradle only | `paketobuildpacks/gradle` |
 | `paketo-buildpacks/maven` | Maven and Maven Daemon | `paketobuildpacks/maven` |
 | `paketo-buildpacks/sbt` | sbt only | `paketobuildpacks/sbt` |
-| `paketo-buildpacks/build-tools` | All tools | `paketobuildpacks/build-tools` |
+| `paketo-buildpacks/java-build-tools` | All tools | `paketobuildpacks/java-build-tools` |
 
 Each generated buildpack rewrites its `buildpack.toml` metadata (ID, name,
 description, homepage, version), keeps only the dependencies and constraints
@@ -94,11 +94,11 @@ keep their current names and tags, so existing users and the current
   `BP_EXCLUDE_FILES`, `BP_JAVA_INSTALL_NODE`, and `BP_NODE_PROJECT_PATH`.
 - SBOM entries, CPEs, PURLs, and layer behavior are preserved. Dependency
   metadata is regenerated with the same conventions and checksums as today.
-- The new combined `paketobuildpacks/build-tools` image is additive.
+- The new combined `paketobuildpacks/java-build-tools` image is additive.
 - The per-tool images (`paketobuildpacks/leiningen`,
   `paketobuildpacks/clojure-tools`, `paketobuildpacks/gradle`,
   `paketobuildpacks/maven`, and `paketobuildpacks/sbt`) continue to be published
-  indefinitely alongside `paketobuildpacks/build-tools`. There are no plans to
+  indefinitely alongside `paketobuildpacks/java-build-tools`. There are no plans to
   drop them in favor of only the combined image.
 
 ### Testing images and retiring the old repositories
@@ -107,8 +107,8 @@ The rollout publishes test images first, so existing consumers and composites
 are never affected while the new repository is validated. The existing per-tool
 images use the same `-dev` suffix that `jvm-vendors` uses today.
 
-1. Publish the first release of `build-tools`. The combined buildpack is a new
-   image, so it is published directly as `paketobuildpacks/build-tools`. The
+1. Publish the first release of `java-build-tools`. The combined buildpack is a new
+   image, so it is published directly as `paketobuildpacks/java-build-tools`. The
    per-tool buildpacks already have production image names, so they are
    published under test names for now: `paketobuildpacks/leiningen-dev`,
    `paketobuildpacks/clojure-tools-dev`, `paketobuildpacks/gradle-dev`,
@@ -120,21 +120,21 @@ images use the same `-dev` suffix that `jvm-vendors` uses today.
    `java-native-image` composite orders on a branch or draft.
 4. Move publishing of the production image names (`paketobuildpacks/leiningen`,
    `paketobuildpacks/clojure-tools`, `paketobuildpacks/gradle`,
-   `paketobuildpacks/maven`, and `paketobuildpacks/sbt`) over to `build-tools`,
+   `paketobuildpacks/maven`, and `paketobuildpacks/sbt`) over to `java-build-tools`,
    and switch the `java` and `java-native-image` order groups to the
-   `build-tools` artifacts in the same coordinated release (per-tool or
+   `java-build-tools` artifacts in the same coordinated release (per-tool or
    combined, see [Unresolved Questions](#unresolved-questions-and-bikeshedding)).
 5. Announce the production switch, and leave a 30 day window for feedback.
 6. Archive the `libbs`, `gradle`, `maven`, `sbt`, `clojure-tools`, and
    `leiningen` GitHub repositories. This stops their workflows.
 7. Do **not** delete the Docker Hub tags. Those image names continue to be
-   published from `build-tools`.
+   published from `java-build-tools`.
 
 ## Implementation
 
 The highlights:
 
-1. Create `paketo-buildpacks/build-tools` from the `libbs` and build tool code:
+1. Create `paketo-buildpacks/java-build-tools` from the `libbs` and build tool code:
    `libbs/`, `leiningen/`, `clojure-tools/` (or `clojure/`), `gradle/`,
    `maven/`, `sbt/`, a combined `buildtools/` package, and `run/main.go`.
 2. Add `buildpack.toml` with the Leiningen, Clojure, Gradle, Maven, Maven
@@ -143,14 +143,14 @@ The highlights:
    releases, Maven 3/4 from Maven Central, Maven Daemon per-architecture GitHub
    release assets, and sbt from GitHub releases. The existing retrieval code in
    `clojure-tools` and `leiningen` can be ported as-is.
-4. Add `libpak-tools build-build-tools` (in `paketo-buildpacks/libpak-tools`),
+4. Add `libpak-tools build-java-build-tools` (in `paketo-buildpacks/libpak-tools`),
    modeled on `build-jvm-vendors`, with a catalog entry per tool.
 5. Add `scripts/package.sh` to emit the six buildpacks, plus release and
    publish workflows that handle all six artifacts and images.
 6. Adopt the shared `github-config` implementation workflows, with unit tests
    and linting in CI. Integration testing stays at the composite
    (`java`/`java-native-image`) level, as it is today for `jvm-vendors`.
-7. Release `build-tools` under test image names, announce the testing images,
+7. Release `java-build-tools` under test image names, announce the testing images,
    validate them (including in the `java`/`java-native-image` composites on a
    branch), then move the production image names and composite order groups
    over, wait 30 days, and archive `libbs`, `gradle`, `maven`, `sbt`,
@@ -158,11 +158,11 @@ The highlights:
 
 Repositories affected:
 
-- **New:** `paketo-buildpacks/build-tools`
+- **New:** `paketo-buildpacks/java-build-tools`
 - **Archived:** `paketo-buildpacks/libbs`, `paketo-buildpacks/gradle`,
   `paketo-buildpacks/maven`, `paketo-buildpacks/sbt`,
   `paketo-buildpacks/clojure-tools`, `paketo-buildpacks/leiningen`
-- **Changed:** `paketo-buildpacks/libpak-tools` (new `build-build-tools`
+- **Changed:** `paketo-buildpacks/libpak-tools` (new `build-java-build-tools`
   command)
 - **No change during testing:** `paketo-buildpacks/java`,
   `paketo-buildpacks/java-native-image`; their order groups are updated in the
@@ -183,9 +183,9 @@ Several alternatives were considered:
    would remove the per-tool images that users pin today and require changing
    the `java` and `java-native-image` order groups. It would be a breaking
    change for no functional benefit.
-3. **Keep `libbs` as a separate library and have `build-tools` depend on it.**
+3. **Keep `libbs` as a separate library and have `java-build-tools` depend on it.**
    This retains an additional repository and the version-bump loop. Copying the
-   code into `build-tools` is what `jvm-vendors` did with the JVM code and keeps
+   code into `java-build-tools` is what `jvm-vendors` did with the JVM code and keeps
    the new repository self-contained.
 
 The approach described in this document keeps the per-tool artifacts that users
@@ -210,7 +210,7 @@ implementation package rather than creating a new repository.
 ## Unresolved Questions and Bikeshedding
 
 - Should `java` and `java-native-image` reference the combined
-  `paketo-buildpacks/build-tools` buildpack, or keep using the per-tool
+  `paketo-buildpacks/java-build-tools` buildpack, or keep using the per-tool
   buildpacks? Either works; the per-tool buildpacks keep the change invisible.
 - Is a 30 day deprecation window appropriate for a change that keeps buildpack
   IDs and image names stable?
